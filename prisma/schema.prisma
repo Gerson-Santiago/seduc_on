@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model alunos {
+  id                Int       @id @default(autoincrement())
+  tipo_de_ensino    String?
+  serie1            String?
+  n_chamada         Int?
+  nome_aluno        String?
+  ra                String    @db.VarChar(20)
+  dig               String?   @db.VarChar(5)
+  uf                String?   @db.Char(2)
+  data_nasci        DateTime? @db.Date
+  data_inicial      DateTime? @db.Date
+  data_fim          DateTime? @db.Date
+  situacao          String?   @db.VarChar(10)
+  data_movimentacao DateTime? @db.Date
+  deficiencia       String?
+  endereco          String?
+  transporte_15     String?   @db.VarChar(20)
+  genero            String?   @db.Char(1)
+  bolsa_familia     String?   @db.Char(1)
+  etnia             String?   @db.Char(1)
+  cod_turma         String?   @db.VarChar(20)
+  periodo           String?   @db.VarChar(20)
+  email_aluno       String?
+  ra_senha          String?
+  telefone          String?
+  nome_responsavel  String?
+  turma             String?
+  filtro_serie      String?
+  cod_escola        String?   @db.VarChar(20)
+  nome_escola       String?
+  info1             String?   @db.Char(1)
+  info2             String?   @db.Char(1)
+  info3             String?   @db.Char(1)
+  tipo_32           String?
+  turma_escola      String?
+  prof1             String?
+  mais_info1        String?
+  mais_info2        String?
+  mais_info3        String?
+  mais_info4        String?
+  mais_info5        String?
+  mais_info6        String?
+  ra_uuid           String?   @db.Uuid
+}
+
+model consulta_matricula {
+  pk_serie              Int?
+  cod_escola            String?
+  nome_escola           String?
+  n_classe_sed          String?
+  tipo_de_ensino        String?
+  capacidade            Int?
+  quant_alunos_ativos   Int?
+  nome_serie_sed        String?
+  periodo               String?
+  tipo_ensino_matricula String?
+  turma                 String?
+  cod_turma             String?
+  cod_escola_dup        String?
+  filtro_serie          String?
+  link_sala             String?
+  cod_turma_dup         String?
+  id                    String?
+  id_new                Int     @id @default(autoincrement())
+}
+
+model dados_das_escolas {
+  cod_escola         String  @id
+  cod_ue             String?
+  nome_escola        String?
+  inep               String?
+  endereco           String?
+  cep                String?
+  telefone           String?
+  cod_sed            String?
+  dir_email          String?
+  assist_email       String?
+  coord_email        String?
+  sec_email          String?
+  etapa              String?
+  educacao_infantil  String?
+  quant_turma_inf    Int?
+  pre_escola         String?
+  quant_turma_pre    Int?
+  ensino_fundamental String?
+  quant_turma_fund   Int?
+  turmas_totais      Int?
+  aee                String?
+  eee                String?
+  status_aee         String?
+  ano_letivo         String?
+  status_eja         String?
+  decreto_de_criacao String?
+  cnpj               String?
+  decreto_altera     String?
+  linkpiloto         String?
+  turma1             String?
+  turma2             String?
+  turma3             String?
+  turma4             String?
+  turma5             String?
+  turma6             String?
+  turma7             String?
+  turma8             String?
+  turma9             String?
+  turma10            String?
+  turma11            String?
+  turma12            String?
+  turma13            String?
+  turma14            String?
+  turma15            String?
+  turma16            String?
+  turma17            String?
+  turma18            String?
+  turma19            String?
+  turma20            String?
+  turma21            String?
+  turma22            String?
+  turma23            String?
+  turma24            String?
+  turma25            String?
+  turma26            String?
+  turma27            String?
+  turma28            String?
+  turma29            String?
+  turma30            String?
+  turma31            String?
+  turma32            String?
+  turma33            String?
+  turma34            String?
+  turma35            String?
+  turma36            String?
+  turma37            String?
+  turma38            String?
+  turma39            String?
+  turma40            String?
+}
