@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import './App.css';
@@ -10,44 +10,58 @@ function App() {
   const [erro, setErro] = useState(null);
   const [loginErro, setLoginErro] = useState(null);
 
-const onLoginSuccess = async (credentialResponse) => {
-  try {
-    const decoded = jwtDecode(credentialResponse.credential);
-    const email = decoded.email;
-
-    if (!email.endsWith('@seducbertioga.com.br')) {
-      setLoginErro('Domínio não permitido');
-      return;
+  // Tentar recuperar usuário salvo no localStorage ao montar o componente
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     }
+  }, []);
 
-    const response = await fetch('http://localhost:3000/api/usuarios/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
+  const onLoginSuccess = async (credentialResponse) => {
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+      const email = decoded.email;
 
-    if (!response.ok) {
-      setLoginErro('Usuário não autorizado');
-      return;
+      if (!email.endsWith('@seducbertioga.com.br')) {
+        setLoginErro('Domínio não permitido');
+        return;
+      }
+
+      const response = await fetch('http://localhost:3000/api/usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        setLoginErro('Usuário não autorizado');
+        return;
+      }
+
+      const data = await response.json();
+      const userData = { ...decoded, role: data.usuario.role };
+      
+      setUser(userData);
+      setLoginErro(null);
+
+      // Salvar usuário no localStorage para persistir o login
+      localStorage.setItem('user', JSON.stringify(userData));
+    } catch (e) {
+      console.error(e);
+      setLoginErro('Erro ao processar login');
     }
-
-    const data = await response.json();
-    setUser({ ...decoded, role: data.role }); // adiciona role
-    setLoginErro(null);
-  } catch (e) {
-    console.error(e);
-    setLoginErro('Erro ao processar login');
-  }
-};
-
+  };
 
   const onLoginError = () => {
     setLoginErro('Falha no login com Google');
   };
 
   const logout = () => {
-    googleLogout(); // limpa sessão do Google
-    setUser(null);  // limpa estado local
+    googleLogout();
+    setUser(null);
+    // Remover usuário do localStorage ao sair
+    localStorage.removeItem('user');
   };
 
   const buscarAluno = async (e) => {
@@ -56,9 +70,7 @@ const onLoginSuccess = async (credentialResponse) => {
     setAluno(null);
     try {
       const response = await fetch(`http://localhost:3000/api/alunos?ra=${ra}`);
-      if (!response.ok) {
-        throw new Error('Aluno não encontrado');
-      }
+      if (!response.ok) throw new Error('Aluno não encontrado');
       const data = await response.json();
       setAluno(data);
     } catch (err) {

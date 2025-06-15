@@ -5,43 +5,33 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
 import usuarioRoutes from './routes/usuario.routes.js';
-import alunoRoutes from './routes/aluno.routes.js';
-import escolaRoutes from './routes/escola.routes.js';
-import matriculaRoutes from './routes/matricula.routes.js';
+// outros imports de rotas...
+
 import { notFound, errorHandler } from './middleware/error.js';
 
 const app = express();
 const prisma = new PrismaClient();
 
-// Middlewares globais
-app.use(helmet());                                     // Proteção de cabeçalhos
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));  // CORS
-app.use(express.json());                               // Parse JSON
-app.use(morgan('combined'));                           // Logs HTTP
+app.use(helmet());
+app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
+app.use(express.json());
+app.use(morgan('combined'));
 
-// Injetar Prisma em todas as requisições
+// Injetar prisma
 app.use((req, res, next) => {
   req.prisma = prisma;
   next();
 });
 
 // Health check
-app.get('/api/health', (req, res) =>
-  res.json({ status: 'OK', timestamp: new Date().toISOString() })
-);
+app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date().toISOString() }));
 
-// Rotas principais
+// Rotas
 app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/alunos', alunoRoutes);
-app.use('/api/escolas', escolaRoutes);
-app.use('/api/matriculas', matriculaRoutes);
+// outras rotas...
 
-// 404 e tratamento centralizado de erros
+// Middleware de erro
 app.use(notFound);
 app.use(errorHandler);
-
-//Para teste ver as propriedados do Prisma Client
-//console.log(Object.keys(prisma));
-
 
 export default app;
