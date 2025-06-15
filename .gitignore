@@ -9,3 +9,6 @@ node_modules/
 
 # CSV
 csv/*.csv
+
+# Ignorar segredos do Google OAuth
+/credentials/client_secret.json

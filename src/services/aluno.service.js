@@ -1,3 +1,4 @@
+// src/service/aluno.service.js
 export async function findAllAlunos(prisma, filtros) {
   const { nome, escola } = filtros;
 

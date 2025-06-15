@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
+import usuarioRoutes from './routes/usuario.routes.js';
 import alunoRoutes from './routes/aluno.routes.js';
 import escolaRoutes from './routes/escola.routes.js';
 import matriculaRoutes from './routes/matricula.routes.js';
@@ -30,6 +31,7 @@ app.get('/api/health', (req, res) =>
 );
 
 // Rotas principais
+app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/alunos', alunoRoutes);
 app.use('/api/escolas', escolaRoutes);
 app.use('/api/matriculas', matriculaRoutes);
@@ -39,7 +41,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 //Para teste ver as propriedados do Prisma Client
-// console.log(Object.keys(prisma));
+//console.log(Object.keys(prisma));
 
 
 export default app;
