@@ -1,11 +1,17 @@
 import { PrismaClient } from '@prisma/client'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const prisma = new PrismaClient()
 
 async function main() {
-  const superadminEmail = 'gerson.santiago@seducbertioga.com.br'
+  const superadminEmail = process.env.SUPERADMIN_EMAIL
 
-  // Verifica se já existe superadmin
+  if (!superadminEmail) {
+    throw new Error('SUPERADMIN_EMAIL não definido no .env')
+  }
+
   const existing = await prisma.usuario.findUnique({
     where: { email: superadminEmail }
   })
