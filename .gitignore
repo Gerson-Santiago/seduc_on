@@ -1,14 +1,24 @@
-# Node modules
+# Node modules e lockfile
 node_modules/
+package-lock.json
 
-# Environment variables
+# Variáveis de ambiente
 .env
 
-# Prisma
-/generated/prisma/
+# VS Code
+.vscode/
 
-# CSV
+# Prisma
+generated/
+prisma/migrations/
+
+# Arquivos CSV
 csv/*.csv
 
-# Ignorar segredos do Google OAuth
-/credentials/client_secret.json
+# Credenciais sensíveis (Google OAuth 2.0)
+credentials/client_secret.json
+
+# Builds, logs e caches
+dist/
+build/
+*.log
