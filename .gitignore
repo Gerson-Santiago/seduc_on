@@ -1,5 +1,11 @@
-node_modules
-# Keep environment variables out of version control
+# Node modules
+node_modules/
+
+# Environment variables
 .env
 
-/generated/prisma
+# Prisma
+/generated/prisma/
+
+# CSV
+csv/*.csv
