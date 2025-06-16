@@ -1,85 +1,21 @@
 // aee/frontend-aee/src/App.js
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import './App.css';
 
-// Tela de Login
-function Login({ onLoginSuccess, loginErro }) {
-  return (
-    <div>
-      <h1>Login</h1>
-      <GoogleLogin
-        onSuccess={onLoginSuccess}
-        onError={() => console.log('Login falhou')}
-      />
-      {loginErro && <p style={{ color: 'red' }}>{loginErro}</p>}
-    </div>
-  );
-}
-
-// Tela Home - busca aluno e logout
-function Home({ user, logout }) {
-  const [ra, setRa] = useState('');
-  const [aluno, setAluno] = useState(null);
-  const [erro, setErro] = useState(null);
-
-  const buscarAluno = async (e) => {
-    e.preventDefault();
-    setErro(null);
-    setAluno(null);
-    try {
-      const response = await fetch(`http://localhost:3000/api/alunos?ra=${ra}`);
-      if (!response.ok) throw new Error('Aluno não encontrado');
-      const data = await response.json();
-      setAluno(data);
-    } catch (err) {
-      setErro(err.message);
-    }
-  };
-
-  return (
-    <div>
-      <h1>Buscar Aluno por RA</h1>
-      <p>Usuário logado: {user.name} ({user.email})</p>
-      <button onClick={logout}>Sair / Trocar Conta</button>
-
-      <form onSubmit={buscarAluno}>
-        <input
-          type="text"
-          placeholder="Digite o RA"
-          value={ra}
-          onChange={(e) => setRa(e.target.value)}
-        />
-        <button type="submit">Buscar</button>
-      </form>
-
-      {erro && <p style={{ color: 'red' }}>{erro}</p>}
-
-      {aluno && (
-        <div>
-          <h2>Dados do Aluno</h2>
-          <p><strong>Nome:</strong> {aluno.nome_aluno}</p>
-          <p><strong>RA:</strong> {aluno.ra}</p>
-          <p><strong>Data de Nascimento:</strong> {new Date(aluno.data_nasci).toLocaleDateString()}</p>
-          <p><strong>Escola:</strong> {aluno.nome_escola}</p>
-          <p><strong>Turma:</strong> {aluno.turma}</p>
-          <p><strong>Situação:</strong> {aluno.situacao}</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Componente principal App com rotas
 function App() {
   const [user, setUser] = useState(null);
   const [loginErro, setLoginErro] = useState(null);
+  const [ra, setRa] = useState('');
+  const [aluno, setAluno] = useState(null);
+  const [raErro, setRaErro] = useState(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
-    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
   }, []);
 
   const onLoginSuccess = async (credentialResponse) => {
@@ -105,7 +41,7 @@ function App() {
 
       const data = await response.json();
       const userData = { ...decoded, role: data.usuario.role };
-      
+
       setUser(userData);
       setLoginErro(null);
       localStorage.setItem('user', JSON.stringify(userData));
@@ -115,28 +51,98 @@ function App() {
     }
   };
 
+  const onLoginError = () => {
+    setLoginErro('Falha no login com Google');
+  };
+
   const logout = () => {
     googleLogout();
     setUser(null);
     localStorage.removeItem('user');
+    setAluno(null);
+    setRa('');
+    setRaErro(null);
   };
 
+  const buscarRa = async (e) => {
+    e.preventDefault();
+    setRaErro(null);
+    setAluno(null);
+
+    if (!ra) {
+      setRaErro('Digite um RA válido');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/alunos/${ra}`);
+      if (!response.ok) {
+        setRaErro('Aluno não encontrado');
+        return;
+      }
+      const data = await response.json();
+      setAluno(data);
+    } catch (error) {
+      setRaErro('Erro ao buscar aluno');
+    }
+  };
+
+  if (!user) {
+    return (
+      <div className="login-container">
+        <div className="login-box">
+          <h1>Bem-vindo ao AEE</h1>
+          <p>Faça login com sua conta @seducbertioga.com.br</p>
+          <div className="google-button">
+            <GoogleLogin
+              onSuccess={onLoginSuccess}
+              onError={onLoginError}
+              useOneTap
+              shape="rectangular"
+              theme="filled_blue"
+              size="large"
+              width="280"
+            />
+          </div>
+          {loginErro && <p className="error-message">{loginErro}</p>}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <Router>
-      <Routes>
-        {/* Se usuário já está logado, redireciona login para home */}
-        <Route path="/login" element={user ? <Navigate to="/home" /> : <Login onLoginSuccess={onLoginSuccess} loginErro={loginErro} />} />
-        
-        {/* Rota protegida /home */}
-        <Route path="/home" element={user ? <Home user={user} logout={logout} /> : <Navigate to="/login" />} />
-        
-        {/* /aee redireciona para login */}
-        <Route path="/aee" element={<Navigate to="/login" />} />
-        
-        {/* Rota padrão (qualquer outra) redireciona para /login */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </Router>
+    <div className="App">
+      <h1>Olá, {user.name}</h1>
+      <p>Você está logado com {user.email}</p>
+      <button className="logout-btn" onClick={logout}>Sair</button>
+
+      <form onSubmit={buscarRa} className="search-form">
+        <input
+          type="text"
+          placeholder="Digite o RA do aluno"
+          value={ra}
+          onChange={(e) => setRa(e.target.value)}
+        />
+        <button type="submit">Buscar</button>
+      </form>
+
+      {raErro && <p className="error-message">{raErro}</p>}
+
+      {aluno && (
+        <div className="aluno-card">
+          <h2>{aluno.nome_aluno}</h2>
+          <p><strong>RA:</strong> {aluno.ra}</p>
+          <p><strong>Data de nascimento:</strong> {new Date(aluno.data_nasci).toLocaleDateString()}</p>
+          <p><strong>Situação:</strong> {aluno.situacao}</p>
+          <p><strong>Escola:</strong> {aluno.nome_escola}</p>
+          <p><strong>Turma + Período:</strong> {aluno.turma} - {aluno.periodo}</p>
+          <p><strong>Endereço:</strong> {aluno.endereco}</p>
+          <p><strong>Gênero:</strong> {aluno.genero}</p>
+          <p><strong>Bolsa Família:</strong> {aluno.bolsa_familia}</p>
+          <p><strong>Etnia:</strong> {aluno.etnia}</p>
+        </div>
+      )}
+    </div>
   );
 }
 
