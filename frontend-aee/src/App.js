@@ -1,69 +1,29 @@
 // aee/frontend-aee/src/App.js
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import './App.css';
 
-function App() {
-  const [user, setUser] = useState(null);
+// Tela de Login
+function Login({ onLoginSuccess, loginErro }) {
+  return (
+    <div>
+      <h1>Login</h1>
+      <GoogleLogin
+        onSuccess={onLoginSuccess}
+        onError={() => console.log('Login falhou')}
+      />
+      {loginErro && <p style={{ color: 'red' }}>{loginErro}</p>}
+    </div>
+  );
+}
+
+// Tela Home - busca aluno e logout
+function Home({ user, logout }) {
   const [ra, setRa] = useState('');
   const [aluno, setAluno] = useState(null);
   const [erro, setErro] = useState(null);
-  const [loginErro, setLoginErro] = useState(null);
-
-  // Tentar recuperar usuário salvo no localStorage ao montar o componente
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, []);
-
-  const onLoginSuccess = async (credentialResponse) => {
-    try {
-      const decoded = jwtDecode(credentialResponse.credential);
-      const email = decoded.email;
-
-      if (!email.endsWith('@seducbertioga.com.br')) {
-        setLoginErro('Domínio não permitido');
-        return;
-      }
-
-      const response = await fetch('http://localhost:3000/api/usuarios/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!response.ok) {
-        setLoginErro('Usuário não autorizado');
-        return;
-      }
-
-      const data = await response.json();
-      const userData = { ...decoded, role: data.usuario.role };
-      
-      setUser(userData);
-      setLoginErro(null);
-
-      // Salvar usuário no localStorage para persistir o login
-      localStorage.setItem('user', JSON.stringify(userData));
-    } catch (e) {
-      console.error(e);
-      setLoginErro('Erro ao processar login');
-    }
-  };
-
-  const onLoginError = () => {
-    setLoginErro('Falha no login com Google');
-  };
-
-  const logout = () => {
-    googleLogout();
-    setUser(null);
-    // Remover usuário do localStorage ao sair
-    localStorage.removeItem('user');
-  };
 
   const buscarAluno = async (e) => {
     e.preventDefault();
@@ -79,21 +39,8 @@ function App() {
     }
   };
 
-  if (!user) {
-    return (
-      <div className="App">
-        <h1>Login</h1>
-        <GoogleLogin
-          onSuccess={onLoginSuccess}
-          onError={onLoginError}
-        />
-        {loginErro && <p style={{ color: 'red' }}>{loginErro}</p>}
-      </div>
-    );
-  }
-
   return (
-    <div className="App">
+    <div>
       <h1>Buscar Aluno por RA</h1>
       <p>Usuário logado: {user.name} ({user.email})</p>
       <button onClick={logout}>Sair / Trocar Conta</button>
@@ -122,6 +69,74 @@ function App() {
         </div>
       )}
     </div>
+  );
+}
+
+// Componente principal App com rotas
+function App() {
+  const [user, setUser] = useState(null);
+  const [loginErro, setLoginErro] = useState(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) setUser(JSON.parse(savedUser));
+  }, []);
+
+  const onLoginSuccess = async (credentialResponse) => {
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+      const email = decoded.email;
+
+      if (!email.endsWith('@seducbertioga.com.br')) {
+        setLoginErro('Domínio não permitido');
+        return;
+      }
+
+      const response = await fetch('http://localhost:3000/api/usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        setLoginErro('Usuário não autorizado');
+        return;
+      }
+
+      const data = await response.json();
+      const userData = { ...decoded, role: data.usuario.role };
+      
+      setUser(userData);
+      setLoginErro(null);
+      localStorage.setItem('user', JSON.stringify(userData));
+    } catch (e) {
+      console.error(e);
+      setLoginErro('Erro ao processar login');
+    }
+  };
+
+  const logout = () => {
+    googleLogout();
+    setUser(null);
+    localStorage.removeItem('user');
+  };
+
+  return (
+    <Router>
+      <Routes>
+        {/* Se usuário já está logado, redireciona login para home */}
+        <Route path="/login" element={user ? <Navigate to="/home" /> : <Login onLoginSuccess={onLoginSuccess} loginErro={loginErro} />} />
+        
+        {/* Rota protegida /home */}
+        <Route path="/home" element={user ? <Home user={user} logout={logout} /> : <Navigate to="/login" />} />
+        
+        {/* /aee redireciona para login */}
+        <Route path="/aee" element={<Navigate to="/login" />} />
+        
+        {/* Rota padrão (qualquer outra) redireciona para /login */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 
