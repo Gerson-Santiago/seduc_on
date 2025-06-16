@@ -5,7 +5,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
 import usuarioRoutes from './routes/usuario.routes.js';
-// outros imports de rotas...
+import alunoRoutes from './routes/aluno.routes.js';
+
 
 import { notFound, errorHandler } from './middleware/error.js';
 
@@ -28,6 +29,8 @@ app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Dat
 
 // Rotas
 app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/alunos', alunoRoutes);
+
 // outras rotas...
 
 // Middleware de erro
