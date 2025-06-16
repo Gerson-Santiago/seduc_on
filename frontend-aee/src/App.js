@@ -1,3 +1,4 @@
+// aee/frontend-aee/src/App.js
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';

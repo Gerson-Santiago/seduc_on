@@ -1,7 +1,7 @@
 //aee/frontend-aee/src/contexts/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import jwtDecode from 'jwt-decode';
+// import jwtDecode from 'jwt-decode';
 
 const AuthContext = createContext();
 const LOCAL_STORAGE_KEY = 'aee_user';
