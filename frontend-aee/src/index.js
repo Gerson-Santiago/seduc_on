@@ -1,24 +1,22 @@
-// frontend-aee/src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-
+import { BrowserRouter } from 'react-router-dom';      // ← adicionado
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './features/auth/context/AuthContext';
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId={clientId}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </GoogleOAuthProvider>
+    <BrowserRouter>                                {/* ← adicionado */}
+      <GoogleOAuthProvider clientId={clientId}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </GoogleOAuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
-
-reportWebVitals();
