@@ -1,16 +1,13 @@
 import React from 'react'
-import Sidebar from '../layout/Sidebar'
-import Header from '../layout/Header'
 import BuscaAluno from '../features/alunos/components/BuscaAluno'
+import AlunoCard from '../features/alunos/components/AlunoCard'
 
-export default function AlunoPage() {
+export default function AlunoPage({ aluno, onAlunoLoaded }) {
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1 p-4">
-        <Header />
-        <BuscaAluno />
-      </div>
+    <div className="aluno-page">
+      <h2>Buscar Aluno</h2>
+      <BuscaAluno onAlunoLoaded={onAlunoLoaded} />
+      {aluno && <AlunoCard aluno={aluno} />}
     </div>
-  )
+  );
 }

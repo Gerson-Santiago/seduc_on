@@ -27,6 +27,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
+    "debug": "PORT=3001 react-scripts start",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

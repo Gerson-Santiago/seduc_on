@@ -1,20 +1,18 @@
-// src/App.js
-import React, { useState, useEffect } from 'react';
+//frontend-aee/src/App.js
+import React, { useState } from 'react';
 import useAuth from './features/auth/hooks/useAuth';
 import Login from './components/Login';
 import TopBar from './components/layout/TopBar';
-import Sidebar from './components/layout/Sidebar';
-import BuscaAluno from './features/alunos/components/BuscaAluno';
-import AlunoCard from './features/alunos/components/AlunoCard';
+import AlunoPage from './pages/AlunoPage'
+import Sidebar from './components/layout/Sidebar'; // Sidebar padrão
+import TestSidebar from './novasidebar/TestSidebar';    // Sidebar para teste, renomeada
 
 function App() {
   const { user, loginErro, onLoginSuccess, onLoginError, logout } = useAuth();
   const [aluno, setAluno] = useState(null);
 
-  // Nova linha: controle de página
-  const [page, setPage] = useState('alunos'); // padrão: 'alunos'
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [page, setPage] = useState('home');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const toggleSidebar = () => setSidebarOpen(o => !o);
 
   if (!user) {
@@ -27,15 +25,15 @@ function App() {
     );
   }
 
-  // Função que o Sidebar vai chamar para navegar
   const navigateTo = (targetPage) => {
-    setAluno(null);   // limpa aluno ao mudar de página
+    setAluno(null);
     setPage(targetPage);
     if (sidebarOpen) setSidebarOpen(false);
   };
 
   return (
     <>
+      {/* Use a sidebar padrão */}
       <Sidebar isOpen={sidebarOpen} onNavigate={navigateTo} />
       <div style={{
         marginLeft: sidebarOpen ? 240 : 0,
@@ -44,10 +42,7 @@ function App() {
         <TopBar onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} user={user} onLogout={logout} />
         <main style={{ paddingTop: 60, padding: 20 }}>
           {page === 'alunos' && (
-            <>
-              <BuscaAluno onAlunoLoaded={setAluno} />
-              {aluno && <AlunoCard aluno={aluno} />}
-            </>
+            <AlunoPage aluno={aluno} onAlunoLoaded={setAluno} />
           )}
           {page === 'home' && (
             <h2>Bem-vindo, {user.name}!</h2>
@@ -55,9 +50,16 @@ function App() {
           {page === 'config' && (
             <h2>Página de Configurações (em breve)</h2>
           )}
+          {page === 'testsidebar' && <TestSidebarPage />}
         </main>
       </div>
     </>
+  );
+}
+
+function TestSidebarPage() {
+  return (
+    <TestSidebar />
   );
 }
 

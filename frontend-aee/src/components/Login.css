@@ -1,0 +1,65 @@
+/* Login.css */
+
+/* página inteira em flex para centralizar conteúdo */
+.login-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* header fixo no topo, logos lado a lado */
+.login-header {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-prefeitura,
+.logo-sistema {
+  height: 40px;
+  object-fit: contain;
+}
+
+/* container que ocupa toda a área disponível, para centralizar o card */
+.login-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* cartão branco com sombra e cantos arredondados */
+.login-card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+.login-card h1 {
+  margin-bottom: 16px;
+  font-size: 1.75rem;
+}
+
+.login-card p {
+  margin-bottom: 24px;
+  color: #555;
+}
+
+.google-button {
+  margin-bottom: 16px;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}

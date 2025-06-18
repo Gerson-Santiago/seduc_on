@@ -199,3 +199,12 @@ body[data-theme='dark'] .dropdown {
 .main-content {
   padding-top: 60px;
 }
+
+
+* {
+  outline: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+
+
+

@@ -1,4 +1,4 @@
-//aee/frontend-aee/src/components/BuscaAluno.jsx
+//aee/frontend-aee/src/features/alunos/components/AlunoCard.jsx
 import React from 'react';
 
 export default function AlunoCard({ aluno }) {

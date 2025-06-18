@@ -29,6 +29,11 @@ export default function Sidebar({ isOpen, onNavigate }) {
           <li style={itemStyle} onClick={() => onNavigate('config')}>
             <FiSettings style={{ marginRight: 8 }} /> Configurações
           </li>
+          <li style={itemStyle} onClick={() => onNavigate('testsidebar')}>
+            <FiSettings style={{ marginRight: 8 }} /> testsidebar
+          </li>
+
+
         </ul>
       </nav>
     </aside>

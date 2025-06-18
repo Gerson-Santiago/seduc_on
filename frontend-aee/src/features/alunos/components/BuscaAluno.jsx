@@ -1,4 +1,4 @@
-//aee/frontend-aee/src/components/BuscaAluno.jsx
+//frontend-aee/src/features/alunos/components/BuscaAluno.jsx
 import React, { useState } from 'react';
 
 export default function BuscaAluno({ onAlunoLoaded }) {
