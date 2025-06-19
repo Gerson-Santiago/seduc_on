@@ -14,9 +14,30 @@
 );
 
 
-\copy consulta_matricula(pk_serie, cod_escola, nome_escola, n_classe_sed, tipo_de_ensino, capacidade, quant_alunos_ativos, nome_serie_sed, periodo, tipo_ensino_matricula, turma, cod_turma, cod_escola_dup, filtro_serie, link_sala, cod_turma_dup, id) FROM 'csv/consulta_matricula.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '');
+\copy consulta_matricula(
+  pk_serie, cod_escola, nome_escola, n_classe_sed, tipo_de_ensino, 
+  capacidade, quant_alunos_ativos, nome_serie_sed, periodo, tipo_ensino_matricula, 
+  turma, cod_turma, cod_escola_dup, filtro_serie, link_sala, cod_turma_dup, id
+) FROM 'csv/consulta_matricula.csv' WITH (
+  FORMAT csv, 
+  HEADER true, 
+  DELIMITER ',', 
+  NULL '');
 
 
-
-
-\copy dados_das_escolas(cod_escola,cod_ue,nome_escola,inep,endereco,cep,telefone,cod_sed,dir_email,assist_email,coord_email,sec_email,etapa,educacao_infantil,quant_turma_INF,pre_escola,quant_turma_PRE,ensino_fundamental,quant_turma_FUND,turmas_totais,aee,eee,status_aee,ano_letivo,status_eja,decreto_de_criacao,cnpj,decreto_altera,linkpiloto,turma1,turma2,turma3,turma4,turma5,turma6,turma7,turma8,turma9,turma10,turma11,turma12,turma13,turma14,turma15,turma16,turma17,turma18,turma19,turma20,turma21,turma22,turma23,turma24,turma25,turma26,turma27,turma28,turma29,turma30,turma31,turma32,turma33,turma34,turma35,turma36,turma37,turma38,turma39,turma40) FROM 'csv/dados_das_escolas.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '');
+\copy dados_das_escolas(
+  cod_escola,cod_ue,nome_escola,inep,endereco,cep,telefone,
+  cod_sed,dir_email,assist_email,coord_email,sec_email,etapa,
+  educacao_infantil,quant_turma_INF,pre_escola,quant_turma_PRE,
+  ensino_fundamental,quant_turma_FUND,turmas_totais,aee,eee,status_aee,
+  ano_letivo,status_eja,decreto_de_criacao,cnpj,decreto_altera,linkpiloto,
+  turma1,turma2,turma3,turma4,turma5,turma6,turma7,turma8,turma9,turma10,
+  turma11,turma12,turma13,turma14,turma15,turma16,turma17,turma18,turma19,
+  turma20,turma21,turma22,turma23,turma24,turma25,turma26,turma27,turma28,
+  turma29,turma30,turma31,turma32,turma33,turma34,turma35,turma36,turma37,
+  turma38,turma39,turma40
+) FROM 'csv/dados_das_escolas.csv' WITH (
+  FORMAT csv, 
+  HEADER true, 
+  DELIMITER ',', 
+  NULL '');

@@ -2,7 +2,7 @@
   "name": "frontend-aee",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gerson-gantiago.github.io/aee",
+  "homepage": "https://gerson-santiago.github.io/aee",
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
     "@testing-library/dom": "^10.4.0",

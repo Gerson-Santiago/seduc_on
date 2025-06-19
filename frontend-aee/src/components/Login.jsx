@@ -10,8 +10,7 @@ export default function Login({ onLoginSuccess, onLoginError, loginErro }) {
       <header className="login-header">
         <img src={logoPrefeitura} alt="Prefeitura de Bertioga" className="logo-prefeitura" />
         
-        {/* 
-        Este é um comentário de uma linha 
+        {/*
         <img src={logoSistema}    alt="Sistema AEE"             className="logo-sistema" />
         */}
       </header>

@@ -1,34 +1,48 @@
 // src/controllers/usuario.controller.js
-import * as UsuarioService from '../services/usuario.service.js';
-import { gerarToken } from '../utils/jwt.js';
+import { OAuth2Client } from 'google-auth-library'
+import * as UsuarioService from '../services/usuario.service.js'
+import { gerarToken } from '../utils/jwt.js'
+
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const client = new OAuth2Client(CLIENT_ID)
 
 export async function loginUsuario(req, res) {
-  const { email } = req.body;
-  console.log('Email recebido no backend:', email);
+  const { token } = req.body
+
+  if (!token) return res.status(400).json({ error: 'Token é obrigatório' })
 
   try {
-    if (!email) {
-      return res.status(400).json({ error: 'Email é obrigatório' });
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: CLIENT_ID,
+    })
+
+    const payload = ticket.getPayload()
+    const email = payload.email
+    const hd = payload.hd
+
+    // Verifica domínio do email
+    if (hd !== 'seducbertioga.com.br') {
+      return res.status(403).json({ error: 'Domínio não autorizado' })
     }
 
-    const usuario = await UsuarioService.findUsuarioByEmail(req.prisma, email);
-
+    const usuario = await UsuarioService.findUsuarioByEmail(req.prisma, email)
     if (!usuario) {
-      return res.status(401).json({ error: 'Usuário não autorizado' });
+      return res.status(401).json({ error: 'Usuário não autorizado' })
     }
 
-    const token = gerarToken(usuario);
+    const jwtToken = gerarToken(usuario)
 
     return res.json({
-      token,
-      usuario: {
+      token: jwtToken,
+      user: {
         email: usuario.email,
         nome: usuario.nome,
         role: usuario.role,
       },
-    });
+    })
   } catch (err) {
-    console.error('Erro no login:', err);
-    return res.status(500).json({ error: 'Erro no servidor', details: err.message });
+    console.error('Erro no login:', err)
+    return res.status(401).json({ error: 'Token inválido ou expirado' })
   }
 }
