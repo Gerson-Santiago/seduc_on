@@ -39,9 +39,10 @@ body {
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 4px 10px var(--cor-sombra-card);
+  max-width: 600px;
   text-align: center;
   width: 100%;
-  max-width: 600px;
+
 }
 
 /* Título */
