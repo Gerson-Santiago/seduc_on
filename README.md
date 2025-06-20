@@ -56,8 +56,3 @@ O intuito é garantir um processo mais eficiente, transparente e colaborativo en
 3. Rodar banco PostgreSQL (usando Prisma).
 4. Iniciar backend: `npm run dev` (ou conforme script configurado).
 5. Iniciar frontend: `npm run dev` dentro da pasta `frontend-aee-vite`.
-
----
-
-Qualquer dúvida, me avise para ajustar o README ou ajudar em instruções!
-
