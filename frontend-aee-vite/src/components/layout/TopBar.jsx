@@ -1,6 +1,6 @@
 // src/components/TopBar.jsx
 import React from 'react'
-import UserDropdown from './UserDropdown'
+import UserDropdown from '../topbar/UserDropdown';
 
 export default function TopBar({ onSidebarToggle, user, onLogout }) {
   return (

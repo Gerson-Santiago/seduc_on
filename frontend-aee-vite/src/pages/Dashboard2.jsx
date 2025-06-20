@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import Sidebar from '../components/Sidebar'
-import TopBar from '../components/TopBar'
-import MainContent from '../components/MainContent'
+import Sidebar from '../components/layout/Sidebar'
+import TopBar from '../components/layout/TopBar'
+import MainContent from '../components/layout/MainContent'
 
 export default function Dashboard2() {
   const [collapsed, setCollapsed] = useState(window.innerWidth <= 768)
