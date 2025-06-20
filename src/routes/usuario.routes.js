@@ -6,4 +6,7 @@ const router = Router();
 
 router.post('/login', UsuarioController.loginUsuario);
 
+// Rota protegida GET /me para retornar dados do usuário autenticado
+router.get('/me', UsuarioController.getMe);
+
 export default router;
