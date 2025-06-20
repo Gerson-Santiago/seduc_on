@@ -1,3 +1,4 @@
+/* frontend-aee-vite/src/pages/Home.css */
 :root {
   --cor-texto-primario: #1F2936;
   --cor-texto-secundario: #1b1e24;
@@ -140,4 +141,19 @@ body {
     font-size: 1rem;
     padding: 0.85rem;
   }
+}
+
+.git-status-popup {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #333;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  font-size: 14px;
+  z-index: 1000;
+  max-width: 280px;
+  white-space: pre-line; /* quebras de linha*/
 }
