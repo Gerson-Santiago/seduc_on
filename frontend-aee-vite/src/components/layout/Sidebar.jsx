@@ -1,7 +1,7 @@
 // src/components/Sidebar.jsx
 import React, { useState, useEffect } from 'react'
-import logo from '../components/TestSidebar/logo.png'
-import './style.css'
+import logo from '../../assets/logo-sistema.png'
+import '../style.css'
 
 export default function Sidebar({ collapsed, onToggle }) {
   const [darkMode, setDarkMode] = useState(
