@@ -1,7 +1,8 @@
-// src/controllers/usuario.controller.js
 import { OAuth2Client } from 'google-auth-library'
 import * as UsuarioService from '../services/usuario.service.js'
-import { gerarToken } from '../utils/jwt.js'
+import { gerarToken, verificarToken } from '../utils/jwt.js'
+import 'dotenv/config'
+import prisma from '../../prisma/client.js' // ajuste conforme seu projeto
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const client = new OAuth2Client(CLIENT_ID)
@@ -21,12 +22,11 @@ export async function loginUsuario(req, res) {
     const email = payload.email
     const hd = payload.hd
 
-    // Verifica domínio do email
     if (hd !== 'seducbertioga.com.br') {
       return res.status(403).json({ error: 'Domínio não autorizado' })
     }
 
-    const usuario = await UsuarioService.findUsuarioByEmail(req.prisma, email)
+    const usuario = await UsuarioService.findUsuarioByEmail(prisma, email)
     if (!usuario) {
       return res.status(401).json({ error: 'Usuário não autorizado' })
     }
@@ -44,5 +44,27 @@ export async function loginUsuario(req, res) {
   } catch (err) {
     console.error('Erro no login:', err)
     return res.status(401).json({ error: 'Token inválido ou expirado' })
+  }
+}
+
+export async function getMe(req, res) {
+  try {
+    const authHeader = req.headers.authorization
+    if (!authHeader) return res.status(401).json({ error: 'Token não fornecido' })
+
+    const token = authHeader.split(' ')[1]
+    if (!token) return res.status(401).json({ error: 'Token inválido' })
+
+    const payload = verificarToken(token)
+    if (!payload) return res.status(401).json({ error: 'Token inválido ou expirado' })
+
+    const usuario = await UsuarioService.findUsuarioById(prisma, payload.id)
+    if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
+
+    const { senha, ...usuarioSemSenha } = usuario
+    res.json({ user: usuarioSemSenha })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Erro interno' })
   }
 }

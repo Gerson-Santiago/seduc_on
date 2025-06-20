@@ -8,7 +8,14 @@ import app from './src/app.js';
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server backend http://localhost:${PORT}`);
-  console.log(`Acessar login em: http://localhost:3001/aee`);
+  console.log('==========================================');
+  console.log(`🚀 Backend rodando em: http://localhost:${PORT}`);
+  console.log('==========================================\n');
+
+  console.log('🔗 URLs do Frontend:');
+  console.log(`   • Home page: http://localhost:5173`);
+  console.log(`   • Login page: http://localhost:5173/login\n`);
+
+  console.log('==========================================');
 });
 

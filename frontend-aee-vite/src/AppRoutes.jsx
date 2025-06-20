@@ -17,7 +17,10 @@ function NotFoundRedirect({ user }) {
 }
 
 export default function AppRoutes() {
-  const { user, error } = useAuth()
+  const { user, error, loading } = useAuth()
+  if (loading) {
+    return null
+  }
 
   return (
     <Routes>
