@@ -1,5 +1,11 @@
-# Logs
-logs
+# ✅ Ignorar a build gerada pelo Vite
+dist/
+dist-ssr/
+
+# ✅ Dependências
+node_modules/
+
+# ✅ Arquivos de log
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,18 +13,26 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# ✅ Configurações locais
 *.local
+.env              # Se houver, como VITE_CLIENT_ID
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# ✅ Arquivos de sistema
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# ✅ Diretórios de editor
+.vscode/*
+!.vscode/extensions.json  # permite versionar recomendações
+.idea/
+
+# ❌ NÃO ignorar:
+# - src/
+# - public/
+# - package.json
+# - vite.config.js
+# - README.md
