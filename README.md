@@ -1,5 +1,5 @@
 # Sistema de Acompanhamento AEE
-
+Atualizado em 20 de jun 2025
 Sistema de Acompanhamento de Alunos em Processo de Avaliação Educacional Especializada.
 
 O projeto tem como objetivo centralizar, organizar e acompanhar o processo de observação, intervenção e encaminhamento de alunos da rede municipal de ensino que apresentam indícios de necessidades educacionais especiais.
