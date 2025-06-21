@@ -15,7 +15,13 @@ lerna-debug.log*
 
 # ✅ Configurações locais
 *.local
-.env              # Se houver, como VITE_CLIENT_ID
+.env              
+.env.local      
+.env.*.local  
+.env.production
+.env.development
+.env.test
+
 
 # ✅ Arquivos de sistema
 .DS_Store

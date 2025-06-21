@@ -1,30 +1,15 @@
-import { defineConfig, loadEnv } from 'vite'
-import react from '@vitejs/plugin-react'
+// frontend-aee-vite/vite.config.dev.js
+// vite.config.js
+import { defineConfig } from 'vite'
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd())
-  const baseURL = env.VITE_API_BASE_URL || 'http://localhost:3000'
-
-  return {
-    plugins: [react()],
-    server: {
-      proxy: {
-        '/api': {
-          target: baseURL,
-          changeOrigin: true,
-          secure: false,
-          rewrite: path => path.replace(/^\/api/, ''),
-        }
-      }
-    }
+export default defineConfig(({ command, mode }) => {
+  if (mode === 'production') {
+    return import('./vite.config.prod.js').then(m => m.default)
+  } else if (mode === 'preview') {
+    return import('./vite.config.preview.js').then(m => m.default)
+  } else if (mode === 'github') {
+    return import('./vite.config.github.js').then(m => m.default)
+  } else {
+    return import('./vite.config.dev.js').then(m => m.default)
   }
 })
-//   } catch (err) {
-//     console.error('Erro ao fazer login:', err)
-//     setError(err.message || 'Erro ao fazer login')
-//   } finally {
-//     setLoading(false)
-//   }
-//   }
-//    
