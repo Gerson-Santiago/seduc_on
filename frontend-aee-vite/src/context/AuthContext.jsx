@@ -3,8 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 // Importa a URL base da API do ambiente (variável de ambiente via import.meta.env)
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
-
-
+// Cria o contexto de autenticação
 
 const AuthContext = createContext()
 const LOCAL_STORAGE_KEY = 'aee_user'
@@ -19,10 +18,14 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored)
-      console.log('TOKEN RECUPERADO DO localStorage:', parsed.token)
+      console.log('✅ TOKEN RECUPERADO DO localStorage:', parsed.token)
+      console.log('✅ BASE URL carregada no AuthContext:', API_BASE_URL)
+
       validateSession(parsed.token)
     } else {
-      console.log('NENHUM usuário no localStorage')
+      console.log('❌ NENHUM usuário no localStorage')
+      console.log('❌ BASE URL carregada no AuthContext:', API_BASE_URL)
+
       setLoading(false)
     }
   }, [])
@@ -72,7 +75,7 @@ export const AuthProvider = ({ children }) => {
   const loginRedirect = () => {
     const params = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: `${window.location.origin}/auth/callback`,
+      redirect_uri: `${window.location.origin}/aee/auth/callback`,
       response_type: 'id_token',
       scope: 'openid email profile',
       prompt: 'select_account',
