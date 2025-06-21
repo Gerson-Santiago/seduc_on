@@ -1,6 +1,11 @@
 // src/context/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
+// Importa a URL base da API do ambiente (variável de ambiente via import.meta.env)
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+
+
+
 const AuthContext = createContext()
 const LOCAL_STORAGE_KEY = 'aee_user'
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
@@ -10,22 +15,21 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-useEffect(() => {
-  const stored = localStorage.getItem(LOCAL_STORAGE_KEY)
-  if (stored) {
-    const parsed = JSON.parse(stored)
-    console.log('TOKEN RECUPERADO DO localStorage:', parsed.token)
-    validateSession(parsed.token)
-  } else {
-    console.log('NENHUM usuário no localStorage')
-    setLoading(false)
-  }
-}, [])
-
+  useEffect(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      console.log('TOKEN RECUPERADO DO localStorage:', parsed.token)
+      validateSession(parsed.token)
+    } else {
+      console.log('NENHUM usuário no localStorage')
+      setLoading(false)
+    }
+  }, [])
 
   const validateSession = async (token) => {
     try {
-      const response = await fetch('http://localhost:3000/api/usuarios/me', {
+      const response = await fetch(`${API_BASE_URL}/usuarios/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (!response.ok) throw new Error('Sessão inválida')
@@ -42,7 +46,7 @@ useEffect(() => {
   const login = async ({ credential }) => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:3000/api/usuarios/login', {
+      const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: credential }),
@@ -89,8 +93,4 @@ useEffect(() => {
   )
 }
 
-
-
 export const useAuth = () => useContext(AuthContext)
-
-
