@@ -1,33 +1,81 @@
-# Node modules e arquivos de lock
+# =====================
+# 🔧 CONFIGURAÇÕES GERAIS
+# =====================
+
+# Node.js
 node_modules/
 package-lock.json
 
-# Variáveis de ambiente sensíveis
-.env
-
-# VS Code (configurações locais)
-.vscode/
-
-# Prisma - diretórios gerados e migrações
-generated/
+# Prisma
 prisma/migrations/
+prisma/client.js
+generated/
 
-# CSV originais (somente ignorar os que não são _headers.csv)
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+backend.log
+
+# Builds (Vite, frontend, SSR)
+dist/
+dist-ssr/
+build/
+
+# CSV - manter apenas arquivos header
 csv/*.csv
 !csv/*_headers.csv
 !csv/csv.txt
 !csv/extract_headers.sh
 
-# Credenciais sensíveis (Google OAuth 2.0)
+# Credenciais sensíveis
+credentials/
+!credentials/README.md  # caso deseje documentar uso da pasta
 credentials/client_secret.json
+credentials/clent_secret21.json
 
-# Builds, logs e caches
-dist/
-build/
-*.log
-backend.log
-
-# Scripts usados para issues (não versionar)
+# Scripts auxiliares (issues, setup)
 create_issues.sh
 create_labels.sh
 add_issues_to_project.sh
+
+# =====================
+# 💻 EDITORES E SISTEMA
+# =====================
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+
+# WebStorm / JetBrains
+.idea/
+
+# Arquivos de sistema
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =====================
+# ✅ NÃO IGNORAR ESSENCIAIS
+# =====================
+
+!src/
+!public/
+!package.json
+!vite.config.js
+!README.md
