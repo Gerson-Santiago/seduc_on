@@ -1,15 +1,17 @@
-// frontend-aee-vite/vite.config.dev.js
 // vite.config.js
-import { defineConfig } from 'vite'
-
-export default defineConfig(({ command, mode }) => {
+export default async function ({ mode }) {
   if (mode === 'production') {
-    return import('./vite.config.prod.js').then(m => m.default)
-  } else if (mode === 'preview') {
-    return import('./vite.config.preview.js').then(m => m.default)
-  } else if (mode === 'github') {
-    return import('./vite.config.github.js').then(m => m.default)
-  } else {
-    return import('./vite.config.dev.js').then(m => m.default)
+    const mod = await import('./vite.config.prod.js');
+    return mod.default;
   }
-})
+  if (mode === 'preview') {
+    const mod = await import('./vite.config.preview.js');
+    return mod.default;
+  }
+  if (mode === 'github') {
+    const mod = await import('./vite.config.github.js');
+    return mod.default;
+  }
+  const mod = await import('./vite.config.dev.js');
+  return mod.default;
+}
