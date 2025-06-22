@@ -7,23 +7,23 @@ export default function Home() {
   const [gitStatus, setGitStatus] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
 
-  useEffect(() => {
-    async function fetchGitStatus() {
-      try {
-        const res = await fetch('/api/git-status')
-        const data = await res.json()
+  // useEffect(() => {
+  //   async function fetchGitStatus() {
+  //     try {
+  //       const res = await fetch('/api/git-status')
+  //       const data = await res.json()
 
-        setGitStatus(data)
-        setShowPopup(true)
+  //       setGitStatus(data)
+  //       setShowPopup(true)
 
-        // Esconde o pop-up após 7 segundos
-        setTimeout(() => setShowPopup(false), 7000)
-      } catch (error) {
-        console.error('Erro ao buscar status Git:', error)
-      }
-    }
-    fetchGitStatus()
-  }, [])
+  //       // Esconde o pop-up após 7 segundos
+  //       setTimeout(() => setShowPopup(false), 7000)
+  //     } catch (error) {
+  //       console.error('Erro ao buscar status Git:', error)
+  //     }
+  //   }
+  //   fetchGitStatus()
+  // }, [])
 
   return (
     <>
@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       </div>
 
-      {showPopup && gitStatus && (
+      {/* {showPopup && gitStatus && (
         <div className="git-status-popup">
           <p>Branch local: {gitStatus.branch}.</p>
           {gitStatus.ahead === 0 && gitStatus.behind === 0 ? (
@@ -52,7 +52,7 @@ export default function Home() {
             </>
           )}
         </div>
-      )}
+      )} */}
     </>
   )
 }
