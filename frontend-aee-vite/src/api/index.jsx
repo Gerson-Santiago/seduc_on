@@ -1,16 +1,22 @@
 // frontend-aee-vite/src/api/index.jsx
 
-// Variáveis de ambiente
-const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
-export const API_BASE_URL = `${baseURL}/api`;
+// src/api/index.jsx
+// Variáveis de ambiente (agora só VITE_API_BASE_URL)
+const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+export const API_ROUTES = {
+  login:   `${apiBase}/usuarios/login`,
+  me:      `${apiBase}/usuarios/me`,
+  logout:  `${apiBase}/usuarios/logout`,
+  usuarios:`${apiBase}/usuarios`,
+  // ...
+};
 
-// // Rotas organizadas
-// export const API_ROUTES = {
-//   login: `${API_BASE_URL}/usuarios/login`,
-//   me: `${API_BASE_URL}/usuarios/me`,
-//   logout: `${API_BASE_URL}/usuarios/logout`,
-//   usuarios: `${API_BASE_URL}/usuarios`,
-// };
+// Utilitários para ambiente
+export const getEnv = () => ({
+  GOOGLE_CLIENT_ID: import.meta.env.VITE_GOOGLE_CLIENT_ID || 'Não definido',
+  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'Não definido',
+  APP_MODE: import.meta.env.VITE_APP_MODE || 'Não definido',
+});
 
 // // Utilitário com token
 // export const fetchWithAuth = async (url, options = {}) => {
@@ -67,9 +73,4 @@ export const API_BASE_URL = `${baseURL}/api`;
 //   return fetchWithAuth(url.toString());
 // };
 
-// // Utilitários para ambiente
-// export const getEnv = () => ({
-//   GOOGLE_CLIENT_ID: import.meta.env.VITE_GOOGLE_CLIENT_ID || 'Não definido',
-//   API_BASE_URL: import.meta.env.VITE_API_BASE_URL || 'Não definido',
-//   APP_MODE: import.meta.env.VITE_APP_MODE || 'Não definido',
-// });
+
