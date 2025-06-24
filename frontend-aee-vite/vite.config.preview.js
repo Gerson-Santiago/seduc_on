@@ -17,11 +17,3 @@ export default defineConfig({
     'import.meta.env.VITE_DASHBOARD_PATH': JSON.stringify('/aee/dashboard2')
   }
 })
-// Configuração para o modo de preview do Vite
-// Esta configuração é usada para simular o ambiente de produção durante o preview
-// O servidor de preview roda na porta 4173 e permite acesso externo
-// A base é definida para '/aee/' para simular o comportamento do GitHub Pages
-// As variáveis de ambiente são definidas para corresponder ao ambiente de produção
-// O plugin React é usado para compilar o código React
-// O servidor de preview é configurado para permitir acesso externo e rodar na porta 4173
-// O base é definido para '/aee/' para simular o comportamento do GitHub Pages

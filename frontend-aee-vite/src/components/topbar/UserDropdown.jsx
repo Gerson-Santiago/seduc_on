@@ -1,3 +1,4 @@
+// frontend-aee-vite/src/components/topbar/UserDropdown.jsx
 import React, { useState, useRef, useEffect } from 'react';
 
 export default function UserDropdown({ user, onLogout }) {

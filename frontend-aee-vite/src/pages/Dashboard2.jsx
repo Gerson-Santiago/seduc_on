@@ -1,3 +1,4 @@
+// frontend-aee-vite/src/pages/Dashboard2.jsx
 import React, { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import Sidebar from '../components/layout/Sidebar'

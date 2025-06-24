@@ -9,11 +9,6 @@ export default function TopBar({ onSidebarToggle, user, onLogout }) {
       {/* 
       A interatividade de abrir e fecher deste botão precisa ser
       implementada em 
-
-
-
-
-
         sidebar --> 
       */}
 

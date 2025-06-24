@@ -11,15 +11,14 @@ export default function AuthCallback() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
     const idToken = hashParams.get('id_token')
 
-    // console.log('ID Token do Google:', idToken); 
-
     if (idToken) {
       login({ credential: idToken }).then(() => {
-        window.history.replaceState(null, '', '/dashboard2')
-        navigate('/dashboard2')
+        // Corrigindo o replaceState para refletir o basename
+        window.history.replaceState(null, '', import.meta.env.VITE_DASHBOARD_PATH)
+        navigate(import.meta.env.VITE_DASHBOARD_PATH)
       })
     } else {
-      navigate('/login')
+      navigate(import.meta.env.VITE_LOGIN_PATH)
     }
   }, [])
 

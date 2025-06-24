@@ -14,13 +14,7 @@ export default function App() {
     <BrowserRouter basename={basename}>
       <AuthProvider>
         <AppRoutes />
-          {/* <EnvCheck /> */}
       </AuthProvider>
     </BrowserRouter>
   )
 }
-
-            // <>
-            // {/* Seu conteúdo */}
-            // <EnvCheck />
-            // </>
