@@ -79,3 +79,4 @@ add_issues_to_project.sh
 !package.json
 !vite.config.js
 !README.md
+frontend-aee-vite/.env.github
