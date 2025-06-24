@@ -69,7 +69,3 @@ Este documento serve como guia de revisão e checklist para o projeto frontend d
 * [ ] Criar componente de loading centralizado (`<LoadingScreen />`).
 * [ ] Centralizar lógica de redirecionamento em um `ProtectedRoute.jsx`.
 * [ ] Adicionar refresh de token, se o backend suportar.
-
----
-
-Se quiser, podemos agora gerar um `README.md` com instruções de execução e publicação em diferentes ambientes.
