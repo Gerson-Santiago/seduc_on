@@ -16,6 +16,7 @@ generated/
 .env.local
 .env.*.local
 .env.production
+.env.preview
 .env.development
 .env.test
 *.local
