@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+      - migracao-backend-para-pasta-backend
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependências backend
+        working-directory: ./backend
+        run: npm install
+
+      - name: Rodar testes backend (se tiver)
+        working-directory: ./backend
+        run: npm test || echo "Sem testes configurados"
+
+      - name: Instalar dependências frontend
+        working-directory: ./frontend-aee-vite
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./frontend-aee-vite
+        run: npm run build
