@@ -12,10 +12,12 @@
     "build:dev": "vite build --mode development",
     "build:preview": "vite build --mode preview",
     "build:github": "vite build --mode github",
-    "build:prod": "vite build --mode production",
     "preview": "vite preview --mode preview",
+    "preview:prod": "vite preview --mode production",
     "deploy:github": "npm run build:github && gh-pages -d dist"
   },
+
+  
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
     "jwt-decode": "^4.0.0",
