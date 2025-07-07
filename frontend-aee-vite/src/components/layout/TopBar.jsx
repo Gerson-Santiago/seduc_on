@@ -17,9 +17,6 @@ export default function TopBar({ onSidebarToggle, user, onLogout }) {
         <span className="material-symbols-rounded">menu</span>
       </button>
 
-
-
-
       {/* Precisa pegar a foto do google do usuario logado  */}
        <div className="topbar-right">
         {user && <UserDropdown user={user} onLogout={onLogout} />}

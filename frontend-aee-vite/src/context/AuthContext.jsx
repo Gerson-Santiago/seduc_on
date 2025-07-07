@@ -47,6 +47,11 @@ export const AuthProvider = ({ children }) => {
   }
 
   const login = async ({ credential }) => {
+
+
+    console.log('LOGIN token recebido @token: ', credential)
+    
+    
     try {
       setLoading(true)
       const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
@@ -54,6 +59,12 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: credential }),
       })
+
+
+      console.log('Resposta login:', response.status, await response.clone().text())
+      
+      
+      
       if (!response.ok) {
         const body = await response.json()
         throw new Error(body.message || 'Usuário não autorizado')
@@ -75,14 +86,15 @@ export const AuthProvider = ({ children }) => {
   const loginRedirect = () => {
     const params = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: `${window.location.origin}/aee/auth/callback`,
+      redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
       response_type: 'id_token',
       scope: 'openid email profile',
       prompt: 'select_account',
       nonce: crypto.randomUUID(),
-    })
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
-  }
+    });
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  };
+
 
   const logout = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY)

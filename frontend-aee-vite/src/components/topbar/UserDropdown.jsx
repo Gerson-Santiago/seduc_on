@@ -17,6 +17,7 @@ export default function UserDropdown({ user, onLogout }) {
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
+      {/* imagem google não está aparecendo */}
       <img
         src={user.picture}
         alt={user.name}

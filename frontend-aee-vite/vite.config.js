@@ -13,15 +13,24 @@ export default ({ mode }) => {
   const isGithub  = mode === 'github'       // npm run build:github
   const isProd    = mode === 'production'   // npm run build:prod
 
+  // ===================================
+  // PATH BASE
+  // - '/' em dev (raiz)
+  // - './' em preview (evita erro nos assets locais)
+  // - VITE_BASE_URL nos demais (ex: '/aee/')
+  // ===================================
+const base = isDev
+  ? '/'
+  : isPreview
+    ? env.VITE_BASE_URL || '/aee/'  // forçar aee como padrão se faltar variável
+    : env.VITE_BASE_URL || '/'
+
+
+
   return defineConfig({
     plugins: [react()],
 
-    // ===================================
-    // PATH BASE
-    // - '/' em dev (raiz)
-    // - VITE_BASE_URL nos demais (ex: '/aee/')
-    // ===================================
-    base: isDev ? '/' : env.VITE_BASE_URL,
+    base,
 
     // ===================================
     // SERVIDOR DE DESENVOLVIMENTO (vite --mode development)

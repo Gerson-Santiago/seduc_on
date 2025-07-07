@@ -22,14 +22,13 @@ export default function AppRoutes() {
   }
 
   return (
-    <Routes>
-      <Route path="/aee" element={<Home />} />      
-      <Route path="/" element={<Home />} />
-      <Route path="/home" element={<Navigate to="/" replace />} />
-      <Route path="/aee/auth/callback" element={<AuthCallback />} />
-      <Route path="/login" element={user ? <Navigate to="/dashboard2" replace /> : <Login loginErro={error} />} />
-      <Route path="/dashboard2" element={<ProtectedRoute user={user}><Dashboard2 /></ProtectedRoute>} />
-      <Route path="*" element={<NotFoundRedirect user={user} />} />
-    </Routes>
+<Routes>
+  <Route path="/" element={<Home />} />      
+  <Route path="/auth/callback" element={<AuthCallback />} />
+  <Route path="/login" element={user ? <Navigate to="/dashboard2" replace /> : <Login loginErro={error} />} />
+  <Route path="/dashboard2" element={<ProtectedRoute user={user}><Dashboard2 /></ProtectedRoute>} />
+  <Route path="*" element={<NotFoundRedirect user={user} />} />
+</Routes>
+
   )
 }

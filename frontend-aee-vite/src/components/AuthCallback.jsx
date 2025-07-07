@@ -16,6 +16,7 @@ export default function AuthCallback() {
         // Corrigindo o replaceState para refletir o basename
         window.history.replaceState(null, '', import.meta.env.VITE_DASHBOARD_PATH)
         navigate(import.meta.env.VITE_DASHBOARD_PATH)
+
       })
     } else {
       navigate(import.meta.env.VITE_LOGIN_PATH)
