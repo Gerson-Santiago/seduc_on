@@ -1,110 +1,17 @@
-/* Reset básico e global */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
+/* 
+  AVISO: Este arquivo index.css foi intencionalmente deixado sem estilos.
 
-/* Tipografia e links globais */
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+  ⚠️ Todos os estilos globais foram removidos para evitar conflitos visuais
+  que estavam afetando páginas como Login e Home.
 
-/* Body básico e layout global */
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  background: var(--color-bg-primary);
-}
+  ✅ As páginas agora possuem seus próprios arquivos CSS:
+     - Login: src/pages/Login.css
+     - Home:  src/pages/Home.css
 
-/* Títulos globais */
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+  ✅ Estilos compartilhados devem ser centralizados em:
+     - src/styles/base.css (reset e estilo base)
+     - src/styles/layout.css (estrutura de layout)
+     - src/styles/components.css (componentes reutilizáveis)
 
-/* Botões genéricos básicos */
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-/* Container e root básico */
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.container {
-  display: flex;
-}
-.container .main-content {
-  flex: 1;
-  padding: 30px;
-  color: var(--color-text-primary);
-}
-
-/* Media queries globais para responsividade */
-@media (max-width: 768px) {
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    opacity: 0;
-    pointer-events: none;
-    background: rgba(0, 0, 0, 0.6);
-    transition: 0.4s ease;
-  }
-  body:has(.sidebar:not(.collapsed))::before {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  body:has(.sidebar:not(.collapsed)) {
-    overflow: hidden;
-  }
-  .site-nav {
-    display: block;
-  }
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 20;
-    width: 270px;
-    transition: left 0.4s ease;
-  }
-  .sidebar.collapsed {
-    left: -270px;
-    width: 270px;
-  }
-  .container .main-content {
-    padding: 30px 20px;
-  }
-}
+  Manter este arquivo vazio garante que os estilos fiquem isolados e previsíveis.
+*/
