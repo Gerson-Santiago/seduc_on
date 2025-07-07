@@ -14,32 +14,34 @@ export default function Sidebar({ collapsed, onToggle }) {
 
   return (
     <aside className={`sidebar${collapsed ? ' collapsed' : ''}`}>
-      {/* Topo do sidebar  */}
-      {/* melhorar a interatividade  */}
       <div className="sidebar-header">
-        <img src={logo} alt="Bertioga" className="header-logo" />   
-        {/* Botão Abrir fecher sidebar */}
-        {/* Só está fechando precisa fazer abrir tbm*/}
-        <button
-          className="sidebar-toggle"
-          aria-label="Recolher sidebar"
-          type="button"
-          onClick={onToggle}
-        >
-          <span className="material-symbols-rounded">chevron_left</span>
-        </button>  
+        <img src={logo} alt="Bertioga" className="header-logo" />
+          <button
+            className="sidebar-toggle"
+            aria-label={collapsed ? 'Expandir sidebar' : 'Recolher sidebar'}
+            type="button"
+            onClick={onToggle}
+          >
+            <span
+              className="material-symbols-rounded"
+              style={{
+                transform: collapsed ? 'rotate(180deg)' : 'none',
+                transition: 'transform 0.4s ease',
+              }}
+            >
+              chevron_left
+            </span>
+          </button>
+
       </div>
 
-      
       <div className="sidebar-content">
         <form className="search-form">
           <span className="material-symbols-rounded">search</span>
           <input type="search" placeholder="Buscar..." required />
         </form>
-        
+
         <ul className="menu-list">
-          
-          {/*Botões principais da site*/}
           <li className="menu-item">
             <a href="#" className="menu-link active">
               <span className="material-symbols-rounded">dashboard</span>
@@ -52,15 +54,6 @@ export default function Sidebar({ collapsed, onToggle }) {
               <span className="menu-label">Recentes</span>
             </a>
           </li>
-
-
-          {/* Repensar onde será manter aqui até decidir --> não é prioridade*/}
-          {/* <li className="menu-item">
-            <a href="#" className="menu-link">
-              <span className="material-symbols-rounded">notifications</span>
-              <span className="menu-label">Notificações</span>
-            </a>
-          </li> */}
           <li className="menu-item">
             <a href="#" className="menu-link">
               <span className="material-symbols-rounded">star</span>
@@ -68,7 +61,6 @@ export default function Sidebar({ collapsed, onToggle }) {
             </a>
           </li>
           <li className="menu-item">
-            {/* Precisa melhorar o icone para um Calendário  */}
             <a href="#" className="menu-link">
               <span className="material-symbols-rounded">storefront</span>
               <span className="menu-label">Calendário</span>
@@ -89,21 +81,18 @@ export default function Sidebar({ collapsed, onToggle }) {
         </ul>
       </div>
 
-      {/* Botão darkMode */}
       <div className="sidebar-footer">
         <button
           className="theme-toggle"
           aria-label="Alternar tema"
           type="button"
-          onClick={() => setDarkMode(prev => !prev)}
+          onClick={() => setDarkMode((prev) => !prev)}
         >
           <div className="theme-label">
             <span className="theme-icon material-symbols-rounded">
               {darkMode ? 'light_mode' : 'dark_mode'}
             </span>
-            <span className="theme-text">
-              {darkMode ? 'Claro' : 'Escuro'}
-            </span>
+            <span className="theme-text">{darkMode ? 'Claro' : 'Escuro'}</span>
           </div>
           <div className="theme-toggle-track">
             <div className="theme-toggle-indicator" />

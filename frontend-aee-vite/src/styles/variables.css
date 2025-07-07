@@ -9,6 +9,9 @@
   --color-hover-primary: #695CFE;
   --color-hover-secondary: #e2e2fb;
   --color-shadow: rgba(0, 0, 0, 0.05);
+    /* Larguras da sidebar */
+  --sidebar-width: 270px;
+  --sidebar-collapsed-width: 90px;
 }
 
 body.dark-theme {

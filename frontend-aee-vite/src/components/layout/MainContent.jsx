@@ -1,3 +1,4 @@
+// frontend-aee-vite/src/components/layout/MainContent.jsx
 import React from 'react'
 import '../style.css'
 

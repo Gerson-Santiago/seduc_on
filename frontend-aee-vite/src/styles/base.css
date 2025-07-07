@@ -1,71 +1,60 @@
+/* =================================================
+   base.css — reset básico, tipografia e tema claro
+   ================================================= */
+
+/* Reset e box‑sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Font‑family default (Poppins) */
+body, button, input, textarea, select {
   font-family: "Poppins", sans-serif;
 }
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--color-bg-primary);
-  display: flex;
-  place-items: center;
-}
-
+/* Tipografia de links */
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--color-hover-primary);
+  text-decoration: none;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--color-hover-secondary);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
+/* Botões padrão */
 button {
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg);
+  color: var(--button-color);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--button-hover-bg);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Tema claro */
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
+  body {
     background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
+    color: var(--color-text-primary);
   }
   button {
     background-color: #f9f9f9;

@@ -20,7 +20,7 @@ export default function Dashboard2() {
 
       <Sidebar
         collapsed={collapsed}
-        onToggle={setCollapsed}
+        onToggle={() => setCollapsed(prev => !prev)}
         darkTheme={darkTheme}
         onToggleTheme={setDarkTheme}
       />
