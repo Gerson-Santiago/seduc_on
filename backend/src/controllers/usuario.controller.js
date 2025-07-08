@@ -1,3 +1,4 @@
+// backend/src/controllers/usuario.controller.js
 import { OAuth2Client } from 'google-auth-library'
 import * as UsuarioService from '../services/usuario.service.js'
 import { gerarToken, verificarToken } from '../utils/jwt.js'
@@ -21,6 +22,7 @@ export async function loginUsuario(req, res) {
     const payload = ticket.getPayload()
     const email = payload.email
     const hd = payload.hd
+    const picture = payload.picture  // Pega a foto do Google
 
     if (hd !== 'seducbertioga.com.br') {
       return res.status(403).json({ error: 'Domínio não autorizado' })
@@ -31,7 +33,8 @@ export async function loginUsuario(req, res) {
       return res.status(401).json({ error: 'Usuário não autorizado' })
     }
 
-    const jwtToken = gerarToken(usuario)
+    // Gerar token incluindo a foto no payload
+    const jwtToken = gerarToken({ ...usuario, picture })
 
     return res.json({
       token: jwtToken,
@@ -39,6 +42,7 @@ export async function loginUsuario(req, res) {
         email: usuario.email,
         nome: usuario.nome,
         role: usuario.role,
+        picture,  // Retorna a foto no JSON
       },
     })
   } catch (err) {
@@ -61,8 +65,9 @@ export async function getMe(req, res) {
     const usuario = await UsuarioService.findUsuarioById(prisma, payload.id)
     if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
 
+    // Monta objeto incluindo a picture do payload do token
     const { senha, ...usuarioSemSenha } = usuario
-    res.json({ user: usuarioSemSenha })
+    res.json({ user: { ...usuarioSemSenha, picture: payload.picture } })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Erro interno' })

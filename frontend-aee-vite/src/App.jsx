@@ -9,7 +9,7 @@ import AppRoutes from './AppRoutes'
 const basename = import.meta.env.VITE_BASE_URL || '/'
 
 
-console.log('BASE URL:', basename)
+// console.log('BASE URL:', basename)
 
 export default function App() {
   return (

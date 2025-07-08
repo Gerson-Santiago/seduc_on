@@ -1,11 +1,15 @@
 /* layout.css - estrutura geral e layout */
 
-/* Sidebar */
+/* =======================
+   Sidebar
+   ======================= */
 .sidebar {
-  position: sticky;
+  /* Fixa o sidebar na viewport */
+  position: fixed;
   top: 0;
-  width: 270px;
+  left: 0;
   height: 100vh;
+  width: var(--sidebar-width, 270px);
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
@@ -13,10 +17,11 @@
   border-right: 1px solid var(--color-border-hr);
   box-shadow: 0 3px 9px var(--color-shadow);
   transition: width 0.4s ease;
+  z-index: 200; /* maior que topbar para ficar na frente */
 }
 
 .sidebar.collapsed {
-  width: 90px;
+  width: var(--sidebar-collapsed-width, 90px);
 }
 
 .sidebar .sidebar-header {
@@ -91,7 +96,7 @@
   scrollbar-width: none;
 }
 
-/* Search form inside sidebar */
+/* Formulário de busca dentro do sidebar */
 .sidebar-content .search-form {
   border-radius: 8px;
   min-height: 48px;
@@ -131,7 +136,7 @@
   color: var(--color-text-placeholder);
 }
 
-/* Menu list inside sidebar */
+/* Lista de menu dentro do sidebar */
 .sidebar-content .menu-list {
   display: flex;
   gap: 4px;
@@ -165,7 +170,7 @@
   background: var(--color-hover-primary);
 }
 
-/* Sidebar footer and theme toggle */
+/* Rodapé do sidebar e botão de alternar tema */
 .sidebar .sidebar-footer {
   padding: 20px 18px;
   white-space: nowrap;
@@ -202,6 +207,7 @@
   transition: opacity 0.4s 0.2s ease;
 }
 
+/* Esconder texto e toggle track quando sidebar está colapsada */
 .sidebar.collapsed .theme-toggle :where(.theme-text, .theme-toggle-track) {
   opacity: 0;
   width: 0;
@@ -218,6 +224,7 @@
   transition: opacity 0.4s 0.2s ease, background-color 0.3s ease;
 }
 
+/* Tema escuro - toggle track */
 body.dark-theme .theme-toggle-track {
   background: #695CFE;
 }
@@ -234,33 +241,84 @@ body.dark-theme .theme-toggle-track {
   transition: transform 0.3s ease;
 }
 
+/* Tema escuro - mover o indicador para direita */
 body.dark-theme .theme-toggle-indicator {
   transform: translateX(24px);
 }
 
-/* Site nav for smaller screens *
-/* ---------- Sidebar fixa na esquerda para desktop (≥1280px) ---------- */
-@media (min-width: 1280px) {
+/* =======================
+   Topbar
+   ======================= */
+.topbar {
+  position: fixed;       /* fixa no topo da viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;          /* altura fixa do topbar */
+  background: transparent; /* transparente */
+  box-shadow: none;
+  z-index: 100;          /* menor que sidebar para ficar atrás */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* =======================
+   Container principal (conteúdo)
+   ======================= */
+.container {
+  display: flex;
+  margin-left: var(--sidebar-width, 270px); /* espaço para sidebar fixo */
+  padding-top: 56px; /* espaço para topbar fixo */
+  transition: margin-left 0.4s ease;
+}
+
+.sidebar.collapsed + .container {
+  margin-left: var(--sidebar-collapsed-width, 90px);
+}
+
+/* =======================
+   Responsividade para telas menores
+   ======================= */
+@media (max-width: 768px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.6);
+    transition: 0.4s ease;
+  }
+  body:has(.sidebar:not(.collapsed))::before {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  body:has(.sidebar:not(.collapsed)) {
+    overflow: hidden;
+  }
+  .site-nav {
+    display: block;
+  }
   .sidebar {
-    position: fixed;      /* fixa na viewport */
-    left: 0;
+    position: fixed;
     top: 0;
-    height: 100vh;
-    width: var(--sidebar-width);
-    z-index: 100;         /* acima do conteúdo principal */
+    left: 0;
+    height: 100%;
+    z-index: 20;
+    width: 270px;
+    transition: left 0.4s ease;
   }
-
-  /* Quando colapsada, usa largura reduzida */
   .sidebar.collapsed {
-    width: var(--sidebar-collapsed-width);
+    left: -270px;
+    width: 270px;
   }
-
-  /* O container principal deve ter padding para não ficar “atrás” da sidebar */
-  .container {
-    margin-left: var(--sidebar-width);
-    transition: margin-left 0.4s ease;
-  }
-  .sidebar.collapsed + .container {
-    margin-left: var(--sidebar-collapsed-width);
+  .container .main-content {
+    padding: 30px 20px;
   }
 }

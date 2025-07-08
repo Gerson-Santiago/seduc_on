@@ -10,6 +10,7 @@ export function gerarToken(usuario) {
       email: usuario.email,
       nome: usuario.nome,
       role: usuario.role,
+      picture: usuario.picture,
     },
     SECRET,
     { expiresIn: '1d' }

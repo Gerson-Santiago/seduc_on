@@ -15,6 +15,9 @@ export default function UserDropdown({ user, onLogout }) {
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
+  // console.log('user picture:', user?.picture);
+
+
   return (
     <div ref={ref} style={{ position: 'relative' }}>
       {/* imagem google não está aparecendo */}

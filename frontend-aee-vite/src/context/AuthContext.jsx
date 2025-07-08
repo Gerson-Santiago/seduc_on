@@ -18,13 +18,13 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored)
-      console.log('✅ TOKEN RECUPERADO DO localStorage:', parsed.token)
-      console.log('✅ BASE URL carregada no AuthContext:', API_BASE_URL)
+      // console.log('✅ TOKEN RECUPERADO DO localStorage:', parsed.token)
+      // console.log('✅ BASE URL carregada no AuthContext:', API_BASE_URL)
 
       validateSession(parsed.token)
     } else {
-      console.log('❌ NENHUM usuário no localStorage')
-      console.log('❌ BASE URL carregada no AuthContext:', API_BASE_URL)
+      // console.log('❌ NENHUM usuário no localStorage')
+      // console.log('❌ BASE URL carregada no AuthContext:', API_BASE_URL)
 
       setLoading(false)
     }
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   const login = async ({ credential }) => {
 
 
-    console.log('LOGIN token recebido @token: ', credential)
+    // console.log('LOGIN token recebido @token: ', credential)
     
     
     try {
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
       })
 
 
-      console.log('Resposta login:', response.status, await response.clone().text())
+      // console.log('Resposta login:', response.status, await response.clone().text())
       
       
       
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
       const userData = { ...data.user, token: data.token }
       setUser(userData)
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData))
-      console.log('SALVOU NO LOCALSTORAGE', userData)
+      // console.log('SALVOU NO LOCALSTORAGE', userData)
       setError(null)
     } catch (e) {
       setError(e.message)
