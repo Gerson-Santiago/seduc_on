@@ -1,62 +1,53 @@
-/* =================================================
-   base.css — reset básico, tipografia e tema claro
-   ================================================= */
+/* src/styles/base.css */
 
-/* Reset e box‑sizing */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Reset e tipografia */
+* { margin:0; padding:0; box-sizing:border-box; }
+body, button, input, textarea, select { font-family:"Poppins",sans-serif; }
 
-/* Font‑family default (Poppins) */
-body, button, input, textarea, select {
-  font-family: "Poppins", sans-serif;
-}
-
-/* Tipografia de links */
-a {
-  font-weight: 500;
-  color: var(--color-hover-primary);
-  text-decoration: none;
-}
-a:hover {
-  color: var(--color-hover-secondary);
-}
+/* Links */
+a { color: var(--color-hover-primary); font-weight:500; text-decoration:none; }
+a:hover { color: var(--color-hover-secondary); }
 
 /* Títulos */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  color: var(--color-text-primary);
-}
+h1,h2,h3,h4,h5,h6 { font-weight:600; color: var(--color-text-primary); }
 
 /* Botões padrão */
 button {
-  border-radius: var(--border-radius);
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   background-color: var(--button-bg);
-  color: var(--button-color);
-  cursor: pointer;
+  color:            var(--button-color);
+  border:           1px solid transparent;
+  border-radius:    8px;
+  padding:          0.6em 1.2em;
+  font-size:        1em;
+  font-weight:      500;
+  cursor:           pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: var(--button-hover-bg);
-}
+button:hover { border-color: var(--button-hover-bg); }
 button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:focus-visible { outline: 4px auto -webkit-focus-ring-color; }
+
+/* Body */
+body {
+  min-height:100vh;
+  background: var(--color-bg-primary);
+  color:      var(--color-text-primary);
 }
 
-/* Tema claro */
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #ffffff;
-    color: var(--color-text-primary);
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Inputs básicos */
+input, textarea, select {
+  background:  var(--input-bg);
+  border:      1px solid var(--color-border-hr);
+  border-radius:6px;
+  padding:     0.5em;
+  color:       var(--color-text-primary);
 }
+input:focus { outline:none; border-color: var(--color-hover-primary); }
+
+/* Cards */
+.card {
+  background:  var(--card-bg);
+  border-radius: 8px;
+  box-shadow:  0 1px 3px var(--color-shadow);
+}
+

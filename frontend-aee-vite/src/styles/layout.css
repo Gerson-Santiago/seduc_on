@@ -1,4 +1,4 @@
-/* layout.css - estrutura geral e layout */
+/* layout.css — estrutura geral e layout */
 
 /* =======================
    Sidebar
@@ -17,7 +17,7 @@
   border-right: 1px solid var(--color-border-hr);
   box-shadow: 0 3px 9px var(--color-shadow);
   transition: width 0.4s ease;
-  z-index: 200; /* maior que topbar para ficar na frente */
+  z-index: 200; /* fica acima da topbar */
 }
 
 .sidebar.collapsed {
@@ -36,7 +36,6 @@
 .sidebar-header .header-logo {
   width: 46px;
   height: 46px;
-  display: block;
   object-fit: contain;
   border-radius: 50%;
   transition: opacity 0.4s ease;
@@ -101,8 +100,8 @@
   border-radius: 8px;
   min-height: 48px;
   margin: 5px 0 20px;
-  align-items: center;
   display: flex;
+  align-items: center;
   padding: 0 15px;
   white-space: nowrap;
   background: var(--color-bg-secondary);
@@ -139,20 +138,20 @@
 /* Lista de menu dentro do sidebar */
 .sidebar-content .menu-list {
   display: flex;
+  flex-direction: column;
   gap: 4px;
   list-style: none;
-  flex-direction: column;
 }
 
 .menu-list .menu-link {
   display: flex;
+  align-items: center;
   gap: 12px;
   white-space: nowrap;
-  border-radius: 8px;
   padding: 12px 15px;
-  align-items: center;
-  text-decoration: none;
+  border-radius: 8px;
   color: var(--color-text-primary);
+  text-decoration: none;
   transition: 0.3s ease;
 }
 
@@ -178,17 +177,16 @@
 }
 
 .sidebar-footer .theme-toggle {
-  width: 100%;
-  min-height: 48px;
-  border-radius: 8px;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  border: none;
+  width: 100%;
+  min-height: 48px;
   padding: 0 15px;
-  white-space: nowrap;
-  color: var(--color-text-primary);
+  border: none;
+  border-radius: 8px;
   background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  cursor: pointer;
   transition: 0.3s ease;
 }
 
@@ -198,8 +196,8 @@
 
 .theme-toggle .theme-label {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
 }
 
 .theme-toggle .theme-label .theme-text {
@@ -207,7 +205,6 @@
   transition: opacity 0.4s 0.2s ease;
 }
 
-/* Esconder texto e toggle track quando sidebar está colapsada */
 .sidebar.collapsed .theme-toggle :where(.theme-text, .theme-toggle-track) {
   opacity: 0;
   width: 0;
@@ -215,16 +212,15 @@
 }
 
 .theme-toggle .theme-toggle-track {
+  position: relative;
   height: 24px;
   width: 48px;
-  border-radius: 999px;
   margin-left: auto;
+  border-radius: 999px;
   background: #c3d1ec;
-  position: relative;
   transition: opacity 0.4s 0.2s ease, background-color 0.3s ease;
 }
 
-/* Tema escuro - toggle track */
 body.dark-theme .theme-toggle-track {
   background: #695CFE;
 }
@@ -233,15 +229,14 @@ body.dark-theme .theme-toggle-track {
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 18px;
   height: 18px;
+  width: 18px;
   border-radius: 50%;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
 }
 
-/* Tema escuro - mover o indicador para direita */
 body.dark-theme .theme-toggle-indicator {
   transform: translateX(24px);
 }
@@ -250,33 +245,30 @@ body.dark-theme .theme-toggle-indicator {
    Topbar
    ======================= */
 .topbar {
-  position: fixed;       /* fixa no topo da viewport */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 56px;          /* altura fixa do topbar */
-  background: transparent; /* transparente */
-  box-shadow: none;
-  z-index: 100;          /* menor que sidebar para ficar atrás */
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 0 20px;
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  background: transparent !important;
+  z-index: 100; /* fica atrás do sidebar */
 }
 
-/* =======================
-   Container principal (conteúdo)
-   ======================= */
+/* Container principal (conteúdo) */
 .container {
   display: flex;
-  margin-left: var(--sidebar-width, 270px); /* espaço para sidebar fixo */
-  padding-top: 56px; /* espaço para topbar fixo */
+  margin-left: var(--sidebar-width, 270px);
+  padding-top: 56px;
   transition: margin-left 0.4s ease;
 }
 
+/* Ajuste quando sidebar estiver recolhida */
 .sidebar.collapsed + .container {
   margin-left: var(--sidebar-collapsed-width, 90px);
 }
@@ -285,39 +277,51 @@ body.dark-theme .theme-toggle-indicator {
    Responsividade para telas menores
    ======================= */
 @media (max-width: 768px) {
+  /* Overlay escuro atrás da sidebar aberta */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
-    z-index: 10;
+    background: rgba(0,0,0,0.6);
     opacity: 0;
     pointer-events: none;
-    background: rgba(0, 0, 0, 0.6);
     transition: 0.4s ease;
+    z-index: 10;
   }
+
+  /* Ativa overlay quando sidebar aberta */
   body:has(.sidebar:not(.collapsed))::before {
     opacity: 1;
     pointer-events: auto;
   }
+
+  /* Bloqueia rolagem do body */
   body:has(.sidebar:not(.collapsed)) {
     overflow: hidden;
   }
+
+  /* Exibe o site-nav com botão toggle */
   .site-nav {
     display: block;
   }
+
+  /* Sidebar fixa para mobile */
   .sidebar {
     position: fixed;
     top: 0;
     left: 0;
+    width: var(--sidebar-width, 270px);
     height: 100%;
-    z-index: 20;
-    width: 270px;
     transition: left 0.4s ease;
+    z-index: 20;
   }
+
+  /* Esconde sidebar ao recolher */
   .sidebar.collapsed {
     left: -270px;
-    width: 270px;
   }
+
+  /* Ajustes de padding do conteúdo em mobile */
   .container .main-content {
     padding: 30px 20px;
   }

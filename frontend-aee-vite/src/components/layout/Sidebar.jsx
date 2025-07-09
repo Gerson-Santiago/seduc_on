@@ -1,47 +1,64 @@
 // src/components/Sidebar.jsx
 import React, { useState, useEffect } from 'react'
 import logo from '../../assets/logo-sistema.png'
-import '../style.css'
+// import '../style.css'
+import '../../styles/base.css' // /home/sant/aee/frontend-aee-vite/src/styles/base.css
+import '../../styles/components.css' // /home/sant/aee/frontend-aee-vite/src/styles/components.css
+import '../../styles/layout.css' // /home/sant/aee/frontend-aee-vite/src/styles/layout.css
+import '../../styles/variables.css' // /home/sant/aee/frontend-aee-vite/src/styles/variables.css
 
+// Componente Sidebar recebe props: 
+// - collapsed: booleano que define se está recolhido
+// - onToggle: função para alternar entre expandido/recolhido
 export default function Sidebar({ collapsed, onToggle }) {
+  // Estado para alternância de tema escuro
   const [darkMode, setDarkMode] = useState(
     () => window.matchMedia('(prefers-color-scheme: dark)').matches
   )
 
+  // Efeito colateral: adiciona/remove classe no <body> quando darkMode muda
   useEffect(() => {
     document.body.classList.toggle('dark-theme', darkMode)
   }, [darkMode])
 
   return (
+    // Aplica classe 'collapsed' se o sidebar estiver recolhido
     <aside className={`sidebar${collapsed ? ' collapsed' : ''}`}>
+
+      {/* TOPO DO SIDEBAR - LOGO + BOTÃO TOGGLE */}
       <div className="sidebar-header">
         <img src={logo} alt="Bertioga" className="header-logo" />
-          <button
-            className="sidebar-toggle"
-            aria-label={collapsed ? 'Expandir sidebar' : 'Recolher sidebar'}
-            type="button"
-            onClick={onToggle}
-          >
-            <span
-              className="material-symbols-rounded"
-              style={{
-                transform: collapsed ? 'rotate(180deg)' : 'none',
-                transition: 'transform 0.4s ease',
-              }}
-            >
-              chevron_left
-            </span>
-          </button>
 
+        {/* Botão de recolher/expandir sidebar */}
+        <button
+          className="sidebar-toggle"
+          aria-label={collapsed ? 'Expandir sidebar' : 'Recolher sidebar'}
+          type="button"
+          onClick={onToggle}  // chama função passada via props
+        >
+          <span
+            className="material-symbols-rounded"
+            style={{
+              transform: collapsed ? 'rotate(180deg)' : 'none', // seta apontando para o lado
+              // transition: 'transform 0.4s ease',                 // animação suave
+            }}
+          >
+            chevron_left
+          </span>
+        </button>
       </div>
 
+      {/* CONTEÚDO CENTRAL DO SIDEBAR */}
       <div className="sidebar-content">
+        {/* Campo de busca */}
         <form className="search-form">
           <span className="material-symbols-rounded">search</span>
           <input type="search" placeholder="Buscar..." required />
         </form>
 
+        {/* Lista de menus */}
         <ul className="menu-list">
+          {/* Cada item tem um ícone e um rótulo */}
           <li className="menu-item">
             <a href="#" className="menu-link active">
               <span className="material-symbols-rounded">dashboard</span>
@@ -81,12 +98,13 @@ export default function Sidebar({ collapsed, onToggle }) {
         </ul>
       </div>
 
+      {/* RODAPÉ DO SIDEBAR - TOGGLE TEMA */}
       <div className="sidebar-footer">
         <button
           className="theme-toggle"
           aria-label="Alternar tema"
           type="button"
-          onClick={() => setDarkMode((prev) => !prev)}
+          onClick={() => setDarkMode((prev) => !prev)} // alterna entre claro/escuro
         >
           <div className="theme-label">
             <span className="theme-icon material-symbols-rounded">

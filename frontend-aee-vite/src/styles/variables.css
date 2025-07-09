@@ -1,27 +1,48 @@
+/* src/styles/variables.css */
+
+/* Tema claro (padrão) */
 :root {
-  /* Light theme colors */
-  --color-text-primary: #1F2936;
-  --color-text-placeholder: #798EAE;
-  --color-bg-primary: #f9fafb;
-  --color-bg-secondary: #ECECFD;
-  --color-bg-sidebar: #FFFFFF;
-  --color-border-hr: #E2E8F0;
-  --color-hover-primary: #695CFE;
-  --color-hover-secondary: #e2e2fb;
-  --color-shadow: rgba(0, 0, 0, 0.05);
-    /* Larguras da sidebar */
-  --sidebar-width: 270px;
-  --sidebar-collapsed-width: 90px;
+  /* Cores base */
+  --color-text-primary:       #1F2936;
+  --color-text-placeholder:   #798EAE;
+  --color-bg-primary:         #f9fafb;
+  --color-bg-secondary:       #ECECFD;
+  --color-bg-sidebar:         #FFFFFF;
+  --color-border-hr:          #E2E8F0;
+  --color-hover-primary:      #695CFE;
+  --color-hover-secondary:    #e2e2fb;
+  --color-shadow:             rgba(0, 0, 0, 0.05);
+
+  /* Larguras da sidebar */
+  --sidebar-width:            270px;
+  --sidebar-collapsed-width:   90px;
+
+  /* Botões (usados em base.css) */
+  --button-bg:                #f9f9f9;
+  --button-color:             #1F2936;
+  --button-hover-bg:          #e2e2fb;
+
+  /* Outros componentes */
+  --card-bg:                  #FFFFFF;
+  --input-bg:                 #FFFFFF;
 }
 
+/* Tema escuro (quando <body class="dark-theme">) */
 body.dark-theme {
-  /* Dark theme colors */
-  --color-text-primary: #F1F5F9;
-  --color-text-placeholder: #A6B7D2;
-  --color-bg-primary: #111827;
-  --color-bg-secondary: #3D4859;
-  --color-bg-sidebar: #1f2937;
-  --color-border-hr: #3B475C;
-  --color-hover-secondary: #48566a;
-  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-text-primary:       #F1F5F9;
+  --color-text-placeholder:   #A6B7D2;
+  --color-bg-primary:         #111827;
+  --color-bg-secondary:       #3D4859;
+  --color-bg-sidebar:         #1f2937;
+  --color-border-hr:          #3B475C;
+  --color-hover-primary:      #695CFE;
+  --color-hover-secondary:    #48566a;
+  --color-shadow:             rgba(0, 0, 0, 0.3);
+
+  --button-bg:                #374151;
+  --button-color:             #F9F5F9;
+  --button-hover-bg:          #48566a;
+
+  --card-bg:                  #1f2937;
+  --input-bg:                 #374151;
 }

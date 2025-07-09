@@ -1,9 +1,0 @@
-Versão estável - 19 Jun 2025 23:16
-
-Adicionado arquivo version.txt com o status das funcionalidades atuais:
-
-- Versão estável: Página HOME funcionando corretamente
-- Versão estável: Página Login funcional
-- Versão estável: Login com Google disponível para ambiente localhost
-- Versão em desenvolvimento: Dashboard2 em progresso
-- Versão gh-pages: Deploy configurado, mas build Vite ainda não funcionando corretamente

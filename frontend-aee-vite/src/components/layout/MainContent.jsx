@@ -1,6 +1,9 @@
 // frontend-aee-vite/src/components/layout/MainContent.jsx
 import React from 'react'
-import '../style.css'
+import '../../styles/base.css' // /home/sant/aee/frontend-aee-vite/src/styles/base.css
+import '../../styles/components.css' // /home/sant/aee/frontend-aee-vite/src/styles/components.css
+import '../../styles/layout.css' // /home/sant/aee/frontend-aee-vite/src/styles/layout.css
+import '../../styles/variables.css' // /home/sant/aee/frontend-aee-vite/src/styles/variables.css
 
 export default function MainContent() {
   return (
