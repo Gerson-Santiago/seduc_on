@@ -47,50 +47,50 @@ export const AuthProvider = ({ children }) => {
   }
 
   const login = async ({ credential }) => {
+  try {
+    setLoading(true)
+    const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: credential }),
+    })
 
-
-    // console.log('LOGIN token recebido @token: ', credential)
-    
-    
-    try {
-      setLoading(true)
-      const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: credential }),
-      })
-
-
-      // console.log('Resposta login:', response.status, await response.clone().text())
-      
-      
-      
-      if (!response.ok) {
-        const body = await response.json()
-        throw new Error(body.message || 'Usuário não autorizado')
-      }
-      const data = await response.json()
-      const userData = { ...data.user, token: data.token }
-      setUser(userData)
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData))
-      // console.log('SALVOU NO LOCALSTORAGE', userData)
-      setError(null)
-    } catch (e) {
-      setError(e.message)
-      setUser(null)
-    } finally {
-      setLoading(false)
+    if (!response.ok) {
+      const body = await response.json()
+      throw new Error(body.message || 'Usuário não autorizado')
     }
-  }
 
+    const data = await response.json()
+
+    // ✅ Aqui chamamos validateSession para obter o user completo
+    await validateSession(data.token)
+
+    // Obs: validateSession já seta o user e o loading
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ token: data.token }))
+
+    setError(null)
+
+  } catch (e) {
+    setError(e.message)
+    setUser(null)
+    setLoading(false)
+  }
+}
+
+//==========================================
+
+          // para redicionamento dos link
+
+//==========================================
   const loginRedirect = () => {
     const params = new URLSearchParams({
-      client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-      response_type: 'id_token',
-      scope: 'openid email profile',
-      prompt: 'select_account',
-      nonce: crypto.randomUUID(),
+      client_id:      GOOGLE_CLIENT_ID,
+      redirect_uri:   import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+      response_type:  'id_token',
+      scope:          'openid email profile',
+      prompt:         'select_account',
+      hd:             'seducbertioga.com.br',
+      nonce:           crypto.randomUUID(),
     });
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
   };

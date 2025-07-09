@@ -1,4 +1,3 @@
-// frontend-aee-vite/src/components/topbar/UserDropdown.jsx
 import React, { useState, useRef, useEffect } from 'react';
 
 export default function UserDropdown({ user, onLogout }) {
@@ -15,15 +14,18 @@ export default function UserDropdown({ user, onLogout }) {
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
-  // console.log('user picture:', user?.picture);
+  const displayName = user.nome || user.name || 'Usuário';
+  const [firstName, lastName] = displayName.split(' ');
 
+  // console.log('user picture:', user?.picture);
+  // console.log('UserDropdown displayName:', displayName);
+  console.log('UserDropdown user:', user);
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
-      {/* imagem google não está aparecendo */}
       <img
         src={user.picture}
-        alt={user.name}
+        alt={displayName}
         style={{ width: 36, height: 36, borderRadius: '50%', cursor: 'pointer' }}
         onClick={() => setOpen(o => !o)}
       />
@@ -42,13 +44,22 @@ export default function UserDropdown({ user, onLogout }) {
             padding: '10px',
           }}
         >
+          {/* Por em alguns momentos aparece o user perfil outros momentos não? */}
           <div style={{ marginBottom: 8 }}>
-            <div style={{ fontWeight: 600 }}>{user.name}</div>
+            <div style={{ fontWeight: 600 }}>{firstName} {lastName ?? ''}</div>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>{user.perfil} </div>
             <div style={{ fontSize: 12, opacity: 0.7 }}>{user.email}</div>
-            {user.role && <div style={{ fontSize: 12, fontStyle: 'italic', opacity: 0.6 }}>Nível: {user.role}</div>}
+            {user.role && (
+              <div style={{ fontSize: 12, fontStyle: 'italic', opacity: 0.6 }}>
+                Nível: {user.role}
+              </div>
+            )}
           </div>
           <button
-            onClick={() => { onLogout(); setOpen(false); }}
+            onClick={() => {
+              onLogout()
+              setOpen(false)
+            }}
             style={{
               width: '100%',
               padding: '6px 0',
