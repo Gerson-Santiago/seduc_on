@@ -8,7 +8,6 @@ import { PrismaClient } from '@prisma/client';
 import usuarioRoutes from './routes/usuario.routes.js';
 import alunoRoutes from './routes/aluno.routes.js';
 import { notFound, errorHandler } from './middleware/error.js';
-// import gitStatusRouter from './routes/gitStatus.js'
 import { getBackendConfig } from './config/environments.js'
 const { ALLOWED_ORIGINS } = getBackendConfig()
 
@@ -16,12 +15,10 @@ const app = express();
 const prisma = new PrismaClient();
 
 app.use(helmet());
-// app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }))
 
 app.use(express.json());
 app.use(morgan('combined'));
-// app.use('/api', gitStatusRouter)
 
 // Injetar prisma
 app.use((req, res, next) => {
