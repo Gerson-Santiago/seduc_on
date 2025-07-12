@@ -8,15 +8,18 @@ import '../../styles/variables.css' // /home/sant/aee/frontend-aee-vite/src/styl
 export default function MainContent() {
   return (
     // Componente principal do conteúdo, onde ficam as páginas cada botão do Sidebar vai abrir um MainContent diferente
-    // onClick e vai abrir as configuraçẽos das opções 
+    // onClick e vai abrir as configuraçẽos das opções
+
     /**
      * Criar um botão para Pesquisar Alunos -> <MainSearchStudents />
      * Criar um botão para Alunos -> <MainAlunosIAEE />
      * Criar um botão para Escolas -> <MainEscolas />
-     * 
+     * Escolher icones de Pesquisar Alunos - Alunos - Escolas
+     * Criar uma classe para refatorar a criar destes botões
      * Dashboard -> esta está em frontend-aee-vite/src/pages/Dashboard.jsx <Dashboard />
      * Recentes -> <MainRecent />
      * Favoritos -> <MainFavorites />
+     * Melhorar o icone de Calendario
      * Calendário -> <MainCalendar />
      * Usuários -> <MainUsers />
      * Configurações -> <MainSettings />
