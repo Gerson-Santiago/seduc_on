@@ -20,7 +20,7 @@ Este documento serve como guia de revisão e checklist para o projeto frontend d
 
 * [x] Extrai `id_token` da hash da URL.
 * [x] Chama `login({ credential: idToken })` do contexto.
-* [x] Redireciona para `/dashboard2` após sucesso.
+* [x] Redireciona para `/dashboard` após sucesso.
 * [x] Se falhar, redireciona para `/login`.
 
 ## ✅ 3. Variáveis de Ambiente e Configuração do Vite

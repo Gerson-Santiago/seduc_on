@@ -3,7 +3,7 @@ import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Home from './pages/Home'
-import Dashboard2 from './pages/Dashboard2'
+import Dashboard from './pages/Dashboard'
 import AuthCallback from './components/AuthCallback'
 import { useAuth } from './context/AuthContext'
 
@@ -12,7 +12,7 @@ function ProtectedRoute({ user, children }) {
 }
 
 function NotFoundRedirect({ user }) {
-  return user ? <Navigate to="/dashboard2" replace /> : <Navigate to="/login" replace />
+  return user ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />
 }
 
 export default function AppRoutes() {
@@ -25,8 +25,8 @@ export default function AppRoutes() {
 <Routes>
   <Route path="/" element={<Home />} />      
   <Route path="/auth/callback" element={<AuthCallback />} />
-  <Route path="/login" element={user ? <Navigate to="/dashboard2" replace /> : <Login loginErro={error} />} />
-  <Route path="/dashboard2" element={<ProtectedRoute user={user}><Dashboard2 /></ProtectedRoute>} />
+  <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login loginErro={error} />} />
+  <Route path="/dashboard" element={<ProtectedRoute user={user}><Dashboard /></ProtectedRoute>} />
   <Route path="*" element={<NotFoundRedirect user={user} />} />
 </Routes>
 

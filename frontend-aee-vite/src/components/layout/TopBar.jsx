@@ -6,7 +6,8 @@ export default function TopBar({ onSidebarToggle, user, onLogout }) {
   return (
     <header className="topbar">
       {/* Botão unificado de menu (hambúrguer) */}
-      {/* <button
+      {/* Esta comentádo apenas para consulta
+      <button
         className="sidebar-toggle"
         aria-label="Alternar sidebar"
         type="button"
