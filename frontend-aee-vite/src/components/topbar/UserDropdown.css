@@ -1,0 +1,83 @@
+/* src/components/UserDropdown.css */
+.user-dropdown-container {
+  position: relative;
+}
+
+.user-dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  min-width: 200px;
+  z-index: 1001;
+  padding: 12px;
+}
+
+.user-dropdown-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;  /* espaçamento vertical consistente */
+  margin-bottom: 12px;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-email,
+.user-perfil,
+.user-role {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.user-role {
+  font-style: italic;
+  opacity: 0.6;
+}
+
+/* separador estilizado */
+.user-separator {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 6px 0;
+}
+
+.dropdown-logout {
+  width: 100%;
+  padding: 8px 0;
+  background-color: #e53e3e;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Dark mode via classe global no <body> */
+.dark-theme .user-dropdown-menu {
+  background-color: #1f2937;
+  color: #eee;
+  border-color: #444;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.dark-theme .user-separator {
+  border-top-color: #4b5563;
+}
+
+.dark-theme .dropdown-logout {
+  background-color: #c53030;
+}

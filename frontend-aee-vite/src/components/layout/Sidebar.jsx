@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from 'react'
 import logo from '../../assets/logo-sistema.png'
 // import '../style.css'
-import '../../styles/base.css' // /home/sant/aee/frontend-aee-vite/src/styles/base.css
-import '../../styles/components.css' // /home/sant/aee/frontend-aee-vite/src/styles/components.css
-import '../../styles/layout.css' // /home/sant/aee/frontend-aee-vite/src/styles/layout.css
-import '../../styles/variables.css' // /home/sant/aee/frontend-aee-vite/src/styles/variables.css
+import '../../styles/base.css' // /aee/frontend-aee-vite/src/styles/base.css
+import '../../styles/components.css' // /aee/frontend-aee-vite/src/styles/components.css
+import '../../styles/layout.css' // /aee/frontend-aee-vite/src/styles/layout.css
+import '../../styles/variables.css' // /aee/frontend-aee-vite/src/styles/variables.css
 
 // Componente Sidebar recebe props: 
 // - collapsed: booleano que define se está recolhido
@@ -27,7 +27,11 @@ export default function Sidebar({ collapsed, onToggle }) {
 
       {/* TOPO DO SIDEBAR - LOGO + BOTÃO TOGGLE */}
       <div className="sidebar-header">
-        <img src={logo} alt="Bertioga" className="header-logo" />
+
+        {/* Logo do sistema, clicável para abrir o site da SEDUC Bertioga */}
+        <img src={logo} alt="Bertioga" className="header-logo" 
+        onClick={() => window.open('https://sites.google.com/seducbertioga.com.br/bertiogaedu/in%C3%ADcio', '_blank')} />
+        {/* Quando passar o mouse mudar de seta para mãozinha ao clicar no logo assim como os demais botões do site*/}
 
         {/* Botão de recolher/expandir sidebar */}
         <button
@@ -40,7 +44,7 @@ export default function Sidebar({ collapsed, onToggle }) {
             className="material-symbols-rounded"
             style={{
               transform: collapsed ? 'rotate(180deg)' : 'none', // seta apontando para o lado
-              // transition: 'transform 0.4s ease',                 // animação suave
+              transition: 'transform 0.4s ease',                // animação suave
             }}
           >
             chevron_left
