@@ -6,14 +6,14 @@ export default function TopBar({ onSidebarToggle, user, onLogout }) {
   return (
     <header className="topbar">
       {/* Botão unificado de menu (hambúrguer) */}
-      <button
+      {/* <button
         className="sidebar-toggle"
         aria-label="Alternar sidebar"
         type="button"
         onClick={onSidebarToggle}
       >
         <span className="material-symbols-rounded">menu</span>
-      </button>
+      </button> */}
 
       {/* Área direita com foto e dropdown */}
       <div className="topbar-right">
