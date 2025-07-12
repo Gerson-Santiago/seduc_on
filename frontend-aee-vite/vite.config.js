@@ -11,7 +11,7 @@ export default ({ mode }) => {
   const isDev     = mode === 'development'  // npm run dev
   const isPreview = mode === 'preview'      // npm run preview
   const isGithub  = mode === 'github'       // npm run build:github
-  const isProd    = mode === 'production'   // npm run build:prod
+  const isProd    = mode === 'production'   // npm run build:production
 
   // ===================================
   // PATH BASE
