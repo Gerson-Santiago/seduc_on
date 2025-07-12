@@ -38,6 +38,20 @@ jobs:
         working-directory: ./frontend-aee-vite
         run: npm run build:github
 
-      - name: Deploy para GitHub Pages
+      - name: Deploy para GitHub Pages via script Node
         working-directory: ./frontend-aee-vite
-        run: npm run deploy:github
+        run: |
+          node -e "
+          const ghpages = require('gh-pages');
+          ghpages.publish('dist', {
+            user: {
+              name: 'github-actions[bot]',
+              email: 'github-actions[bot]@users.noreply.github.com'
+            }
+          }, (err) => {
+            if(err) {
+              console.error(err);
+              process.exit(1);
+            }
+          });
+          "
