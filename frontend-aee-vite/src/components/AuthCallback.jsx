@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import ErrorModal from './ErrorModal'
+// import ErrorModal from './ErrorModal'
 
 export default function AuthCallback() {
   const navigate = useNavigate()
