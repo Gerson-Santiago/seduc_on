@@ -1,0 +1,83 @@
+# =====================
+# 🔧 CONFIGURAÇÕES GERAIS
+# =====================
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Prisma
+prisma/migrations/
+prisma/client.js
+generated/
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+.env.production
+.env.preview
+.env.development
+.env.test
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+backend.log
+
+# Builds (Vite, frontend, SSR)
+dist/
+dist-ssr/
+build/
+
+# CSV - manter apenas arquivos header
+csv/*.csv
+!csv/*_headers.csv
+!csv/csv.txt
+!csv/extract_headers.sh
+
+# Credenciais sensíveis
+credentials/
+!credentials/README.md  # caso deseje documentar uso da pasta
+credentials/client_secret.json
+credentials/clent_secret21.json
+
+# Scripts auxiliares (issues, setup)
+create_issues.sh
+create_labels.sh
+add_issues_to_project.sh
+
+# =====================
+# 💻 EDITORES E SISTEMA
+# =====================
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+
+# WebStorm / JetBrains
+.idea/
+
+# Arquivos de sistema
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =====================
+# ✅ NÃO IGNORAR ESSENCIAIS
+# =====================
+
+!src/
+!public/
+!package.json
+!vite.config.js
+!README.md
+frontend-aee-vite/.env.github
