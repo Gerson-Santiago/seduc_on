@@ -13,6 +13,7 @@ generated/
 
 # Variáveis de ambiente
 .env.*
+*.env.dev
 
 # Logs
 *.log
