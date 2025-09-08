@@ -60,5 +60,3 @@ NODE_ENV: dev
 ALLOWED_ORIGINS: [ 'http://localhost:5173' ],
 ```
 Acessar o link da port 5173 vc está no preview
-
-
