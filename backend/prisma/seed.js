@@ -1,3 +1,4 @@
+// backend/prisma/seed.js
 import { PrismaClient } from '@prisma/client'
 import dotenv from 'dotenv'
 
@@ -7,6 +8,7 @@ const prisma = new PrismaClient()
 
 async function main() {
   const superadminEmail = process.env.SUPERADMIN_EMAIL
+  const superadminName = process.env.SUPERADMIN_NAME
 
   if (!superadminEmail) {
     throw new Error('SUPERADMIN_EMAIL não definido no .env')
@@ -21,7 +23,7 @@ async function main() {
       data: {
         email: superadminEmail,
         perfil: 'superadmin',
-        nome: 'Gerson Santiago',
+        nome: superadminName,
         ativo: true
       }
     })
