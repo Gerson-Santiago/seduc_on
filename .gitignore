@@ -74,7 +74,7 @@ add_issues_to_project.sh
 *.sw?
 
 start_aee.chorme.sh
-client_secret_1094161149479-tru6l17fjasg9jks1he4a8mlgd7a2smj.apps.googleusercontent.com.json
+client_secret.json
 
 # =====================
 # ✅ NÃO IGNORAR ESSENCIAIS
