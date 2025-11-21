@@ -19,6 +19,8 @@ generated/
 .env.preview
 .env.development
 .env.test
+.env.dev
+.env.prod
 *.local
 
 # Logs
@@ -70,6 +72,8 @@ add_issues_to_project.sh
 *.njsproj
 *.sln
 *.sw?
+
+start_aee.chorme.sh
 
 # =====================
 # ✅ NÃO IGNORAR ESSENCIAIS
