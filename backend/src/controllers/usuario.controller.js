@@ -24,8 +24,9 @@ export async function loginUsuario(req, res) {
     const hd = payload.hd
     const picture = payload.picture  // Pega a foto do Google
 
-    if (hd !== 'seducbertioga.com.br') {
-      return res.status(403).json({ error: 'Domínio não autorizado' })
+    const allowedDomain = process.env.ALLOWED_DOMAIN || 'seducbertioga.com.br'
+    if (allowedDomain !== '*' && hd !== allowedDomain) {
+      return res.status(403).json({ error: `Domínio não autorizado. Permitido apenas: ${allowedDomain}` })
     }
 
     const usuario = await UsuarioService.findUsuarioByEmail(prisma, email)
