@@ -45,12 +45,12 @@ echo "🟡 Verificando status do PostgreSQL ${PG_CLUSTER_VERSION}..."
 # Verifica o status usando pg_ctlcluster
 sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} status > /dev/null 2>&1
 if [ $? -eq 0 ]; then
-    echo "✅ PostgreSQL ${PG_CLUSTER_VERSION} já está online."
+    echo "✅ PostgreSQL ${PG_CLUSTER_VERSION} já está online."
 else
-    echo "🔵 Iniciando PostgreSQL ${PG_CLUSTER_VERSION}..."
-    sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} start
-    sleep 3 
-    sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} status
+    echo "🔵 Iniciando PostgreSQL ${PG_CLUSTER_VERSION}..."
+    sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} start
+    sleep 3
+    sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} status
 fi
 
 # 2️⃣ Iniciar backend
@@ -89,7 +89,7 @@ cd "$BASE_DIR"
 echo
 echo "====================================="
 echo "✅ Sistema AEE em execução!"
-echo "Backend:  http://localhost:3000"
+echo "Backend:  http://localhost:3000"
 echo "Frontend: http://localhost:4173/aee/"
 
 # Exibir PIDs
