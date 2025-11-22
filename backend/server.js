@@ -6,8 +6,8 @@ import { getBackendConfig } from './src/config/environments.js';
 // 1. Determina o ambiente
 const env = process.env.NODE_ENV || 'development';
 
-// 2. Define o caminho do arquivo de ambiente (.env ou .env.preview)
-const envFile = env === 'preview' ? `.env.preview` : `.env`;
+// 2. Define o caminho do arquivo de ambiente (.env.dev ou .env.preview)
+const envFile = env === 'preview' ? `.env.preview` : `.env.dev`;
 
 // 3. Carrega o arquivo de ambiente (CORREÇÃO CRÍTICA)
 // Garante que o arquivo correto seja lido (usamos o .env.preview se o NODE_ENV for preview)

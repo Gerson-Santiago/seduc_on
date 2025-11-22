@@ -29,8 +29,8 @@ export default function Sidebar({ collapsed, onToggle }) {
       <div className="sidebar-header">
 
         {/* Logo do sistema, clicável para abrir o site da SEDUC Bertioga */}
-        <img src={logo} alt="Bertioga" className="header-logo" 
-        onClick={() => window.open('https://sites.google.com/seducbertioga.com.br/bertiogaedu/in%C3%ADcio', '_blank')} />
+        <img src={logo} alt="Bertioga" className="header-logo"
+          onClick={() => window.open('https://sites.google.com/seducbertioga.com.br/bertiogaedu/in%C3%ADcio', '_blank')} />
         {/* Quando passar o mouse mudar de seta para mãozinha ao clicar no logo assim como os demais botões do site*/}
 
         {/* Botão de recolher/expandir sidebar */}
