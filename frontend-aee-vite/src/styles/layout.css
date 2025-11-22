@@ -1,4 +1,4 @@
-/* layout.css — estrutura geral e layout */
+/* src/styles/layout.css */
 
 /* =======================
    Sidebar
@@ -17,13 +17,15 @@
   border-right: 1px solid var(--color-border-hr);
   box-shadow: 0 3px 9px var(--color-shadow);
   transition: width 0.4s ease;
-  z-index: 200; /* fica acima da topbar */
+  z-index: 200;
+  /* fica acima da topbar */
 }
 
 .sidebar.collapsed {
   width: var(--sidebar-collapsed-width, 90px);
 }
 
+/* --- Header do Sidebar (Logo + Botão) --- */
 .sidebar .sidebar-header {
   padding: 20px 18px;
   display: flex;
@@ -31,6 +33,8 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--color-border-hr);
+  min-height: 86px;
+  /* Garante altura estável */
 }
 
 .sidebar-header .header-logo {
@@ -46,7 +50,7 @@
   pointer-events: none;
 }
 
-.site-nav .sidebar-toggle,
+/* --- Botão Toggle (Abrir/Fechar) --- */
 .sidebar-header .sidebar-toggle {
   height: 40px;
   width: 40px;
@@ -55,23 +59,28 @@
   display: flex;
   position: absolute;
   right: 18px;
+  /* Posição padrão (Expandido) */
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   color: var(--color-text-primary);
   background: var(--color-bg-secondary);
-  transition: 0.4s ease;
+  transition: all 0.4s ease;
 }
 
-.site-nav .sidebar-toggle:hover,
 .sidebar-header .sidebar-toggle:hover {
   background: var(--color-hover-secondary);
 }
 
+/* Ajuste do botão quando recolhido */
 .sidebar.collapsed .sidebar-header .sidebar-toggle {
-  transform: translateX(-2px);
+  /* Centraliza o botão na barra fina */
+  right: 50%;
+  transform: translateX(50%);
+
+  /* Aumenta ligeiramente a área de clique */
   height: 48px;
-  width: 50px;
+  width: 48px;
 }
 
 .sidebar-header .sidebar-toggle span {
@@ -79,10 +88,10 @@
   transition: transform 0.4s ease;
 }
 
-.sidebar.collapsed .sidebar-toggle span {
-  transform: rotate(180deg);
-}
+/* REMOVIDO: rotação de 180deg. 
+   Não é necessária pois o ícone muda via React (Menu <-> Chevron) */
 
+/* --- Conteúdo do Sidebar (Scroll) --- */
 .sidebar .sidebar-content {
   flex: 1;
   padding: 20px 18px;
@@ -95,7 +104,7 @@
   scrollbar-width: none;
 }
 
-/* Formulário de busca dentro do sidebar */
+/* --- Formulário de Busca --- */
 .sidebar-content .search-form {
   border-radius: 8px;
   min-height: 48px;
@@ -135,7 +144,7 @@
   color: var(--color-text-placeholder);
 }
 
-/* Lista de menu dentro do sidebar */
+/* --- Lista de Menu --- */
 .sidebar-content .menu-list {
   display: flex;
   flex-direction: column;
@@ -169,7 +178,7 @@
   background: var(--color-hover-primary);
 }
 
-/* Rodapé do sidebar e botão de alternar tema */
+/* --- Rodapé (Tema) --- */
 .sidebar .sidebar-footer {
   padding: 20px 18px;
   white-space: nowrap;
@@ -233,7 +242,7 @@ body.dark-theme .theme-toggle-track {
   width: 18px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
@@ -257,10 +266,13 @@ body.dark-theme .theme-toggle-indicator {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  z-index: 100; /* fica atrás do sidebar */
+  z-index: 100;
+  /* fica atrás do sidebar */
 }
 
-/* Container principal (conteúdo) */
+/* =======================
+   Container Principal
+   ======================= */
 .container {
   display: flex;
   margin-left: var(--sidebar-width, 270px);
@@ -269,60 +281,9 @@ body.dark-theme .theme-toggle-indicator {
 }
 
 /* Ajuste quando sidebar estiver recolhida */
-.sidebar.collapsed + .container {
+.sidebar.collapsed+.container {
   margin-left: var(--sidebar-collapsed-width, 90px);
 }
 
-/* =======================
-   Responsividade para telas menores
-   ======================= */
-@media (max-width: 768px) {
-  /* Overlay escuro atrás da sidebar aberta */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.4s ease;
-    z-index: 10;
-  }
-
-  /* Ativa overlay quando sidebar aberta */
-  body:has(.sidebar:not(.collapsed))::before {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Bloqueia rolagem do body */
-  body:has(.sidebar:not(.collapsed)) {
-    overflow: hidden;
-  }
-
-  /* Exibe o site-nav com botão toggle */
-  .site-nav {
-    display: block;
-  }
-
-  /* Sidebar fixa para mobile */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: var(--sidebar-width, 270px);
-    height: 100%;
-    transition: left 0.4s ease;
-    z-index: 20;
-  }
-
-  /* Esconde sidebar ao recolher */
-  .sidebar.collapsed {
-    left: -270px;
-  }
-
-  /* Ajustes de padding do conteúdo em mobile */
-  .container .main-content {
-    padding: 30px 20px;
-  }
-}
+/* NOTA: A responsividade mobile (max-width: 768px)
+   foi movida para src/styles/responsive.css */

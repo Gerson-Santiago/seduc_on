@@ -25,5 +25,22 @@ const environments = {
 
 export const getBackendConfig = () => {
   const env = process.env.NODE_ENV || 'development';
-  return environments[env];
+  const defaultConfig = environments[env];
+
+  // LÓGICA DE OURO: Prioriza o .env, usa o código como fallback
+  const frontendUrl = process.env.FRONTEND_URL || defaultConfig.FRONTEND_URL;
+
+  // Trata ALLOWED_ORIGINS (se vier do .env é string separada por vírgula, se vier do js é array)
+  let allowedOrigins = defaultConfig.ALLOWED_ORIGINS;
+  if (process.env.ALLOWED_ORIGINS) {
+    allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+  }
+
+  return {
+    ...defaultConfig,
+    FRONTEND_URL: frontendUrl,
+    ALLOWED_ORIGINS: allowedOrigins,
+    // Se quiser que o redirect também venha do .env:
+    GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI || defaultConfig.GOOGLE_REDIRECT_URI
+  };
 };
