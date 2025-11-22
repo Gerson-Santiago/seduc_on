@@ -12,11 +12,8 @@ export default function Dashboard() {
 
   return (
     <div className="container">
-      <nav className="site-nav">
-        <button className="sidebar-toggle" onClick={() => setCollapsed(!collapsed)} type="button">
-          <span className="material-symbols-rounded">menu</span>
-        </button>
-      </nav>
+
+
 
       <Sidebar
         collapsed={collapsed}
