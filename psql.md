@@ -3,7 +3,7 @@
 ### 1. Verificar PostgreSQL
 
 ```bash
-psql --version        # Deve ser >=16
+psql --version        # Deve ser >=1
 sudo service postgresql status
 sudo service postgresql start
 ```
@@ -13,10 +13,10 @@ sudo service postgresql start
 ```bash
 sudo -u postgres psql
 
-CREATE DATABASE aee_db;
-CREATE USER aee_user WITH PASSWORD 'sua_senha_segura';
-GRANT ALL PRIVILEGES ON DATABASE aee_db TO aee_user;
-ALTER USER aee_user CREATEDB;
+CREATE DATABASE banco_db;
+CREATE USER criar_user WITH PASSWORD 'sua_senha_segura';
+GRANT ALL PRIVILEGES ON DATABASE banco_db TO criar_user;
+ALTER USER criar_user CREATEDB;
 
 \q
 ```
@@ -24,7 +24,7 @@ ALTER USER aee_user CREATEDB;
 ### 3. Testar conexão
 
 ```bash
-psql -U aee_user -h localhost -d aee_db
+psql -U criar_user -h localhost -d banco_db
 \dt    # Lista tabelas
 ```
 
@@ -33,11 +33,11 @@ psql -U aee_user -h localhost -d aee_db
 No backend, criar/editar `.env`:
 
 ```env
-DATABASE_URL="postgresql://aee_user:MinhaSenhaSegura123@localhost:5432/aee_db"
+DATABASE_URL="postgresql://criar_user:sua_senha_segura@localhost:PORT/banco_db"
 
 # Superadmin do projeto
-SUPERADMIN_EMAIL=monitoramento@seducbertioga.com.br
-SUPERADMIN_NAME="Prefeitura de Bertioga"
+SUPERADMIN_EMAIL=email@dominio.com
+SUPERADMIN_NAME="Nome do Superadmin"
 ```
 
 ### 5. Rodar migrations e gerar client
