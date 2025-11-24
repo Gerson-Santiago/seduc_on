@@ -14,6 +14,7 @@ import Login from '../pages/Login/index';
 import RequestAccess from '../pages/RequestAccess/index';
 import Dashboard from '../pages/Dashboard/index';
 import Alunos from '../pages/Alunos/index';
+import Escolas from '../pages/Escolas/index';
 
 const AppRoutes = () => {
     return (
@@ -32,7 +33,7 @@ const AppRoutes = () => {
             <Route element={<MainLayout />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/alunos" element={<Alunos />} />
-                <Route path="/escolas" element={<div>Página de Escolas (Em breve)</div>} />
+                <Route path="/escolas" element={<Escolas />} />
 
                 {/* Se alguém tentar acessar /aee, manda para o Dashboard (ou Home, você decide) */}
                 <Route path="/aee" element={<Navigate to="/dashboard" replace />} />

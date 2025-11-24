@@ -4,7 +4,7 @@ import UserDropdown from '../topbar/UserDropdown';
 
 export default function TopBar({ user, onLogout }) {
   // Debug: Vamos ver no console se o usuário está chegando
-  console.log("TopBar user:", user);
+  // console.log("TopBar user:", user);
 
   return (
     <header className="topbar">
