@@ -1,37 +1,30 @@
-// frontend-aee-vite/src/components/layout/MainContent.jsx
-import React from 'react'
-import '../../styles/base.css' // /home/sant/aee/frontend-aee-vite/src/styles/base.css
-import '../../styles/components.css' // /home/sant/aee/frontend-aee-vite/src/styles/components.css
-import '../../styles/layout.css' // /home/sant/aee/frontend-aee-vite/src/styles/layout.css
-import '../../styles/variables.css' // /home/sant/aee/frontend-aee-vite/src/styles/variables.css
+// src/components/layout/MainContent.jsx
+import React from 'react';
+import '../../styles/base.css';
+import '../../styles/components.css';
+import '../../styles/layout.css';
+import '../../styles/variables.css';
 
 export default function MainContent() {
   return (
-    // Componente principal do conteúdo, onde ficam as páginas cada botão do Sidebar vai abrir um MainContent diferente
-    // onClick e vai abrir as configuraçẽos das opções
-
-    /**
-     * Criar um botão para Pesquisar Alunos -> <MainSearchStudents />
-     * Criar um botão para Alunos -> <MainAlunosIAEE />
-     * Criar um botão para Escolas -> <MainEscolas />
-     * Escolher icones de Pesquisar Alunos - Alunos - Escolas
-     * Criar uma classe para refatorar a criar destes botões
-     * Dashboard -> esta está em frontend-aee-vite/src/pages/Dashboard.jsx <Dashboard />
-     * Recentes -> <MainRecent />
-     * Favoritos -> <MainFavorites />
-     * Melhorar o icone de Calendario
-     * Calendário -> <MainCalendar />
-     * Usuários -> <MainUsers />
-     * Configurações -> <MainSettings />
-    */
-
     <main className="main-content">
       <h1 className="page-title">Painel Geral</h1>
-      <p className="card">
-        Bem-vindo ao seu painel! Use o menu para navegar, alternar a visualização
-        da barra lateral ou trocar entre temas claro e escuro.
-      </p>
-      {/* resto do conteúdo */}
+
+      <div className="card">
+        <p>
+          Bem-vindo ao seu painel! Use o menu para navegar ou os atalhos abaixo.
+        </p>
+      </div>
+
+      {/* AQUI: Futuramente vamos criar o componente <GridMenu /> 
+          para os botões que você listou (Alunos, Escolas, etc.)
+      */}
+      <div style={{ marginTop: '20px', display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+        {/* Placeholder para visualizar onde ficarão os botões */}
+        <div className="card" style={{ textAlign: 'center', cursor: 'pointer' }}>📚 Alunos</div>
+        <div className="card" style={{ textAlign: 'center', cursor: 'pointer' }}>🏫 Escolas</div>
+        <div className="card" style={{ textAlign: 'center', cursor: 'pointer' }}>📅 Calendário</div>
+      </div>
     </main>
-  )
+  );
 }
