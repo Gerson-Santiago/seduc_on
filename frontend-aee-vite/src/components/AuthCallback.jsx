@@ -1,3 +1,4 @@
+// /aee/frontend-aee-vite/src/components/AuthCallback.jsx
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
