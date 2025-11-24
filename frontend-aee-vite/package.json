@@ -12,7 +12,7 @@
     "build:dev": "vite build --mode development",
     "build:preview": "vite build --mode preview",
     "build:github": "vite build --mode github",
-    "preview": "vite preview --mode preview",
+    "preview": "vite preview --mode preview --host 0.0.0.0",
     "preview:prod": "vite preview --mode production",
     "deploy:github": "npm run build:github && gh-pages -d dist"
   },

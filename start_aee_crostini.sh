@@ -62,6 +62,11 @@ start_frontend() {
     else
         npm run build:preview || { echo "❌ Build do frontend falhou!"; exit 1; }
         npm run preview &
+        # ADIÇÃO IMPORTANTE: Espera por 10 segundos no modo preview
+        if [ "$ENV_MODE" = "preview" ]; then
+            echo "Aguardando 10s para estabilização do servidor preview..."
+            sleep 10
+        fi
     fi
 }
 
