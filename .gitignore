@@ -1,88 +1,80 @@
 # =====================
-# 🔧 CONFIGURAÇÕES GERAIS
+# 🔧 CONFIGURAÇÕES GERAIS (NODE)
 # =====================
-
-# Node.js
 node_modules/
-package-lock.json
-
-# Prisma
-prisma/migrations/
-prisma/client.js
-generated/
-
-# Variáveis de ambiente
-.env
-.env.local
-.env.*.local
-.env.production
-.env.preview
-.env.development
-.env.test
-.env.dev
-.env.prod
-*.local
+# package-lock.json  <-- RECOMENDADO: Mantenha comentado (deixe o git rastrear) para garantir versões iguais.
 
 # Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 backend.log
 
-# Builds (Vite, frontend, SSR)
+# =====================
+# 🐘 PRISMA (BACKEND)
+# =====================
+# Ignora bancos locais SQLite (se usar)
+*.sqlite
+*.sqlite-journal
+
+# ⚠️ IMPORTANTE: Mantemos as migrations rastreadas!
+# Não ignorar: prisma/migrations/
+# Não ignorar: prisma/schema.prisma
+
+# =====================
+# 🚀 BUILDS & FRONTEND
+# =====================
 dist/
 dist-ssr/
 build/
+coverage/
+frontend-aee-vite/test-results/
 
-# CSV - manter apenas arquivos header
+# =====================
+# 🔐 AMBIENTE & SEGREDOS (CRÍTICO)
+# =====================
+.env
+.env.*
+!.env.example
+!.env.github 
+
+# Credenciais específicas
+credentials/
+!credentials/README.md
+client_secret.json
+
+# =====================
+# 📄 DADOS E ARQUIVOS ESPECÍFICOS
+# =====================
+# CSV - Ignora dados, mantém headers
 csv/*.csv
 !csv/*_headers.csv
 !csv/csv.txt
 !csv/extract_headers.sh
 
-# Credenciais sensíveis
-credentials/
-!credentials/README.md  # caso deseje documentar uso da pasta
-credentials/client_secret.json
-credentials/clent_secret21.json
-
-# Scripts auxiliares (issues, setup)
-create_issues.sh
-create_labels.sh
-add_issues_to_project.sh
+# Backups temporários (visto no seu tree)
+*.bak
+*.swp
+*.swo
 
 # =====================
-# 💻 EDITORES E SISTEMA
+# 💻 SISTEMA & IDE
 # =====================
-
-# VSCode
-.vscode/
-!.vscode/extensions.json
-
-# WebStorm / JetBrains
-.idea/
-
-# Arquivos de sistema
 .DS_Store
+.vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
 
+# =====================
+# 🛠️ SCRIPTS LOCAIS
+# =====================
 start_aee.chorme.sh
-client_secret.json
-
-# =====================
-# ✅ NÃO IGNORAR ESSENCIAIS
-# =====================
-
-!src/
-!public/
-!package.json
-!vite.config.js
-!README.md
-frontend-aee-vite/.env.github
+create_issues.sh
+create_labels.sh
+add_issues_to_project.sh
+audit_all.sh
+audit-report.json
