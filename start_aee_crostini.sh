@@ -1,100 +1,114 @@
 #!/bin/bash
 # =====================================
 # Script de inicialização do projeto AEE para Crostini (Debian 12)
+# Suporta: dev (porta 3001/5173) e preview (porta 3000/4173)
+# Modo padrão: dev
+# Função adicional: stop
 # =====================================
 # Autor: Gerson Santiago
-# Data: 2025-11-21
-# Função: Iniciar PostgreSQL 18, backend e frontend, garantindo o build do Vite com BASE '/aee/'.
+# Data: 2025-11-23
 # =====================================
 
-# ⚠️ AJUSTE CRUCIAL 1: Diretórios Base
-# Define o caminho absoluto da pasta onde o script está sendo executado.
-BASE_DIR=$(cd "$(dirname "$0")" && pwd) 
+# 📂 Diretórios Base
+BASE_DIR=$(cd "$(dirname "$0")" && pwd)
 BACKEND_DIR="$BASE_DIR/backend"
 FRONTEND_DIR="$BASE_DIR/frontend-aee-vite"
 
-# Definição do Cluster PostgreSQL
+# Cluster PostgreSQL
 PG_CLUSTER_VERSION="18"
 PG_CLUSTER_NAME="main"
 
-# =====================================
-# Funções de Gerenciamento
-# =====================================
+# Parâmetro: dev | preview | stop
+ENV_MODE=${1:-dev}
 
-# Função para limpar processos antigos do backend e frontend antes de iniciar.
+# =====================================
+# Funções
+# =====================================
 cleanup() {
-    echo "🧹 Parando processos ativos do projeto (Node/Nodemon/Vite)..."
-    # Tenta matar processos Node/Nodemon/Vite associados aos arquivos do projeto
+    echo "🧹 Parando processos ativos (Node/Nodemon/Vite)..."
     pkill -f "node server.js"
-    pkill -f "vite preview"
-    # Aguarda um momento para a porta ser liberada
+    pkill -f "vite"
     sleep 1
 }
 
-# Função para exibir cabeçalho bonito
-echo "====================================="
-echo " 🚀 Iniciando ambiente do projeto AEE (Crostini/Debian) "
-echo "====================================="
+start_postgres() {
+    echo "🟡 Verificando PostgreSQL $PG_CLUSTER_VERSION..."
+    sudo pg_ctlcluster $PG_CLUSTER_VERSION $PG_CLUSTER_NAME status > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo "✅ PostgreSQL já está online."
+    else
+        echo "🔵 Iniciando PostgreSQL..."
+        sudo pg_ctlcluster $PG_CLUSTER_VERSION $PG_CLUSTER_NAME start
+        sleep 3
+        sudo pg_ctlcluster $PG_CLUSTER_VERSION $PG_CLUSTER_NAME status
+    fi
+}
 
-# Chama a limpeza
-cleanup
+start_backend() {
+    echo "🟡 Iniciando BACKEND ($ENV_MODE)..."
+    cd "$BACKEND_DIR" || { echo "❌ Pasta backend não encontrada!"; exit 1; }
+    if [ "$ENV_MODE" = "dev" ]; then
+        npm run dev &
+    else
+        npm run preview &
+    fi
+}
 
-# 1️⃣ Subir PostgreSQL (USANDO pg_ctlcluster)
-echo "🟡 Verificando status do PostgreSQL ${PG_CLUSTER_VERSION}..."
+start_frontend() {
+    echo "🟡 Iniciando FRONTEND ($ENV_MODE)..."
+    cd "$FRONTEND_DIR" || { echo "❌ Pasta frontend não encontrada!"; exit 1; }
+    if [ "$ENV_MODE" = "dev" ]; then
+        npm run dev &
+    else
+        npm run build:preview || { echo "❌ Build do frontend falhou!"; exit 1; }
+        npm run preview &
+    fi
+}
 
-# Verifica o status usando pg_ctlcluster
-sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} status > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    echo "✅ PostgreSQL ${PG_CLUSTER_VERSION} já está online."
-else
-    echo "🔵 Iniciando PostgreSQL ${PG_CLUSTER_VERSION}..."
-    sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} start
-    sleep 3
-    sudo pg_ctlcluster ${PG_CLUSTER_VERSION} ${PG_CLUSTER_NAME} status
-fi
+# =====================================
+# Execução
+# =====================================
+case "$ENV_MODE" in
+    stop)
+        cleanup
 
-# 2️⃣ Iniciar backend
-echo
-echo "🟡 Iniciando BACKEND..."
-# Navega para o diretório backend
-cd "$BACKEND_DIR" || { echo "❌ Erro: pasta backend não encontrada! Verifique o caminho."; exit 1; }
-
-echo "🚀 Rodando backend em http://localhost:3000 ..."
-npm run preview &
-
-# Espera alguns segundos para garantir inicialização
-sleep 5
-
-# 3️⃣ Iniciar frontend
-echo
-echo "🟡 Iniciando FRONTEND..."
-
-# AJUSTE CRUCIAL: Volta para o diretório base
-cd "$BASE_DIR"
-
-# Navega para o diretório frontend
-cd "$FRONTEND_DIR" || { echo "❌ Erro: pasta frontend não encontrada! Verifique o caminho."; exit 1; }
-
-# NOVO PASSO: Rodar o build com o modo 'preview' para garantir a base '/aee/' correta.
-echo "🛠️ Rodando Build do Frontend no modo 'preview'..."
-npm run build:preview || { echo "❌ Erro: Build do Frontend falhou! Verifique logs e dependências."; exit 1; }
-
-echo "🚀 Rodando frontend em http://localhost:4173/aee ..."
-npm run preview &
+        echo "Processos em segundo plano:"
+        # pgrep -f "node server.js" for vazio escreve "Nenhum processo NODE encontrado."
+        pgrep -f "node server.js" || echo "Nenhum processo NODE encontrado."
+        pgrep -f "vite" || echo "Nenhum processo VITE encontrado."
+        #pgrep -f "node server.js" | xargs -r echo "  Backend PID(s):"
+        #pgrep -f "vite" | xargs -r echo "  Frontend PID(s):"
+        echo "✅ Todos os processos foram encerrados."
+        exit 0
+        ;;
+    dev|preview)
+        echo "====================================="
+        echo " 🚀 Inicializando projeto AEE ($ENV_MODE)"
+        echo "====================================="
+        cleanup
+        start_postgres
+        start_backend
+        sleep 5
+        start_frontend
+        ;;
+    *)
+        echo "❌ Parâmetro inválido. Use: dev | preview | stop"
+        exit 1
+        ;;
+esac
 
 # 4️⃣ Finalização
-# Volta para o diretório inicial
 cd "$BASE_DIR"
+BACKEND_PORT=$([ "$ENV_MODE" = "dev" ] && echo 3001 || echo 3000)
+FRONTEND_PORT=$([ "$ENV_MODE" = "dev" ] && echo 5173 || echo 4173)
 
 echo
 echo "====================================="
 echo "✅ Sistema AEE em execução!"
-echo "Backend:  http://localhost:3000"
-echo "Frontend: http://localhost:4173/aee/"
-
-# Exibir PIDs
-echo "Para parar os processos, use 'kill [PID]' ou rode 'cleanup' no terminal."
+echo "Backend:  http://localhost:$BACKEND_PORT"
+echo "Frontend: http://localhost:$FRONTEND_PORT/aee/"
+echo "Para parar processos: ./start_aee_crostini.sh stop"
 echo "Processos em segundo plano:"
 pgrep -f "node server.js" | xargs -r echo "  Backend PID(s):"
-pgrep -f "vite preview" | xargs -r echo "  Frontend PID(s):"
+pgrep -f "vite" | xargs -r echo "  Frontend PID(s):"
 echo "====================================="
