@@ -2,7 +2,7 @@
   "name": "aee",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "backend do sistema AEE",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -29,8 +29,5 @@
     "cross-env": "^7.0.3",
     "gh-pages": "^6.3.0",
     "nodemon": "^3.1.10"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   }
 }
