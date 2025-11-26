@@ -5,10 +5,10 @@
   "description": "backend do sistema AEE",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "NODE_ENV=development nodemon server.js",
+    "start": "node --env-file=.env server.js",
+    "dev": "nodemon --exec \"node --env-file=.env.dev server.js\"",
     "preview": "nodemon --exec \"node --env-file=.env.preview server.js\"",
-    "production": "NODE_ENV=production nodemon server.js"
+    "production": "node --env-file=.env server.js"
   },
   "keywords": [],
   "author": "Gerson Santiago",
