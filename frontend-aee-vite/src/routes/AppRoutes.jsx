@@ -15,6 +15,7 @@ import RequestAccess from '../pages/RequestAccess/index';
 import Dashboard from '../pages/Dashboard/index';
 import Alunos from '../pages/Alunos/index';
 import Escolas from '../pages/Escolas/index';
+import StatusPage from '../pages/Status/index';
 
 const AppRoutes = () => {
     return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
             <Route path="/solicitar-acesso" element={<RequestAccess />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/aee/auth/callback" element={<AuthCallback />} />
+            <Route path="/status" element={<StatusPage />} />
 
             {/* --- Rotas Protegidas (Dentro do Sistema) --- */}
             <Route element={<MainLayout />}>
