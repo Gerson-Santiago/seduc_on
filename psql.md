@@ -56,6 +56,14 @@ CREATE DATABASE aee_db OWNER aee_user;
 \q
 ```
 
+Para alterar a senha do bando de dados
+```bash
+sudo -u postgres psql
+ALTER USER aee_user WITH PASSWORD 'NOVA_SENHA_SEGURA';
+\q
+```
+
+
 ---
 
 ## 3. Testar Conexão via Terminal
@@ -66,6 +74,9 @@ Teste se o usuário consegue entrar no banco usando a senha configurada.
 psql "postgresql://aee_user:SUA_SENHA_AQUI@localhost:5432/aee_db"
 
 # Dica: Use \dt para listar tabelas ou \q para sair
+# Se entrou em aee_db=# indica que a senha esta ok
+# para sair
+# \q
 ```
 
 ---

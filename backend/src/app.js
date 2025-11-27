@@ -27,7 +27,25 @@ app.use((req, res, next) => {
 });
 
 // Health check
-app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date().toISOString() }));
+app.get('/api/health', async (req, res) => {
+  try {
+    // Tenta executar uma query simples para verificar a conexão com o banco
+    await req.prisma.$queryRaw`SELECT 1`;
+    res.status(200).json({
+      backend: 'online',
+      database: 'online',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    // Se a query falhar, o banco está offline
+    console.error("Database health check failed:", error);
+    res.status(503).json({
+      backend: 'online',
+      database: 'offline',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
 
 // Rotas
 app.use('/api/usuarios', usuarioRoutes);
