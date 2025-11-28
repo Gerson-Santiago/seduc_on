@@ -10,7 +10,6 @@ import AppRoutes from './routes/AppRoutes';
 // Estilos Globais (Mantenha a ordem para a cascata funcionar)
 import './styles/variables.css';
 import './styles/base.css';
-import './styles/layout.css';
 import './styles/components.css';
 
 // Configuração do Google

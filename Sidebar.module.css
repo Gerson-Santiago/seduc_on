@@ -1,0 +1,252 @@
+/* =======================
+   Sidebar
+   ======================= */
+.sidebar {
+  /* Fixa o sidebar na viewport */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--sidebar-width, 270px);
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  background: var(--color-bg-sidebar);
+  border-right: 1px solid var(--color-border-hr);
+  box-shadow: 0 3px 9px var(--color-shadow);
+  transition: width 0.4s ease;
+  z-index: 200;
+  /* fica acima da topbar */
+}
+
+.collapsed {
+  width: var(--sidebar-collapsed-width, 90px);
+}
+
+/* --- Header do Sidebar (Logo + Botão) --- */
+.sidebarHeader {
+  padding: 20px 18px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border-hr);
+  min-height: 86px;
+  /* Garante altura estável */
+}
+
+.headerLogo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  border-radius: 50%;
+  transition: opacity 0.4s ease;
+}
+
+.collapsed .headerLogo {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Botão Toggle (Abrir/Fechar) --- */
+.sidebarToggle {
+  height: 40px;
+  width: 40px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  position: absolute;
+  right: 18px;
+  /* Posição padrão (Expandido) */
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
+  transition: all 0.4s ease;
+}
+
+.sidebarToggle:hover {
+  background: var(--color-hover-secondary);
+}
+
+/* Ajuste do botão quando recolhido */
+.collapsed .sidebarToggle {
+  /* Centraliza o botão na barra fina */
+  right: 50%;
+  transform: translateX(50%);
+
+  /* Aumenta ligeiramente a área de clique */
+  height: 48px;
+  width: 48px;
+}
+
+.sidebarToggle span {
+  font-size: 1.75rem;
+  transition: transform 0.4s ease;
+}
+
+/* --- Conteúdo do Sidebar (Scroll) --- */
+.sidebarContent {
+  flex: 1;
+  padding: 20px 18px;
+  overflow: hidden auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-text-placeholder) transparent;
+}
+
+.collapsed .sidebarContent {
+  scrollbar-width: none;
+}
+
+/* --- Formulário de Busca --- */
+.searchForm {
+  border-radius: 8px;
+  min-height: 48px;
+  margin: 5px 0 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  white-space: nowrap;
+  background: var(--color-bg-secondary);
+  transition: 0.4s ease;
+}
+
+.collapsed .searchForm:hover {
+  cursor: pointer;
+}
+
+.searchForm:focus-within,
+.collapsed .searchForm:hover {
+  background: var(--color-hover-secondary);
+}
+
+.searchForm span {
+  color: var(--color-text-placeholder);
+}
+
+.searchForm input {
+  background: none;
+  outline: none;
+  border: none;
+  width: 100%;
+  margin-left: 15px;
+  font-size: 1rem;
+  color: var(--color-text-primary);
+}
+
+.searchForm input::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+/* --- Lista de Menu --- */
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+}
+
+.menuLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  padding: 12px 15px;
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.menuLabel {
+  transition: opacity 0.3s ease;
+}
+
+.collapsed .menuLabel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menuLink:is(:hover, .active) {
+  color: #fff;
+  background: var(--color-hover-primary);
+}
+
+/* --- Rodapé (Tema) --- */
+.sidebarFooter {
+  padding: 20px 18px;
+  white-space: nowrap;
+  border-top: 1px solid var(--color-border-hr);
+}
+
+.themeToggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 15px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.themeToggle:hover {
+  background: var(--color-hover-secondary);
+}
+
+.themeToggle:is(:focus, :focus-visible) {
+  outline: none;
+  border-color: transparent;
+}
+
+.themeLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.themeText {
+  font-size: 1rem;
+  transition: opacity 0.4s 0.2s ease;
+}
+
+.collapsed .themeText,
+.collapsed .themeToggleTrack {
+  opacity: 0;
+  width: 0;
+  transition: all 0.2s ease;
+}
+
+.themeToggleTrack {
+  position: relative;
+  height: 24px;
+  width: 48px;
+  margin-left: auto;
+  border-radius: 999px;
+  background: #c3d1ec;
+  transition: opacity 0.4s 0.2s ease, background-color 0.3s ease;
+}
+
+.darkTheme .themeToggleTrack {
+  background: #695CFE;
+}
+
+.themeToggleIndicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.darkTheme .themeToggleIndicator {
+  transform: translateX(24px);
+}
