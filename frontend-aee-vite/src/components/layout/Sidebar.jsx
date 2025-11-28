@@ -1,5 +1,6 @@
 // src/components/Sidebar.jsx
 import React, { useState, useEffect } from 'react'
+import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo-sistema.png'
 import '../../styles/base.css'
 import '../../styles/components.css'
@@ -57,52 +58,52 @@ export default function Sidebar({ collapsed, onToggle }) {
 
         <ul className="menu-list">
           <li className="menu-item">
-            <a href="#" className="menu-link active">
+            <NavLink to="/dashboard" end className="menu-link">
               <span className="material-symbols-rounded">dashboard</span>
               <span className="menu-label">Dashboard</span>
-            </a>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <a href="#" className="menu-link">
+            <NavLink to="/alunos" className="menu-link">
               <span className="material-symbols-rounded">dine_in</span>
               <span className="menu-label">Alunos</span>
-            </a>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <a href="#" className="menu-link">
+            <NavLink to="/professores" className="menu-link">
               <span className="material-symbols-rounded">owl</span>
               <span className="menu-label">Professores</span>
-            </a>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <a href="#" className="menu-link">
+            <NavLink to="/escolas" className="menu-link">
               <span className="material-symbols-rounded">family_home</span>
               <span className="menu-label">Escolas</span>
-            </a>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <a href="#" className="menu-link">
+            <NavLink to="/turmas" className="menu-link">
               <span className="material-symbols-rounded">jamboard_kiosk</span>
               <span className="menu-label">Turmas</span>
-            </a>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <a href="#" className="menu-link">
+            <NavLink to="/usuarios" className="menu-link">
               <span className="material-symbols-rounded">group</span>
               <span className="menu-label">Usuários</span>
-            </a>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <a href="#" className="menu-link">
+            <NavLink to="/calendario" className="menu-link">
               <span className="material-symbols-rounded">calendar_today</span>
               <span className="menu-label">Calendário</span>
-            </a>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <a href="#" className="menu-link">
+            <NavLink to="/configuracoes" className="menu-link">
               <span className="material-symbols-rounded">settings</span>
               <span className="menu-label">Configurações</span>
-            </a>
+            </NavLink>
           </li>
         </ul>
       </div>
