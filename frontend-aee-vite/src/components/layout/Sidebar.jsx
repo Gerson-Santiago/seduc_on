@@ -64,20 +64,26 @@ export default function Sidebar({ collapsed, onToggle }) {
           </li>
           <li className="menu-item">
             <a href="#" className="menu-link">
-              <span className="material-symbols-rounded">insert_chart</span>
-              <span className="menu-label">Recentes</span>
+              <span className="material-symbols-rounded">child_care</span>
+              <span className="menu-label">Alunos</span>
             </a>
           </li>
           <li className="menu-item">
             <a href="#" className="menu-link">
-              <span className="material-symbols-rounded">star</span>
-              <span className="menu-label">Favoritos</span>
+              <span className="material-symbols-rounded">format_ink_highlighter</span>
+              <span className="menu-label">Professores</span>
             </a>
           </li>
           <li className="menu-item">
             <a href="#" className="menu-link">
-              <span className="material-symbols-rounded">storefront</span>
-              <span className="menu-label">Calendário</span>
+              <span className="material-symbols-rounded">family_home</span>
+              <span className="menu-label">Escolas</span>
+            </a>
+          </li>
+          <li className="menu-item">
+            <a href="#" className="menu-link">
+              <span className="material-symbols-rounded">dine_in</span>
+              <span className="menu-label">Turmas</span>
             </a>
           </li>
           <li className="menu-item">
