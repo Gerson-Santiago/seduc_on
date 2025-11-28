@@ -64,13 +64,13 @@ export default function Sidebar({ collapsed, onToggle }) {
           </li>
           <li className="menu-item">
             <a href="#" className="menu-link">
-              <span className="material-symbols-rounded">child_care</span>
+              <span className="material-symbols-rounded">dine_in</span>
               <span className="menu-label">Alunos</span>
             </a>
           </li>
           <li className="menu-item">
             <a href="#" className="menu-link">
-              <span className="material-symbols-rounded">format_ink_highlighter</span>
+              <span className="material-symbols-rounded">owl</span>
               <span className="menu-label">Professores</span>
             </a>
           </li>
@@ -82,7 +82,7 @@ export default function Sidebar({ collapsed, onToggle }) {
           </li>
           <li className="menu-item">
             <a href="#" className="menu-link">
-              <span className="material-symbols-rounded">dine_in</span>
+              <span className="material-symbols-rounded">jamboard_kiosk</span>
               <span className="menu-label">Turmas</span>
             </a>
           </li>
@@ -90,6 +90,12 @@ export default function Sidebar({ collapsed, onToggle }) {
             <a href="#" className="menu-link">
               <span className="material-symbols-rounded">group</span>
               <span className="menu-label">Usuários</span>
+            </a>
+          </li>
+          <li className="menu-item">
+            <a href="#" className="menu-link">
+              <span className="material-symbols-rounded">calendar_today</span>
+              <span className="menu-label">Calendário</span>
             </a>
           </li>
           <li className="menu-item">
