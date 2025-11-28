@@ -203,6 +203,12 @@
   background: var(--color-hover-secondary);
 }
 
+/* ADICIONADO: Remove o anel de foco preto apenas neste botão */
+.sidebar-footer .theme-toggle:is(:focus, :focus-visible) {
+  outline: none;
+  border-color: transparent; /* Garante que nenhuma outra borda apareça */
+}
+
 .theme-toggle .theme-label {
   display: flex;
   align-items: center;
@@ -277,6 +283,7 @@ body.dark-theme .theme-toggle-indicator {
   display: flex;
   margin-left: var(--sidebar-width, 270px);
   padding-top: 56px;
+  padding: 20px; /* ADICIONADO: Cria um respiro interno */
   transition: margin-left 0.4s ease;
 }
 
