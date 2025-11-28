@@ -13,7 +13,7 @@ O formato segue as recomendações do **Keep a Changelog** e o versionamento seg
 - Planejamento para criação de pasta de testes isolada em `backend/test/`.
 
 #### Changed
-- Sugestão de mover `backend/prisma/client.js` para `backend/src/config/prisma.js`, padronizando a camada de configuração.
+- **[CONCLUÍDO]** Movido `backend/prisma/client.js` para `backend/src/config/prisma.js` para padronizar a camada de configuração.
 - Avaliação para renomear ou dividir `service.js` genérico dentro de `services/`.
 - Possível ajuste para tornar `server.js` responsável apenas por iniciar o servidor, deixando configuração completa no `app.js`.
 
