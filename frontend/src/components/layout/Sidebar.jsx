@@ -1,6 +1,6 @@
-// frontend/src/components/layout/Sidebar.jsx
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import logo from '../../assets/logo-sistema.png'
 import '../../styles/base.css'
 import '../../styles/components.css'
@@ -8,6 +8,7 @@ import '../../styles/layout.css'
 import '../../styles/variables.css'
 
 export default function Sidebar({ collapsed, onToggle }) {
+  const { user } = useAuth();
   // Estado para alternância de tema escuro
   const [darkMode, setDarkMode] = useState(
     () => window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -93,6 +94,17 @@ export default function Sidebar({ collapsed, onToggle }) {
               <span className="menu-label">Usuários</span>
             </NavLink>
           </li>
+
+          {/* Link visível apenas para Admins/Superadmins */}
+          {user && (user.perfil === 'admin' || user.perfil === 'superadmin') && (
+            <li className="menu-item">
+              <NavLink to="/admin/solicitacoes" className="menu-link">
+                <span className="material-symbols-rounded">person_add</span>
+                <span className="menu-label">Solicitações</span>
+              </NavLink>
+            </li>
+          )}
+
           <li className="menu-item">
             <NavLink to="/calendario" className="menu-link">
               <span className="material-symbols-rounded">calendar_today</span>
