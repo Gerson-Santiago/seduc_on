@@ -1,7 +1,12 @@
-// src/config/environments.js
+// backend/src/config/environments.js
 
 const environments = {
   development: {
+    FRONTEND_URL: 'http://localhost:5173',
+    ALLOWED_ORIGINS: ['http://localhost:5173'],
+    GOOGLE_REDIRECT_URI: 'http://localhost:5173/aee/auth/callback'
+  },
+  test: {
     FRONTEND_URL: 'http://localhost:5173',
     ALLOWED_ORIGINS: ['http://localhost:5173'],
     GOOGLE_REDIRECT_URI: 'http://localhost:5173/aee/auth/callback'

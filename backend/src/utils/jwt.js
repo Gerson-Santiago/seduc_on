@@ -1,4 +1,4 @@
-// src/utils/jwt.js
+// backend/src/utils/jwt.js
 import jwt from 'jsonwebtoken';
 
 const SECRET = process.env.JWT_SECRET || 'segredo-supersecreto';

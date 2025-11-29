@@ -1,3 +1,4 @@
+// backend/prisma/verify_migration.js
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 

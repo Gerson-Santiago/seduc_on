@@ -1,3 +1,4 @@
+// backend/src/controllers/escola.controller.js
 export const listarEscolas = async (req, res) => {
   try {
     const escolas = await req.prisma.escola.findMany();

@@ -80,3 +80,9 @@ create_labels.sh
 add_issues_to_project.sh
 audit_all.sh
 audit-report.json
+
+# =====================
+# 🐛 DEBUG SCRIPTS (NÃO COMMITAR)
+# =====================
+backend/scripts/debug/
+!backend/scripts/debug/README.md

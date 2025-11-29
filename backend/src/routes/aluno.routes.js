@@ -1,4 +1,4 @@
-// src/routes/aluno.routes.js
+// backend/src/routes/aluno.routes.js
 import { Router } from 'express';
 import * as AlunoController from '../controllers/aluno.controller.js';
 

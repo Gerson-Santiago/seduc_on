@@ -1,4 +1,4 @@
-// src/routes/matricula.routes.js
+// backend/src/routes/matricula.routes.js
 import { Router } from 'express';
 import * as MatriculaController from '../controllers/matricula.controller.js';
 

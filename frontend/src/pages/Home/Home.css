@@ -1,0 +1,186 @@
+/* frontend/src/pages/Home/Home.css */
+:root {
+  --cor-texto-primario: #1F2936;
+  --cor-texto-secundario: #4b5563;
+  --cor-fundo-primario: #f3f4f6;
+  /* Cinza bem claro para o fundo da página */
+  --cor-fundo-card: #ffffff;
+  /* Branco para o card */
+
+  --cor-botao-normal: #272727;
+  --cor-botao-texto: #ffffff;
+  --cor-botao-hover: #000000;
+
+  --cor-destaque: #0056b3;
+  /* Azul para links/botões secundários */
+  --sombra-card: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Container Principal que ocupa a tela toda */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--cor-fundo-primario);
+}
+
+/* --- Cabeçalho --- */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.home-logo {
+  height: 50px;
+  width: auto;
+}
+
+.btn-nav {
+  background: transparent;
+  border: 1px solid var(--cor-botao-normal);
+  color: var(--cor-botao-normal);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-nav:hover {
+  background: var(--cor-botao-normal);
+  color: #fff;
+}
+
+/* --- Área Central (Hero) --- */
+.home-content {
+  flex: 1;
+  /* Ocupa todo o espaço disponível entre header e footer */
+  display: flex;
+  align-items: center;
+  /* Centraliza verticalmente */
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  padding: 2rem;
+}
+
+.home-card {
+  background: var(--cor-fundo-card);
+  padding: 3rem;
+  border-radius: 1rem;
+  box-shadow: var(--sombra-card);
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.home-card h1 {
+  color: var(--cor-texto-primario);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.home-card p {
+  color: var(--cor-texto-secundario);
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+/* --- Botões de Ação --- */
+.home-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--cor-botao-normal);
+  color: var(--cor-botao-texto);
+  border: none;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--cor-botao-hover);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cor-texto-primario);
+  background: transparent;
+  border: 1px solid #d1d5db;
+  /* Cinza borda */
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: var(--cor-botao-normal);
+  background-color: #f9fafb;
+}
+
+/* --- Rodapé --- */
+.home-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  background-color: transparent;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .home-header {
+    padding: 1rem;
+  }
+
+  .home-logo {
+    height: 40px;
+  }
+
+  .home-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .home-card h1 {
+    font-size: 1.75rem;
+  }
+
+  .home-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+  }
+}

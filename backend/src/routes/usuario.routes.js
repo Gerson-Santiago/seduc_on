@@ -1,4 +1,4 @@
-// src/routes/usuario.routes.js
+// backend/src/routes/usuario.routes.js
 import { Router } from 'express';
 import * as UsuarioController from '../controllers/usuario.controller.js';
 

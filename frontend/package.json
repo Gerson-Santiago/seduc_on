@@ -1,0 +1,44 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "AEE Frontend with Vite",
+  "author": "Gerson Santiago",
+  "homepage": "https://Gerson-Santiago.github.io/aee",
+  "scripts": {
+    "dev": "vite --mode development",
+    "build": "vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "build:preview": "vite build --mode preview",
+    "build:github": "vite build --mode github",
+    "preview": "vite preview --mode preview --host 0.0.0.0",
+    "preview:prod": "vite preview --mode production",
+    "deploy:github": "npm run build:github && gh-pages -d dist"
+  },
+  "dependencies": {
+    "@react-oauth/google": "^0.12.2",
+    "chart.js": "^4.5.1",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.555.0",
+    "react": "^19.1.0",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@playwright/test": "^1.53.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "connect-history-api-fallback": "^2.0.0",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "gh-pages": "^6.3.0",
+    "globals": "^16.3.0",
+    "serve": "^14.2.5",
+    "vite": "^7.0.0"
+  }
+}

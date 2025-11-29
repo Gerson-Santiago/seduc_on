@@ -1,4 +1,4 @@
-// src/services/aluno.service.js
+// backend/src/services/aluno.service.js
 
 // Função para buscar estatísticas agrupadas por escola
 export async function getStats(prisma) {

@@ -1,3 +1,4 @@
+// backend/prisma/import_students.js
 import fs from 'fs';
 import csv from 'csv-parser';
 import { PrismaClient } from '@prisma/client';
