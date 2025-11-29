@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import * as AlunoService from './src/services/aluno.service.js';
+import * as AlunoService from '../../src/services/aluno.service.js';
 
 const prisma = new PrismaClient();
 

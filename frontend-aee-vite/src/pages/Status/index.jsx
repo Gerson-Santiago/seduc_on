@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../../context/AuthContext';
 import { Activity, Database, Server, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import './Status.css';
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
 
 const StatusPage = () => {
   const [status, setStatus] = useState({ backend: 'verificando', database: 'verificando' });
@@ -16,7 +17,7 @@ const StatusPage = () => {
 
     try {
       // Tenta fetch real
-      const response = await fetch(`${apiBaseUrl}/api/health`);
+      const response = await fetch(`${API_BASE_URL}/health`);
       if (!response.ok) throw new Error('Falha na API');
       const data = await response.json();
       setStatus({
@@ -25,9 +26,9 @@ const StatusPage = () => {
       });
     } catch (error) {
       // Em caso de erro de rede ou falha na API, define ambos como offline
-      setStatus({ 
-        backend: 'offline', 
-        database: 'offline' 
+      setStatus({
+        backend: 'offline',
+        database: 'offline'
       });
     } finally {
       setLastUpdate(new Date());
@@ -46,10 +47,10 @@ const StatusPage = () => {
   return (
     <div className="modern-dashboard">
       <div className="dashboard-container fade-in">
-        
+
         {/* Layout em Grid Responsivo: 3 Colunas (como na imagem) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          
+
           {/* COLUNA 1: Cabeçalho e Status Global (Ocupa 5 colunas) */}
           <div className="lg:col-span-5 space-y-6">
             <div className="flex items-center gap-4">
@@ -69,8 +70,8 @@ const StatusPage = () => {
             {/* Alerta de Status Global */}
             <div className={`
               flex items-start gap-3 p-4 rounded-xl border transition-colors duration-300
-              ${allOnline 
-                ? 'bg-green-50 border-green-100 text-green-800' 
+              ${allOnline
+                ? 'bg-green-50 border-green-100 text-green-800'
                 : 'bg-red-50 border-red-100 text-red-800'}
             `}>
               {allOnline ? <CheckCircle2 size={24} /> : <AlertCircle size={24} />}
@@ -79,8 +80,8 @@ const StatusPage = () => {
                   {allOnline ? 'Tudo operando normalmente' : 'Alguns serviços com problemas'}
                 </h3>
                 <p className={`text-sm mt-1 opacity-90 ${allOnline ? 'text-green-700' : 'text-red-700'}`}>
-                  {allOnline 
-                    ? 'Todos os sistemas estão funcionais e respondendo.' 
+                  {allOnline
+                    ? 'Todos os sistemas estão funcionais e respondendo.'
                     : 'A equipe técnica já foi notificada sobre a instabilidade.'}
                 </p>
               </div>
@@ -89,14 +90,14 @@ const StatusPage = () => {
 
           {/* COLUNA 2: Ações (Centro - Ocupa 2 colunas) */}
           <div className="lg:col-span-2 flex flex-col items-center justify-center h-full pt-4">
-            <button 
-              onClick={checkStatus} 
+            <button
+              onClick={checkStatus}
               disabled={loading}
               className="btn-modern group w-full justify-center"
             >
-              <RefreshCw 
-                size={20} 
-                className={`transition-transform duration-700 ${loading ? 'animate-spin' : 'group-hover:rotate-180'}`} 
+              <RefreshCw
+                size={20}
+                className={`transition-transform duration-700 ${loading ? 'animate-spin' : 'group-hover:rotate-180'}`}
               />
               <span>{loading ? 'Atualizando...' : 'Atualizar'}</span>
             </button>
