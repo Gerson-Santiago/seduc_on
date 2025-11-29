@@ -1,15 +1,15 @@
-# Backend AEE
+# Backend - API de Dados da Educação
 
-API RESTful desenvolvida em Node.js com Express e Prisma ORM.
+API RESTful para processamento e fornecimento de dados educacionais da rede de Bertioga.
 
 ## Funcionalidades Principais
 
-*   **Autenticação**: Integração com Google OAuth e gestão de sessões.
-*   **Alunos**:
-    *   Listagem com filtros (Nome, Escola, Série).
-    *   Estatísticas agrupadas por unidade escolar.
-    *   Importação e distribuição de dados via CSV.
-*   **Usuários**: Gestão de perfis e permissões.
+*   **API de Dados**: Endpoints otimizados para alimentar dashboards e relatórios.
+*   **Gestão de Alunos**:
+    *   Processamento de dados de matrículas (Infantil, Fundamental, EJA, AEE).
+    *   Cálculo de estatísticas e indicadores por unidade escolar.
+    *   Importação e tratamento de dados via CSV.
+*   **Autenticação e Segurança**: Integração com Google OAuth e controle de acesso.
 
 ## Comandos Úteis
 
@@ -23,13 +23,13 @@ npm install
 npx prisma migrate dev
 ```
 
-### Importação de Alunos (CSV)
+### Importação de Dados (CSV)
 ```bash
 node --env-file=.env prisma/import_students.js
 ```
 
 ## Estrutura de Pastas
-*   `src/controllers`: Lógica de controle das requisições.
-*   `src/services`: Regras de negócio e acesso ao banco.
-*   `src/routes`: Definição de rotas da API.
-*   `prisma/`: Esquema do banco e scripts de migração.
+*   `src/controllers`: Lógica de tratamento das requisições e resposta de dados.
+*   `src/services`: Regras de negócio, processamento de estatísticas e acesso ao banco.
+*   `src/routes`: Definição dos endpoints da API.
+*   `prisma/`: Esquema do banco de dados e scripts de migração/importação.
