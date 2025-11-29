@@ -1,0 +1,105 @@
+.access-requests-container {
+    padding: 2rem;
+}
+
+.access-requests-title {
+    margin-bottom: 2rem;
+    color: var(--color-text-primary);
+}
+
+.access-requests-table-container {
+    overflow-x: auto;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--color-shadow);
+}
+
+.access-requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.access-requests-table th {
+    padding: 12px;
+    text-align: left;
+    background-color: var(--color-bg-secondary);
+    border-bottom: 2px solid var(--color-border-hr);
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+.access-requests-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-border-hr);
+    color: var(--color-text-primary);
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-pendente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-aprovado {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-negado {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Dark mode adjustments for badges if needed, though these colors are standard bootstrap-ish */
+body.dark-theme .status-pendente {
+    background-color: #4a3e16;
+    color: #ffd700;
+}
+
+body.dark-theme .status-aprovado {
+    background-color: #13381b;
+    color: #5cdb76;
+}
+
+body.dark-theme .status-negado {
+    background-color: #42171b;
+    color: #ff8590;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-approve {
+    padding: 6px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-reject {
+    padding: 6px 12px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: var(--color-text-placeholder);
+}

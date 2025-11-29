@@ -14,18 +14,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const [showAccessDeniedModal, setShowAccessDeniedModal] = useState(false);
+
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored)
-      // console.log('✅ TOKEN RECUPERADO DO localStorage:', parsed.token)
-      // console.log('✅ BASE URL carregada no AuthContext:', API_BASE_URL)
-
       validateSession(parsed.token)
     } else {
-      // console.log('❌ NENHUM usuário no localStorage')
-      // console.log('❌ BASE URL carregada no AuthContext:', API_BASE_URL)
-
       setLoading(false)
     }
   }, [])
@@ -62,8 +58,13 @@ export const AuthProvider = ({ children }) => {
 
       if (!response.ok) {
         const body = await response.json().catch(() => ({}))
-        if (response.status === 401 || response.status === 403) {
-          throw new Error('Você não tem acesso ao sistema. Solicite acesso ao monitoramento@seducbertioga.com.br')
+        if (response.status === 401) {
+          throw new Error('Credenciais inválidas.');
+        }
+        if (response.status === 403) {
+          setShowAccessDeniedModal(true);
+          setLoading(false);
+          return false;
         }
         throw new Error(body.message || 'Usuário não autorizado')
       }
@@ -115,6 +116,31 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ user, loading, error, login, loginRedirect, logout }}>
       {children}
+      {showAccessDeniedModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+        }}>
+          <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', maxWidth: '500px', width: '90%', textAlign: 'center' }}>
+            <h2 style={{ marginBottom: '1rem' }}>Acesso Negado</h2>
+            <p style={{ marginBottom: '1.5rem' }}>Você não possui permissão. Solicite acesso pelo e-mail monitoramento@seducbertioga.com.br</p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <button
+                onClick={() => { setShowAccessDeniedModal(false); window.location.href = '/solicitar-acesso'; }}
+                style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                Solicitar acesso
+              </button>
+              <button
+                onClick={() => setShowAccessDeniedModal(false)}
+                style={{ padding: '10px 20px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AuthContext.Provider>
   )
 }

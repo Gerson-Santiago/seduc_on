@@ -22,6 +22,8 @@ import Usuarios from '../pages/Usuarios/index';
 import Calendario from '../pages/Calendario/index';
 import Configuracoes from '../pages/Configuracoes/index';
 import StatusPage from '../pages/Status/index';
+import AdminRoute from '../components/AdminRoute';
+import AdminAccessRequests from '../pages/Admin/AccessRequests';
 
 const AppRoutes = () => {
     return (
@@ -47,6 +49,11 @@ const AppRoutes = () => {
                 <Route path="/usuarios" element={<Usuarios />} />
                 <Route path="/calendario" element={<Calendario />} />
                 <Route path="/configuracoes" element={<Configuracoes />} />
+
+                {/* Rotas de Admin */}
+                <Route element={<AdminRoute />}>
+                    <Route path="/admin/solicitacoes" element={<AdminAccessRequests />} />
+                </Route>
 
                 {/* Se alguém tentar acessar /aee, manda para o Dashboard (ou Home, você decide) */}
                 <Route path="/aee" element={<Navigate to="/dashboard" replace />} />
