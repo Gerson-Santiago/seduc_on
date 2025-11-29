@@ -33,8 +33,14 @@ export async function loginUsuario(req, res) {
       return res.status(401).json({ error: 'Usuário não autorizado' })
     }
 
+    // Se veio foto do Google, atualiza no banco
+    if (picture && usuario.picture !== picture) {
+      await UsuarioService.updateUsuario(prisma, usuario.id, { picture })
+      usuario.picture = picture // Atualiza objeto local
+    }
+
     // Gerar token incluindo a foto no payload
-    const jwtToken = gerarToken({ ...usuario, picture })
+    const jwtToken = gerarToken({ ...usuario, picture: usuario.picture })
 
     return res.json({
       token: jwtToken,
@@ -42,7 +48,7 @@ export async function loginUsuario(req, res) {
         email: usuario.email,
         nome: usuario.nome,
         role: usuario.role,
-        picture,  // Retorna a foto no JSON
+        picture: usuario.picture,
       },
     })
   } catch (err) {
@@ -65,9 +71,9 @@ export async function getMe(req, res) {
     const usuario = await UsuarioService.findUsuarioById(prisma, payload.id)
     if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
 
-    // Monta objeto incluindo a picture do payload do token
+    // Monta objeto incluindo a picture do banco (ou do payload se banco falhar, mas banco é prioridade)
     const { senha, ...usuarioSemSenha } = usuario
-    res.json({ user: { ...usuarioSemSenha, picture: payload.picture } })
+    res.json({ user: usuarioSemSenha })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Erro interno' })

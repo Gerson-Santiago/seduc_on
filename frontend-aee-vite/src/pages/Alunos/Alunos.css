@@ -1,0 +1,125 @@
+/* aee/frontend-aee-vite/src/pages/Alunos/Alunos.css */
+
+.aluno-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Dashboard Stats */
+.stats-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background-color: var(--color-bg-sidebar);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px var(--color-shadow);
+    text-align: center;
+    border: 1px solid var(--color-border-hr);
+}
+
+.stat-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.stat-card.total .stat-number {
+    color: var(--color-hover-primary);
+}
+
+.stat-card.infantil .stat-number {
+    color: #10b981;
+}
+
+.stat-card.fundamental .stat-number {
+    color: #f59e0b;
+}
+
+/* Tables */
+.table-container,
+.list-container {
+    padding: 20px;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-hr);
+}
+
+.data-table th {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+.data-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Inputs */
+.input-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--color-border-hr);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    border: 1px solid var(--color-border-hr);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination button:not(:disabled):hover {
+    background-color: var(--color-hover-secondary);
+}

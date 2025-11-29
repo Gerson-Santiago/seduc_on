@@ -4,6 +4,7 @@ import './UserDropdown.css';
 
 export default function UserDropdown({ user, onLogout }) {
   const [open, setOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
@@ -19,14 +20,28 @@ export default function UserDropdown({ user, onLogout }) {
   const displayName = user.nome || user.name || 'Usuário';
   const [firstName, lastName] = displayName.split(' ');
 
+  // Get initials for fallback
+  const initials = (firstName?.[0] || '') + (lastName?.[0] || '');
+
   return (
     <div ref={ref} className="user-dropdown-container">
-      <img
-        src={user.picture}
-        alt={displayName}
-        className="user-dropdown-avatar"
-        onClick={() => setOpen(o => !o)}
-      />
+      {!imgError && user.picture ? (
+        <img
+          src={user.picture}
+          alt={displayName}
+          className="user-dropdown-avatar"
+          onClick={() => setOpen(o => !o)}
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        <div
+          className="user-dropdown-avatar fallback-avatar"
+          onClick={() => setOpen(o => !o)}
+        >
+          {initials.toUpperCase()}
+        </div>
+      )}
+
       {open && (
         <div className="user-dropdown-menu">
           <div className="user-dropdown-info">

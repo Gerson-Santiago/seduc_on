@@ -9,44 +9,32 @@ O formato segue as recomendações do **Keep a Changelog** e o versionamento seg
 
 ### Backend
 #### Added
-- Planejamento para criação de testes unitários para controllers (`aluno`, `usuario`, `escola`, `matricula`).
-- Planejamento para criação de pasta de testes isolada em `backend/test/`.
+- **[NOVO]** Endpoint `/alunos/stats` para estatísticas agrupadas por escola e tipo de ensino.
+- **[NOVO]** Script `import_students.js` para migração e distribuição de dados do CSV.
+- **[NOVO]** Tabelas no Prisma: `alunos_integracao_all`, `alunos_regular_ei_ef9`, `alunos_aee`, `alunos_eja`.
+- **[NOVO]** Pasta `backend/prisma/sql/` para organizar scripts SQL.
 
 #### Changed
 - **[CONCLUÍDO]** Movido `backend/prisma/client.js` para `backend/src/config/prisma.js` para padronizar a camada de configuração.
-- Avaliação para renomear ou dividir `service.js` genérico dentro de `services/`.
-- Possível ajuste para tornar `server.js` responsável apenas por iniciar o servidor, deixando configuração completa no `app.js`.
-
----
+- **[REMOVIDO]** Arquivos redundantes na raiz (`client.js`, `prisma.js`).
+- **[REMOVIDO]** Arquivos CSS não utilizados (`Sidebar.module.css`, `TopBar.module.css`).
 
 ### Frontend
-#### Changed
-- Necessidade de resolver duplicação das estruturas de layout chamadas `MainLayout`:
-  - `src/components/layout/MainLayout.jsx`
-  - `src/layouts/MainLayout.jsx`
-- Planejamento para reorganizar páginas com subpastas de componentes (`pages/Alunos/components/`, etc.).
-- Recomenda-se padronizar uso de estilos: trocar CSS global por CSS Modules onde fizer sentido.
-- Considerar início de migração gradual para TypeScript.
-
----
-
-### CSV / Importações
 #### Added
-- Tarefa para documentar no README o fluxo completo de importação dos arquivos CSV e o uso do script `extract_headers.sh`.
+- **[NOVO]** Página `Alunos` com dashboard de estatísticas e listagem filtrável.
+- **[NOVO]** Componentes de tabela e cards de estatísticas.
 
----
+#### Changed
+- Atualização do `Sidebar` para incluir link funcional para a página de Alunos.
 
 ### Scripts
 #### Changed
-- Sugestão de unificar lógica duplicada entre `start_aee.sh` e `start_aee_crostini.sh`.
-- Planejamento para adicionar validação prévia nos scripts (checar portas ativas e dependências).
-
----
+- **[ORGANIZAÇÃO]** Criada pasta `scripts/` na raiz.
+- **[MOVIDO]** `audit_all.sh` e `clean_csv.js` movidos para `scripts/`.
 
 ### Documentação
 #### Added
-- Necessidade de criar documentação detalhada da arquitetura geral do monorepo.
-- Possibilidade de documentar endpoints da API em Markdown (aluno, matrícula, escola, usuários).
+- **[NOVO]** `MANUAL_ATUALIZACAO.md` na raiz com instruções para atualização de dados via CSV.
 
 ---
 

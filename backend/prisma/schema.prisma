@@ -13,8 +13,8 @@ enum Perfil {
   comum
 }
 
-// Modelo de alunos AEE
-model alunos {
+// Tabela de Integração (Staging) - Aceita tudo
+model alunos_integracao_all {
   id                Int       @id @default(autoincrement())
   tipo_de_ensino    String?
   serie1            String?
@@ -30,10 +30,10 @@ model alunos {
   data_movimentacao DateTime? @db.Date
   deficiencia       String?
   endereco          String?
-  transporte_15     String?   @db.VarChar(20)
+  pos_censo         String?
   genero            String?   @db.Char(1)
-  bolsa_familia     String?   @db.Char(1)
-  etnia             String?   @db.Char(1)
+  transporte        String?   @db.VarChar(20)
+  etnia             String?   @db.VarChar(10)
   cod_turma         String?   @db.VarChar(20)
   periodo           String?   @db.VarChar(20)
   email_aluno       String?
@@ -44,9 +44,9 @@ model alunos {
   filtro_serie      String?
   cod_escola        String?   @db.VarChar(20)
   nome_escola       String?
-  info1             String?   @db.Char(1)
-  info2             String?   @db.Char(1)
-  info3             String?   @db.Char(1)
+  inep              String?
+  letra_turma       String?
+  letra_turno       String?
   tipo_32           String?
   turma_escola      String?
   prof1             String?
@@ -57,6 +57,152 @@ model alunos {
   mais_info5        String?
   mais_info6        String?
   ra_uuid           String?   @db.Uuid
+
+  @@map("alunos_integracao_all")
+}
+
+// Tabela Ensino Regular (Infantil e Fundamental 9 anos) - RA Único
+model alunos_regular_ei_ef9 {
+  id                Int       @id @default(autoincrement())
+  tipo_de_ensino    String?
+  serie1            String?
+  n_chamada         Int?
+  nome_aluno        String?
+  ra                String    @unique @db.VarChar(20)
+  dig               String?   @db.VarChar(5)
+  uf                String?   @db.Char(2)
+  data_nasci        DateTime? @db.Date
+  data_inicial      DateTime? @db.Date
+  data_fim          DateTime? @db.Date
+  situacao          String?   @db.VarChar(10)
+  data_movimentacao DateTime? @db.Date
+  deficiencia       String?
+  endereco          String?
+  pos_censo         String?
+  genero            String?   @db.Char(1)
+  transporte        String?   @db.VarChar(20)
+  etnia             String?   @db.VarChar(10)
+  cod_turma         String?   @db.VarChar(20)
+  periodo           String?   @db.VarChar(20)
+  email_aluno       String?
+  ra_senha          String?
+  telefone          String?
+  nome_responsavel  String?
+  turma             String?
+  filtro_serie      String?
+  cod_escola        String?   @db.VarChar(20)
+  nome_escola       String?
+  inep              String?
+  letra_turma       String?
+  letra_turno       String?
+  tipo_32           String?
+  turma_escola      String?
+  prof1             String?
+  mais_info1        String?
+  mais_info2        String?
+  mais_info3        String?
+  mais_info4        String?
+  mais_info5        String?
+  mais_info6        String?
+  ra_uuid           String?   @db.Uuid
+
+  @@map("alunos_regular_ei_ef9")
+}
+
+// Tabela AEE (Atendimento Educacional Especializado) - RA Único
+model alunos_aee {
+  id                Int       @id @default(autoincrement())
+  tipo_de_ensino    String?
+  serie1            String?
+  n_chamada         Int?
+  nome_aluno        String?
+  ra                String    @unique @db.VarChar(20)
+  dig               String?   @db.VarChar(5)
+  uf                String?   @db.Char(2)
+  data_nasci        DateTime? @db.Date
+  data_inicial      DateTime? @db.Date
+  data_fim          DateTime? @db.Date
+  situacao          String?   @db.VarChar(10)
+  data_movimentacao DateTime? @db.Date
+  deficiencia       String?
+  endereco          String?
+  pos_censo         String?
+  genero            String?   @db.Char(1)
+  transporte        String?   @db.VarChar(20)
+  etnia             String?   @db.VarChar(10)
+  cod_turma         String?   @db.VarChar(20)
+  periodo           String?   @db.VarChar(20)
+  email_aluno       String?
+  ra_senha          String?
+  telefone          String?
+  nome_responsavel  String?
+  turma             String?
+  filtro_serie      String?
+  cod_escola        String?   @db.VarChar(20)
+  nome_escola       String?
+  inep              String?
+  letra_turma       String?
+  letra_turno       String?
+  tipo_32           String?
+  turma_escola      String?
+  prof1             String?
+  mais_info1        String?
+  mais_info2        String?
+  mais_info3        String?
+  mais_info4        String?
+  mais_info5        String?
+  mais_info6        String?
+  ra_uuid           String?   @db.Uuid
+
+  @@map("alunos_aee")
+}
+
+// Tabela EJA (Educação de Jovens e Adultos) - RA Repetido Permitido
+model alunos_eja {
+  id                Int       @id @default(autoincrement())
+  tipo_de_ensino    String?
+  serie1            String?
+  n_chamada         Int?
+  nome_aluno        String?
+  ra                String    @db.VarChar(20)
+  dig               String?   @db.VarChar(5)
+  uf                String?   @db.Char(2)
+  data_nasci        DateTime? @db.Date
+  data_inicial      DateTime? @db.Date
+  data_fim          DateTime? @db.Date
+  situacao          String?   @db.VarChar(10)
+  data_movimentacao DateTime? @db.Date
+  deficiencia       String?
+  endereco          String?
+  pos_censo         String?
+  genero            String?   @db.Char(1)
+  transporte        String?   @db.VarChar(20)
+  etnia             String?   @db.VarChar(10)
+  cod_turma         String?   @db.VarChar(20)
+  periodo           String?   @db.VarChar(20)
+  email_aluno       String?
+  ra_senha          String?
+  telefone          String?
+  nome_responsavel  String?
+  turma             String?
+  filtro_serie      String?
+  cod_escola        String?   @db.VarChar(20)
+  nome_escola       String?
+  inep              String?
+  letra_turma       String?
+  letra_turno       String?
+  tipo_32           String?
+  turma_escola      String?
+  prof1             String?
+  mais_info1        String?
+  mais_info2        String?
+  mais_info3        String?
+  mais_info4        String?
+  mais_info5        String?
+  mais_info6        String?
+  ra_uuid           String?   @db.Uuid
+
+  @@map("alunos_eja")
 }
 
 // Modelo para consulta de matrícula
@@ -160,6 +306,7 @@ model Usuario {
   email           String    @unique
   perfil          Perfil
   nome            String?
+  picture         String?   @map("picture")
   ativo           Boolean   @default(true)
   criadoEm        DateTime  @default(now())
   criadoPorId     Int?
