@@ -1,24 +1,22 @@
-# Sistema de Acompanhamento AEE
+# Sistema de Visualização de Dados da Educação - Bertioga
 
-Sistema de Acompanhamento de Alunos em Processo de Avaliação Educacional Especializada.
+Plataforma de inteligência de dados para a Secretaria de Educação de Bertioga.
 
-O projeto tem como objetivo centralizar, organizar e acompanhar o processo de observação, intervenção e encaminhamento de alunos da rede municipal de ensino que apresentam indícios de necessidades educacionais especiais.
+O projeto tem como objetivo centralizar, organizar e visualizar dados educacionais da rede municipal, oferecendo dashboards intuitivos e relatórios detalhados para apoiar a tomada de decisão.
 
-A plataforma será utilizada por professores, gestores escolares e equipes multiprofissionais (como psicólogos, fonoaudiólogos e psicopedagogos), permitindo o registro de observações pedagógicas, histórico de encaminhamentos, ações realizadas e datas importantes. O sistema também ajuda a monitorar prazos e evitar que casos fiquem sem acompanhamento por longos períodos.
+A ferramenta permite que gestores e educadores acompanhem indicadores chave, visualizem a distribuição de alunos por escola e modalidade (Infantil, Fundamental, EJA, AEE) e gerem relatórios personalizados para monitoramento da rede.
 
-O intuito é garantir um processo mais eficiente, transparente e colaborativo entre escola, família e equipe técnica, promovendo um atendimento mais ágil e eficaz às necessidades de cada aluno.
-
-O intuito é garantir um processo mais eficiente, transparente e colaborativo entre escola, família e equipe técnica, promovendo um atendimento mais ágil e eficaz às necessidades de cada aluno.
+O intuito é promover uma gestão baseada em dados, garantindo transparência e eficiência no planejamento educacional.
 
 ---
 
 ## 📂 Estrutura do Projeto
 
-*   **`backend/`**: API Node.js/Express com Prisma e PostgreSQL.
-*   **`frontend-aee-vite/`**: Aplicação React com Vite.
-*   **`csv/`**: Arquivos de dados brutos para importação.
-*   **`scripts/`**: Scripts utilitários de manutenção e auditoria.
-*   **`MANUAL_ATUALIZACAO.md`**: Guia para atualização periódica dos dados de alunos.
+*   **`backend/`**: API Node.js/Express para processamento de dados e regras de negócio.
+*   **`frontend-aee-vite/`**: Interface interativa em React para visualização de dashboards e relatórios.
+*   **`csv/`**: Diretório para carga de dados brutos (importação de alunos).
+*   **`scripts/`**: Scripts para processamento de dados e manutenção do sistema.
+*   **`MANUAL_ATUALIZACAO.md`**: Guia para atualização da base de dados.
 
 ---
 
@@ -43,7 +41,7 @@ Console esperado:
 NODE_ENV: preview
 ALLOWED_ORIGINS: [ 'http://localhost:4173' ],
 ```
-Acessar o link da port 4173 vc está no preview
+Acessar o link da porta 4173 para visualizar o preview.
 
 
 ---
@@ -71,4 +69,4 @@ Console esperado:
 NODE_ENV: dev
 ALLOWED_ORIGINS: [ 'http://localhost:5173' ],
 ```
-Acessar o link da port 5173 vc está no preview
+Acessar o link da porta 5173 para o ambiente de desenvolvimento.
