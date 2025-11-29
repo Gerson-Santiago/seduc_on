@@ -18,3 +18,19 @@ export async function updateUsuario(prisma, id, data) {
     data,
   });
 }
+
+export async function createUserFromRequest(prisma, reqRow) {
+  return await prisma.usuario.create({
+    data: {
+      email: reqRow.email,
+      nome: reqRow.nome_completo,
+      perfil: 'comum',
+      ativo: true,
+      criadoEm: new Date(),
+      registro_funcional: reqRow.registro_funcional,
+      contador_registro_funcional: reqRow.contador_registro_funcional,
+      cargo: reqRow.cargo,
+      setor: reqRow.setor,
+    }
+  });
+}

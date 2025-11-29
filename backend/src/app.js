@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
 import usuarioRoutes from './routes/usuario.routes.js';
 import alunoRoutes from './routes/aluno.routes.js';
+import accessRequestsRouter from './routes/accessRequests.js';
 import { notFound, errorHandler } from './middleware/error.js';
 import { getBackendConfig } from './config/environments.js'
 import { apiLimiter } from './middleware/rateLimiter.js';
@@ -55,6 +56,7 @@ app.get('/api/health', async (req, res) => {
 // Rotas
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/alunos', alunoRoutes);
+app.use('/api/access-requests', accessRequestsRouter);
 
 // outras rotas...
 

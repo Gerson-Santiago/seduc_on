@@ -297,6 +297,10 @@ model Usuario {
   criadoEm        DateTime  @default(now())
   criadoPorId     Int?
   picture         String?   @map("picture")
+  registro_funcional Int?
+  contador_registro_funcional Int?
+  cargo           String?
+  setor           String?
   logins          Login[]
   criadoPor       Usuario?  @relation("UsuarioCriadoPor", fields: [criadoPorId], references: [id])
   usuariosCriados Usuario[] @relation("UsuarioCriadoPor")
@@ -317,4 +321,16 @@ enum Perfil {
   superadmin
   admin
   comum
+}
+
+model access_requests {
+  id                          Int      @id @default(autoincrement())
+  nome_completo               String
+  registro_funcional          Int
+  contador_registro_funcional Int      @default(1)
+  cargo                       String?
+  setor                       String?
+  email              String
+  status             String   @default("pendente") // pendente / aprovado / negado
+  solicitado_em      DateTime @default(now())
 }
