@@ -25,7 +25,7 @@ function generateHeader(filePath, style) {
     const normalizedPath = relativePath.split(path.sep).join('/');
 
     if (style === '//') return `// ${normalizedPath}`;
-    if (style === '/*') return `/* ${normalizedPath} */`;
+    if (style === '/*') return `/*\n// ${normalizedPath}\n*/`;
     if (style === '<!--') return `<!-- ${normalizedPath} -->`;
     return '';
 }
@@ -52,6 +52,17 @@ function processFile(filePath) {
         let isFirstLineComment = false;
 
         if (style === '//' && lines[0].trim().startsWith('//')) isFirstLineComment = true;
+        if (style === '/*' && lines[0].trim() === '/*' && lines[1] && lines[1].trim().startsWith('//')) {
+            // Detecta formato multi-linha específico do usuário
+            isFirstLineComment = true;
+            // Precisamos substituir as 3 primeiras linhas
+            lines.splice(0, 3, header);
+            newContent = lines.join('\n');
+            // Retorna aqui pois a lógica abaixo é para linha única
+            fs.writeFileSync(filePath, newContent, 'utf8');
+            console.log(`Updated (Multi-line CSS): ${filePath}`);
+            return;
+        }
         if (style === '/*' && lines[0].trim().startsWith('/*')) isFirstLineComment = true;
         if (style === '<!--' && lines[0].trim().startsWith('<!--')) isFirstLineComment = true;
 
