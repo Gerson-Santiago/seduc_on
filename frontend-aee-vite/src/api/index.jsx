@@ -2,12 +2,12 @@
 
 // src/api/index.jsx
 // Variáveis de ambiente (agora só VITE_API_BASE_URL)
-const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 export const API_ROUTES = {
-  login:   `${apiBase}/usuarios/login`,
-  me:      `${apiBase}/usuarios/me`,
-  logout:  `${apiBase}/usuarios/logout`,
-  usuarios:`${apiBase}/usuarios`,
+  login: `${apiBase}/usuarios/login`,
+  me: `${apiBase}/usuarios/me`,
+  logout: `${apiBase}/usuarios/logout`,
+  usuarios: `${apiBase}/usuarios`,
   // ...
 };
 

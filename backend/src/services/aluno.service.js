@@ -2,43 +2,87 @@
 
 // Função para buscar estatísticas agrupadas por escola
 export async function getStats(prisma) {
-  // Agrupa por nome_escola e tipo_de_ensino
-  const stats = await prisma.alunos_regular_ei_ef9.groupBy({
-    by: ['nome_escola', 'tipo_de_ensino'],
-    _count: {
-      ra: true,
-    },
-    where: {
-      situacao: 'ATIVO',
-    },
-    orderBy: {
-      nome_escola: 'asc',
-    },
+  // 1. Agregação Global por Série (para os cards de 1º a 5º ano)
+  const seriesStats = await prisma.alunos_regular_ei_ef9.groupBy({
+    by: ['filtro_serie'],
+    _count: { ra: true },
+    where: { situacao: 'ATIVO' },
   });
 
-  // Processa os dados para o formato desejado pelo frontend
-  // Formato: { "Nome da Escola": { total: 0, infantil: 0, fundamental: 0 } }
-  const processed = {};
 
-  stats.forEach(item => {
+  const global = {
+    bercario_1: 0,
+    bercario_2: 0,
+    maternal_1: 0,
+    maternal_2: 0,
+    pre_escola_1: 0,
+    pre_escola_2: 0,
+    ano_1: 0,
+    ano_2: 0,
+    ano_3: 0,
+    ano_4: 0,
+    ano_5: 0,
+  };
+
+  seriesStats.forEach(s => {
+    const serie = s.filtro_serie ? s.filtro_serie.trim() : '';
+
+    if (serie === 'BERÇARIO 1') global.bercario_1 = s._count.ra;
+    if (serie === 'BERÇARIO 2') global.bercario_2 = s._count.ra;
+    if (serie === 'MATERNAL 1') global.maternal_1 = s._count.ra;
+    if (serie === 'MATERNAL 2') global.maternal_2 = s._count.ra;
+    if (serie === 'PRÉ-ESCOLA 1') global.pre_escola_1 = s._count.ra;
+    if (serie === 'PRÉ-ESCOLA 2') global.pre_escola_2 = s._count.ra;
+    if (serie === '1 ANO') global.ano_1 = s._count.ra;
+    if (serie === '2 ANO') global.ano_2 = s._count.ra;
+    if (serie === '3 ANO') global.ano_3 = s._count.ra;
+    if (serie === '4 ANO') global.ano_4 = s._count.ra;
+    if (serie === '5 ANO') global.ano_5 = s._count.ra;
+  });
+
+
+  // 2. Agregação por Escola e Tipo/Série
+  const schoolStats = await prisma.alunos_regular_ei_ef9.groupBy({
+    by: ['nome_escola', 'tipo_de_ensino', 'filtro_serie'],
+    _count: { ra: true },
+    where: { situacao: 'ATIVO' },
+    orderBy: { nome_escola: 'asc' },
+  });
+
+  const processedSchools = {};
+
+  schoolStats.forEach(item => {
     const escola = item.nome_escola || 'Não Informada';
     const tipo = item.tipo_de_ensino;
+    const serie = item.filtro_serie;
     const count = item._count.ra;
 
-    if (!processed[escola]) {
-      processed[escola] = { escola, total: 0, infantil: 0, fundamental: 0 };
+    if (!processedSchools[escola]) {
+      processedSchools[escola] = {
+        escola,
+        total: 0,
+        infantil: 0,
+        fundamental: 0,
+        pre_escola: 0 // Nova métrica para filtro
+      };
     }
 
-    processed[escola].total += count;
+    processedSchools[escola].total += count;
 
     if (tipo === 'EDUCACAO INFANTIL') {
-      processed[escola].infantil += count;
+      processedSchools[escola].infantil += count;
+      if (serie === 'PRÉ-ESCOLA 1' || serie === 'PRÉ-ESCOLA 2') {
+        processedSchools[escola].pre_escola += count;
+      }
     } else if (tipo === 'ENSINO FUNDAMENTAL DE 9 ANOS') {
-      processed[escola].fundamental += count;
+      processedSchools[escola].fundamental += count;
     }
   });
 
-  return Object.values(processed);
+  return {
+    global,
+    schools: Object.values(processedSchools)
+  };
 }
 
 export async function findAllAlunos(prisma, filtros) {

@@ -7,13 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Perfil {
-  superadmin
-  admin
-  comum
-}
-
-// Tabela de Integração (Staging) - Aceita tudo
 model alunos_integracao_all {
   id                Int       @id @default(autoincrement())
   tipo_de_ensino    String?
@@ -61,7 +54,6 @@ model alunos_integracao_all {
   @@map("alunos_integracao_all")
 }
 
-// Tabela Ensino Regular (Infantil e Fundamental 9 anos) - RA Único
 model alunos_regular_ei_ef9 {
   id                Int       @id @default(autoincrement())
   tipo_de_ensino    String?
@@ -109,7 +101,6 @@ model alunos_regular_ei_ef9 {
   @@map("alunos_regular_ei_ef9")
 }
 
-// Tabela AEE (Atendimento Educacional Especializado) - RA Único
 model alunos_aee {
   id                Int       @id @default(autoincrement())
   tipo_de_ensino    String?
@@ -157,7 +148,6 @@ model alunos_aee {
   @@map("alunos_aee")
 }
 
-// Tabela EJA (Educação de Jovens e Adultos) - RA Repetido Permitido
 model alunos_eja {
   id                Int       @id @default(autoincrement())
   tipo_de_ensino    String?
@@ -205,7 +195,6 @@ model alunos_eja {
   @@map("alunos_eja")
 }
 
-// Modelo para consulta de matrícula
 model consulta_matricula {
   pk_serie              Int?
   cod_escola            String?
@@ -227,7 +216,6 @@ model consulta_matricula {
   id_new                Int     @id @default(autoincrement())
 }
 
-// Modelo das escolas
 model dados_das_escolas {
   cod_escola         String  @id
   cod_ue             String?
@@ -300,24 +288,22 @@ model dados_das_escolas {
   turma40            String?
 }
 
-// Modelo para usuários do sistema AEE com perfis e relacionamentos
 model Usuario {
   id              Int       @id @default(autoincrement())
   email           String    @unique
   perfil          Perfil
   nome            String?
-  picture         String?   @map("picture")
   ativo           Boolean   @default(true)
   criadoEm        DateTime  @default(now())
   criadoPorId     Int?
+  picture         String?   @map("picture")
+  logins          Login[]
   criadoPor       Usuario?  @relation("UsuarioCriadoPor", fields: [criadoPorId], references: [id])
   usuariosCriados Usuario[] @relation("UsuarioCriadoPor")
-  logins          Login[]
-  
+
   @@map("usuarios")
 }
 
-// Modelo para logins dos usuários (registro de acessos)
 model Login {
   id        Int      @id @default(autoincrement())
   usuarioId Int
@@ -325,4 +311,10 @@ model Login {
   usuario   Usuario  @relation(fields: [usuarioId], references: [id])
 
   @@map("logins")
+}
+
+enum Perfil {
+  superadmin
+  admin
+  comum
 }

@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 // Importa a URL base da API do ambiente (variável de ambiente via import.meta.env)
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api'
 // Cria o contexto de autenticação
 
 const AuthContext = createContext()
@@ -47,50 +47,50 @@ export const AuthProvider = ({ children }) => {
   }
 
   const login = async ({ credential }) => {
-  try {
-    setLoading(true)
-    const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: credential }),
-    })
+    try {
+      setLoading(true)
+      const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: credential }),
+      })
 
-    if (!response.ok) {
-      const body = await response.json()
-      throw new Error(body.message || 'Usuário não autorizado')
+      if (!response.ok) {
+        const body = await response.json()
+        throw new Error(body.message || 'Usuário não autorizado')
+      }
+
+      const data = await response.json()
+
+      // ✅ Aqui chamamos validateSession para obter o user completo
+      await validateSession(data.token)
+
+      // Obs: validateSession já seta o user e o loading
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ token: data.token }))
+
+      setError(null)
+
+    } catch (e) {
+      setError(e.message)
+      setUser(null)
+      setLoading(false)
     }
-
-    const data = await response.json()
-
-    // ✅ Aqui chamamos validateSession para obter o user completo
-    await validateSession(data.token)
-
-    // Obs: validateSession já seta o user e o loading
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ token: data.token }))
-
-    setError(null)
-
-  } catch (e) {
-    setError(e.message)
-    setUser(null)
-    setLoading(false)
   }
-}
 
-//==========================================
+  //==========================================
 
-          // para redicionamento dos link
+  // para redicionamento dos link
 
-//==========================================
+  //==========================================
   const loginRedirect = () => {
     const params = new URLSearchParams({
-      client_id:      GOOGLE_CLIENT_ID,
-      redirect_uri:   import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-      response_type:  'id_token',
-      scope:          'openid email profile',
-      prompt:         'select_account',
-      hd:             'seducbertioga.com.br',
-      nonce:           crypto.randomUUID(),
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+      response_type: 'id_token',
+      scope: 'openid email profile',
+      prompt: 'select_account',
+      hd: 'seducbertioga.com.br',
+      nonce: crypto.randomUUID(),
     });
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
   };
