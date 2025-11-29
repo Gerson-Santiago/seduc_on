@@ -49,14 +49,22 @@ export const AuthProvider = ({ children }) => {
   const login = async ({ credential }) => {
     try {
       setLoading(true)
-      const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: credential }),
-      })
+      let response;
+      try {
+        response = await fetch(`${API_BASE_URL}/usuarios/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: credential }),
+        })
+      } catch (networkError) {
+        throw new Error('Servidor fora do ar. Tente novamente mais tarde.')
+      }
 
       if (!response.ok) {
-        const body = await response.json()
+        const body = await response.json().catch(() => ({}))
+        if (response.status === 401 || response.status === 403) {
+          throw new Error('Você não tem acesso ao sistema. Solicite acesso ao monitoramento@seducbertioga.com.br')
+        }
         throw new Error(body.message || 'Usuário não autorizado')
       }
 
@@ -69,11 +77,14 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ token: data.token }))
 
       setError(null)
+      return true // Indica sucesso
 
     } catch (e) {
+      console.error('Login error:', e)
       setError(e.message)
       setUser(null)
       setLoading(false)
+      return false // Indica falha
     }
   }
 

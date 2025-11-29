@@ -6,7 +6,7 @@ import './Login.css';
 
 export default function Login() {
   // Usamos a função loginRedirect que vem do seu Contexto, como na versão antiga
-  const { loginRedirect } = useAuth();
+  const { loginRedirect, error } = useAuth();
 
   return (
     <div className="login-page">
@@ -18,6 +18,12 @@ export default function Login() {
         <div className="login-card">
           <h1>Bem-vindo ao AEE</h1>
           <p>Faça login com sua conta <strong>@seducbertioga.com.br</strong></p>
+
+          {error && (
+            <div className="login-error-alert">
+              {error}
+            </div>
+          )}
 
           {/* Botão idêntico ao original, usando a imagem externa do Google */}
           <button onClick={loginRedirect} className="google-login-button">
