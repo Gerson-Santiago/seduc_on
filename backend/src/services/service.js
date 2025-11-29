@@ -1,4 +1,4 @@
-// /* ---------- src/services/aluno.service.js ---------- */
+// backend/src/services/service.js
 // export function findAllAlunos(prisma, filters) {
 //   const where = {};
 //   if (filters.nome) where.nome_aluno = { contains: filters.nome, mode: 'insensitive' };

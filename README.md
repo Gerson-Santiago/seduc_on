@@ -13,7 +13,7 @@ O intuito é promover uma gestão baseada em dados, garantindo transparência e 
 ## 📂 Estrutura do Projeto
 
 *   **`backend/`**: API Node.js/Express para processamento de dados e regras de negócio.
-*   **`frontend-aee-vite/`**: Interface interativa em React para visualização de dashboards e relatórios.
+*   **`frontend/`**: Interface interativa em React para visualização de dashboards e relatórios.
 *   **`csv/`**: Diretório para carga de dados brutos (importação de alunos).
 *   **`scripts/`**: Scripts para processamento de dados e manutenção do sistema.
 *   **`MANUAL_ATUALIZACAO.md`**: Guia para atualização da base de dados.
@@ -23,7 +23,7 @@ O intuito é promover uma gestão baseada em dados, garantindo transparência e 
 ## 🔧 1. Frontend em modo `preview`
 
 ```bash
-cd ~/aee/frontend-aee-vite
+cd ~/aee/frontend
 rm -rf dist
 npm run build:preview
 npm run preview
@@ -51,7 +51,7 @@ Acessar o link da porta 4173 para visualizar o preview.
 ### Frontend
 
 ```bash
-cd ~/aee/frontend-aee-vite
+cd ~/aee/frontend
 npm run dev
 ```
 

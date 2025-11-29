@@ -1,3 +1,4 @@
+// backend/src/controllers/matricula.controller.js
 export const listarMatriculas = async (req, res) => {
   try {
     const matriculas = await req.prisma.matricula.findMany();

@@ -1,3 +1,4 @@
+// backend/tests/auth.test.js
 import { jest } from '@jest/globals';
 
 // Mock das dependências

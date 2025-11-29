@@ -1,4 +1,4 @@
-// ~/aee/backend/prisma.config.js
+// backend/prisma/prisma.config.js
 
 /**
  * Arquivo de configuração do Prisma. Usa sintaxe CommonJS (module.exports)

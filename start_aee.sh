@@ -19,7 +19,7 @@ done
 BASE_DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 
 BACKEND_DIR="$BASE_DIR/backend"
-FRONTEND_DIR="$BASE_DIR/frontend-aee-vite"
+FRONTEND_DIR="$BASE_DIR/frontend"
 
 # Cluster PostgreSQL
 PG_CLUSTER_VERSION="18"

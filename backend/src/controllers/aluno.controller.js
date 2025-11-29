@@ -1,3 +1,4 @@
+// backend/src/controllers/aluno.controller.js
 /* ---------- src/controllers/aluno.controller.js ---------- */
 import * as AlunoService from '../services/aluno.service.js';
 

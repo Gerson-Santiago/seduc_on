@@ -1,4 +1,4 @@
-// *----app.js----*
+// backend/src/app.js
 // src/app.js
 import express from 'express';
 import cors from 'cors';
@@ -9,6 +9,8 @@ import usuarioRoutes from './routes/usuario.routes.js';
 import alunoRoutes from './routes/aluno.routes.js';
 import { notFound, errorHandler } from './middleware/error.js';
 import { getBackendConfig } from './config/environments.js'
+import { apiLimiter } from './middleware/rateLimiter.js';
+
 const { ALLOWED_ORIGINS } = getBackendConfig()
 
 const app = express();
@@ -19,6 +21,9 @@ app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }))
 
 app.use(express.json());
 app.use(morgan('combined'));
+
+// Aplicar Rate Limiting
+app.use(apiLimiter);
 
 // Injetar prisma
 app.use((req, res, next) => {

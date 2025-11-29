@@ -1,4 +1,4 @@
-// src/routes/escola.routes.js
+// backend/src/routes/escola.routes.js
 import { Router } from 'express';
 import * as EscolaController from '../controllers/escola.controller.js';
 
