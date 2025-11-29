@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
+import { useAuth } from '../../context/AuthContext';
 import '../../styles/layout.css';
 
 /**
@@ -10,11 +11,17 @@ import '../../styles/layout.css';
  * 
  * @param {object} props
  * @param {React.ReactNode} props.children O conteúdo da página a ser renderizado.
- * @param {object} props.user O objeto do usuário logado.
- * @param {function} props.onLogout A função para executar o logout.
  */
-export default function MainLayout({ children, user, onLogout }) {
+export default function MainLayout({ children }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { user, logout, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+  }, [user, loading, navigate]);
 
   const handleToggleSidebar = useCallback(() => {
     setSidebarCollapsed(prev => !prev);
@@ -22,17 +29,17 @@ export default function MainLayout({ children, user, onLogout }) {
 
   return (
     <>
-      <Sidebar 
-        collapsed={sidebarCollapsed} 
-        onToggle={handleToggleSidebar} 
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onToggle={handleToggleSidebar}
       />
-      
+
       <div className={`container ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        <TopBar 
-          user={user} 
-          onLogout={onLogout} 
+        <TopBar
+          user={user}
+          onLogout={logout}
         />
-        
+
         {/* O Outlet renderiza o componente da rota filha correspondente */}
         <main className="main-content">
           <Outlet />

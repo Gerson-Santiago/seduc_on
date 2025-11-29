@@ -11,3 +11,10 @@ export async function findUsuarioById(prisma, id) {
     where: { id },
   });
 }
+
+export async function updateUsuario(prisma, id, data) {
+  return await prisma.usuario.update({
+    where: { id },
+    data,
+  });
+}

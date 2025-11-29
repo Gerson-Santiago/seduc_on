@@ -10,16 +10,25 @@ function handleError(res, err) {
 }
 
 
+export async function getEstatisticas(req, res) {
+  try {
+    const stats = await AlunoService.getStats(req.prisma);
+    res.json(stats);
+  } catch (err) {
+    handleError(res, err);
+  }
+}
+
 export async function listarAlunos(req, res) {
-  const { ra, nome, escola } = req.query;
+  const { ra, nome, escola, filtro_serie, page, limit } = req.query;
   try {
     if (ra) {
       const aluno = await AlunoService.findAlunoByRa(req.prisma, ra);
       if (!aluno) return res.status(404).json({ error: 'Aluno não encontrado' });
       return res.json(aluno);
     }
-    const alunos = await AlunoService.findAllAlunos(req.prisma, { nome, escola });
-    res.json(alunos);
+    const resultado = await AlunoService.findAllAlunos(req.prisma, { nome, escola, filtro_serie, page, limit });
+    res.json(resultado);
   } catch (err) {
     handleError(res, err);
   }

@@ -8,6 +8,18 @@ A plataforma será utilizada por professores, gestores escolares e equipes multi
 
 O intuito é garantir um processo mais eficiente, transparente e colaborativo entre escola, família e equipe técnica, promovendo um atendimento mais ágil e eficaz às necessidades de cada aluno.
 
+O intuito é garantir um processo mais eficiente, transparente e colaborativo entre escola, família e equipe técnica, promovendo um atendimento mais ágil e eficaz às necessidades de cada aluno.
+
+---
+
+## 📂 Estrutura do Projeto
+
+*   **`backend/`**: API Node.js/Express com Prisma e PostgreSQL.
+*   **`frontend-aee-vite/`**: Aplicação React com Vite.
+*   **`csv/`**: Arquivos de dados brutos para importação.
+*   **`scripts/`**: Scripts utilitários de manutenção e auditoria.
+*   **`MANUAL_ATUALIZACAO.md`**: Guia para atualização periódica dos dados de alunos.
+
 ---
 
 ## 🔧 1. Frontend em modo `preview`

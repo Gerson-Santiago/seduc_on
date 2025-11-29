@@ -10,6 +10,16 @@
   cursor: pointer;
 }
 
+.fallback-avatar {
+  background-color: #4a5568;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
 .user-dropdown-menu {
   position: absolute;
   top: 44px;

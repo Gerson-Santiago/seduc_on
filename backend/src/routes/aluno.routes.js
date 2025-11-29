@@ -4,6 +4,7 @@ import * as AlunoController from '../controllers/aluno.controller.js';
 
 const router = Router();
 
+router.get('/stats', AlunoController.getEstatisticas);
 router.get('/', AlunoController.listarAlunos);
 router.post('/', AlunoController.criarAluno);
 router.get('/:ra', AlunoController.buscarAluno);
