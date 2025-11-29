@@ -75,6 +75,17 @@
   margin-top: 8px;
 }
 
+.login-error-alert {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
 /* === Botão personalizado do Google (estilo aumentado e arredondado) === */
 .google-login-button {
   display: inline-flex;
