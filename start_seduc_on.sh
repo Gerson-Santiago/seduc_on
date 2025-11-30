@@ -1,11 +1,10 @@
-#!/bin/bash
 # =====================================
-# Script de inicialização do projeto AEE para Crostini (Debian 12)
+# Script de inicialização do projeto SEDUC ON para Crostini (Debian 12)
 # Suporta: dev (porta 3001/5173) e preview (porta 3000/4173)
 # Blindado contra variáveis de ambiente "fantasmas"
 # =====================================
 # Autor: Gerson Santiago
-# Data: 2025-11-26 (Atualizado)
+# Data: 2025-11-29 (Atualizado para SEDUC ON)
 # =====================================
 
 # 📂 Diretórios Base (Com tratamento de erro para links simbólicos/alias)
@@ -107,7 +106,7 @@ case "$ENV_MODE" in
         ;;
     dev|preview)
         echo "====================================="
-        echo " 🚀 Inicializando projeto AEE ($ENV_MODE)"
+        echo " 🚀 Inicializando projeto SEDUC ON ($ENV_MODE)"
         echo "    Diretório Base: $BASE_DIR"
         echo "====================================="
         cleanup
@@ -129,10 +128,10 @@ FRONTEND_PORT=$([ "$ENV_MODE" = "dev" ] && echo 5173 || echo 4173)
 
 echo
 echo "====================================="
-echo "✅ Sistema AEE em execução ($ENV_MODE)!"
+echo "✅ Sistema SEDUC ON em execução ($ENV_MODE)!"
 echo "Backend:  http://localhost:$BACKEND_PORT"
 echo "Frontend: http://localhost:$FRONTEND_PORT/aee/"
-echo "Para parar processos: ./start_aee_crostini.sh stop"
+echo "Para parar processos: ./start_seduc_on.sh stop"
 echo "Processos em segundo plano:"
 pgrep -f "node server.js" | xargs -r echo "  Backend PID(s):"
 pgrep -f "vite" | xargs -r echo "  Frontend PID(s):"

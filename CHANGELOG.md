@@ -7,6 +7,11 @@ O formato segue as recomendações do **Keep a Changelog** e o versionamento seg
 
 ## [Unreleased]
 
+### SEDUC ON (Rebranding)
+- **[RENOMEADO]** Projeto renomeado de "AEE" para "SEDUC ON".
+- **[RENOMEADO]** Script de inicialização `start_aee.sh` para `start_seduc_on.sh`.
+- **[ATUALIZADO]** Documentação e descrições do projeto.
+
 ### Backend
 #### Added
 - **[NOVO]** Endpoint `/alunos/stats` para estatísticas agrupadas por escola e tipo de ensino.
