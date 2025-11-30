@@ -18,7 +18,7 @@ export const getEnv = () => ({
 
 // // Utilitário com token
 // export const fetchWithAuth = async (url, options = {}) => {
-//   const tokenData = localStorage.getItem('aee_user');
+//   const tokenData = localStorage.getItem('seduc_on_user');
 //   const token = tokenData ? JSON.parse(tokenData).token : null;
 
 //   if (token) {
@@ -47,7 +47,7 @@ export const getEnv = () => ({
 // export const getCurrentUser = () => fetchWithAuth(API_ROUTES.me);
 // export const logout = async () => {
 //   await fetchWithAuth(API_ROUTES.logout, { method: 'POST' });
-//   localStorage.removeItem('aee_user');
+//   localStorage.removeItem('seduc_on_user');
 // };
 // export const getUsuarios = () => fetchWithAuth(API_ROUTES.usuarios);
 // export const createUsuario = (data) =>

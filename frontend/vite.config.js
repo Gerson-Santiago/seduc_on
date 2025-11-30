@@ -8,22 +8,21 @@ export default ({ mode }) => {
   // Carrega variáveis de ambiente do .env.<mode>
   const env = loadEnv(mode, process.cwd(), 'VITE_')
 
-  const isDev     = mode === 'development'  // npm run dev
+  const isDev = mode === 'development'  // npm run dev
   const isPreview = mode === 'preview'      // npm run preview
-  const isGithub  = mode === 'github'       // npm run build:github
-  const isProd    = mode === 'production'   // npm run build:production
+  const isGithub = mode === 'github'       // npm run build:github
+  const isProd = mode === 'production'   // npm run build:production
 
-  // ===================================
-  // PATH BASE
-  // - '/' em dev (raiz)
-  // - './' em preview (evita erro nos assets locais)
-  // - VITE_BASE_URL nos demais (ex: '/aee/')
-  // ===================================
-const base = isDev
-  ? '/'
-  : isPreview
-    ? env.VITE_BASE_URL || '/aee/'  // forçar aee como padrão se faltar variável
-    : env.VITE_BASE_URL || '/'
+    // ===================================
+    // PATH BASE
+    // - '/' em dev (raiz)
+    // - './' em preview (evita erro nos assets locais)
+    // - VITE_BASE_URL nos demais (ex: '/aee/')
+    // ===================================
+    ? '/'
+    : isPreview
+      ? env.VITE_BASE_URL || '/seduc_on/'  // forçar seduc_on como padrão se faltar variável
+      : env.VITE_BASE_URL || '/'
 
 
 
@@ -72,11 +71,11 @@ const base = isDev
     // INJEÇÃO DE VARIÁVEIS EM import.meta.env
     // ===================================
     define: {
-      'import.meta.env.VITE_APP_URL':             JSON.stringify(env.VITE_APP_URL),
-      'import.meta.env.VITE_API_BASE_URL':        JSON.stringify(env.VITE_API_BASE_URL),
+      'import.meta.env.VITE_APP_URL': JSON.stringify(env.VITE_APP_URL),
+      'import.meta.env.VITE_API_BASE_URL': JSON.stringify(env.VITE_API_BASE_URL),
       'import.meta.env.VITE_GOOGLE_REDIRECT_URI': JSON.stringify(env.VITE_GOOGLE_REDIRECT_URI),
-      'import.meta.env.VITE_LOGIN_PATH':          JSON.stringify(env.VITE_LOGIN_PATH),
-      'import.meta.env.VITE_DASHBOARD_PATH':      JSON.stringify(env.VITE_DASHBOARD_PATH),
+      'import.meta.env.VITE_LOGIN_PATH': JSON.stringify(env.VITE_LOGIN_PATH),
+      'import.meta.env.VITE_DASHBOARD_PATH': JSON.stringify(env.VITE_DASHBOARD_PATH),
     }
   })
 }

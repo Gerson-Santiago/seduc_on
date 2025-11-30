@@ -3,6 +3,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: '/aee/', // nome do repositório
+  base: '/seduc_on/', // nome do repositório
   plugins: [react()],
 });
