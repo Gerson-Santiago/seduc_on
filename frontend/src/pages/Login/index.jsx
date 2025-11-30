@@ -16,7 +16,7 @@ export default function Login() {
 
       <div className="login-container">
         <div className="login-card">
-          <h1>Bem-vindo ao AEE</h1>
+          <h1>Bem-vindo ao SEDUC ON</h1>
           <p>Faça login com sua conta <strong>@seducbertioga.com.br</strong></p>
 
           {error && (

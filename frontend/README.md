@@ -1,4 +1,4 @@
-# Frontend - Visualização de Dados da Educação (React + Vite)
+# SEDUC ON - Frontend - Visualização de Dados da Educação (React + Vite)
 
 Interface web para visualização de dados e geração de relatórios da educação municipal de Bertioga.
 

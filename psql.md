@@ -1,4 +1,4 @@
-# 📌 Banco de Dados – Projeto AEE (Manual de Operação)
+# 📌 Banco de Dados – Projeto SEDUC ON (Manual de Operação)
 
 **Versão Engine:** PostgreSQL 18  
 **Data de Atualização:** 29/11/2025
@@ -164,7 +164,7 @@ Quando receber uma nova planilha `ALUNOS.csv` atualizada:
 ### Passo 1: Atualizar o Arquivo CSV
 Substitua o arquivo antigo pelo novo na pasta `csv/`.
 *   **Nome do arquivo**: Deve ser exatamente `ALUNOS.csv`.
-*   **Local**: Pasta `csv` na raiz do projeto (`/home/sant/aee/csv/`).
+*   **Local**: Pasta `csv` na raiz do projeto (`/home/sant/seduc_on/csv/`).
 
 ### Passo 2: Executar o Script de Importação
 Abra o terminal, navegue até a pasta `backend` e rode o comando:

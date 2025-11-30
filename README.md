@@ -23,7 +23,7 @@ O intuito é promover uma gestão baseada em dados, garantindo transparência e 
 ## 🔧 1. Frontend em modo `preview`
 
 ```bash
-cd ~/aee/frontend
+cd ~/seduc_on/frontend
 rm -rf dist
 npm run build:preview
 npm run preview
@@ -32,7 +32,7 @@ npm run preview
 ## 🔧 2. Backend em modo `preview`
 
 ```bash
-cd ~/aee
+cd ~/seduc_on
 npm run preview
 ````
 Console esperado:
@@ -51,7 +51,7 @@ Acessar o link da porta 4173 para visualizar o preview.
 ### Frontend
 
 ```bash
-cd ~/aee/frontend
+cd ~/seduc_on/frontend
 npm run dev
 ```
 
@@ -59,7 +59,7 @@ npm run dev
 ### Backend
 
 ```bash
-cd ~/aee
+cd ~/seduc_on
 npm run dev
 ```
 

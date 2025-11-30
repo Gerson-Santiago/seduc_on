@@ -31,7 +31,7 @@ dist/
 dist-ssr/
 build/
 coverage/
-frontend-aee-vite/test-results/
+frontend-seduc-on-vite/test-results/
 
 # =====================
 # 🔐 AMBIENTE & SEGREDOS (CRÍTICO)
@@ -74,7 +74,7 @@ csv/*.csv
 # =====================
 # 🛠️ SCRIPTS LOCAIS
 # =====================
-start_aee.chorme.sh
+start_seduc_on.chorme.sh
 create_issues.sh
 create_labels.sh
 add_issues_to_project.sh

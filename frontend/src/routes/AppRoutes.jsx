@@ -36,7 +36,7 @@ const AppRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/solicitar-acesso" element={<RequestAccess />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/aee/auth/callback" element={<AuthCallback />} />
+            <Route path="/seduc_on/auth/callback" element={<AuthCallback />} />
             <Route path="/status" element={<StatusPage />} />
 
             {/* --- Rotas Protegidas (Dentro do Sistema) --- */}
@@ -55,8 +55,8 @@ const AppRoutes = () => {
                     <Route path="/admin/solicitacoes" element={<AdminAccessRequests />} />
                 </Route>
 
-                {/* Se alguém tentar acessar /aee, manda para o Dashboard (ou Home, você decide) */}
-                <Route path="/aee" element={<Navigate to="/dashboard" replace />} />
+                {/* Se alguém tentar acessar /seduc_on, manda para o Dashboard (ou Home, você decide) */}
+                <Route path="/seduc_on" element={<Navigate to="/dashboard" replace />} />
             </Route>
 
             {/* Rota 404 */}

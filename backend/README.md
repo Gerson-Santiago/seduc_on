@@ -1,4 +1,4 @@
-# Backend - API de Dados da Educação
+# SEDUC ON - Backend - API de Dados da Educação
 
 API RESTful para processamento e fornecimento de dados educacionais da rede de Bertioga.
 

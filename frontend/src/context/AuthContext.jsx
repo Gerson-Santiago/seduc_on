@@ -6,7 +6,7 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localho
 // Cria o contexto de autenticação
 
 const AuthContext = createContext()
-const LOCAL_STORAGE_KEY = 'aee_user'
+const LOCAL_STORAGE_KEY = 'seduc_on_user'
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 export const AuthProvider = ({ children }) => {
