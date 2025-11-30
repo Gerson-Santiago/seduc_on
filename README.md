@@ -1,8 +1,8 @@
-# Sistema de Visualização de Dados da Educação - Bertioga
+# SEDUC ON - Sistema de Visualização de Dados da Educação - Bertioga
 
 Plataforma de inteligência de dados para a Secretaria de Educação de Bertioga.
 
-O projeto tem como objetivo centralizar, organizar e visualizar dados educacionais da rede municipal, oferecendo dashboards intuitivos e relatórios detalhados para apoiar a tomada de decisão.
+O projeto **SEDUC ON** tem como objetivo centralizar, organizar e visualizar dados educacionais da rede municipal, oferecendo dashboards intuitivos e relatórios detalhados para apoiar a tomada de decisão.
 
 A ferramenta permite que gestores e educadores acompanhem indicadores chave, visualizem a distribuição de alunos por escola e modalidade (Infantil, Fundamental, EJA, AEE) e gerem relatórios personalizados para monitoramento da rede.
 

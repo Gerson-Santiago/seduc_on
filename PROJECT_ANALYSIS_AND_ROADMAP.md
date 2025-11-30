@@ -1,6 +1,8 @@
-# Análise do Projeto e Roadmap de Segurança
+# Análise do Projeto e Roadmap - SEDUC ON
 
 Este documento consolida a análise da arquitetura atual, auditoria de segurança e o roadmap para o futuro do projeto **Sistema de Visualização de Dados da Educação - Bertioga**.
+
+**Última Atualização:** 29/11/2025
 
 ---
 
@@ -10,15 +12,25 @@ O projeto segue uma arquitetura **Monorepo** bem estruturada, separando claramen
 
 ### Estrutura Atual
 *   **Frontend (`frontend`)**: SPA moderna construída com **React** e **Vite**.
-    *   **Pontos Fortes**: Uso de Context API para estado global (Auth), separação de rotas e componentes, e agora integração com **Chart.js** para visualização de dados.
-    *   **Oportunidades**: Padronização de estilos (CSS Modules vs Vanilla CSS) e tipagem estática (TypeScript) para maior robustez.
+    *   **Pontos Fortes**:
+        *   Uso de **Context API** para autenticação (`AuthContext`).
+        *   **Rotas Protegidas**: Implementação de `AdminRoute` para áreas restritas.
+        *   **Theming**: Suporte a tema claro/escuro via variáveis CSS nativas.
+        *   **Nova Área Administrativa**: Módulo de "Solicitações de Acesso" implementado.
+    *   **Oportunidades**:
+        *   Implementação real dos gráficos no Dashboard (atualmente placeholders).
+        *   Padronização de estilos (migração gradual para CSS Modules ou manter Vanilla CSS organizado).
 *   **Backend (`backend`)**: API RESTful com **Node.js**, **Express** e **Prisma ORM**.
-    *   **Pontos Fortes**: Arquitetura em camadas (Routes -> Controllers -> Services), uso de `helmet` para segurança básica, e `prisma` para interação segura com o banco.
-    *   **Oportunidades**: Falta de validação de entrada robusta (ex: Zod/Joi) e Rate Limiting.
-*   **Dados (`csv/`)**: Scripts e arquivos para ETL (Extração, Transformação e Carga) de dados da prefeitura.
+    *   **Pontos Fortes**:
+        *   Arquitetura em camadas (Routes -> Controllers -> Services).
+        *   **Segurança**: `helmet`, `cors` e `express-rate-limit` (implementado) ativos.
+        *   **Banco de Dados**: Schema Prisma robusto, com recente refatoração do `registro_funcional` (Int) para integridade de dados.
+    *   **Oportunidades**:
+        *   Validação de entrada com **Zod** ou **Joi** (ainda pendente).
+*   **Dados (`csv/`)**: Scripts e arquivos para ETL.
 
 ### Veredito
-A arquitetura é **sólida e escalável** para o propósito de visualização de dados. A separação entre front e back permite evoluções independentes.
+A arquitetura evoluiu significativamente. A camada de segurança foi reforçada e o fluxo de gestão de usuários (solicitação/aprovação) foi automatizado, reduzindo a carga operacional manual.
 
 ---
 
@@ -27,52 +39,48 @@ A arquitetura é **sólida e escalável** para o propósito de visualização de
 Análise de riscos e vulnerabilidades potenciais.
 
 ### ✅ Pontos Seguros Identificados
-*   **Helmet**: O middleware `helmet` está ativo no backend, protegendo contra headers HTTP inseguros conhecidos.
-*   **CORS**: Configurado para permitir apenas origens específicas (`ALLOWED_ORIGINS`), prevenindo acesso não autorizado de outros domínios.
-*   **ORM**: O uso do Prisma previne a maioria das injeções de SQL (SQL Injection).
+*   **Rate Limiting**: Middleware `apiLimiter` implementado no `app.js`, mitigando ataques de força bruta.
+*   **Controle de Acesso**: Rotas administrativas (`/admin/solicitacoes`) protegidas tanto no Frontend (`AdminRoute`) quanto no Backend.
+*   **Helmet & CORS**: Ativos e configurados corretamente.
+*   **ORM**: Prisma previne SQL Injection.
 
-### ⚠️ Riscos e Vulnerabilidades (Atenção Imediata)
+### ⚠️ Riscos e Vulnerabilidades (Atenção)
 
-1.  **Scripts de Debug em Produção**:
-    *   A pasta `backend/scripts/debug` contém scripts como `restore_users.js` e `check_users.js`.
-    *   **Risco**: Se esses scripts forem acessíveis ou executados indevidamente em produção, podem expor dados sensíveis ou alterar o estado do banco.
-    *   **Ação**: Garantir que esses scripts não sejam incluídos no build de produção ou movê-los para uma pasta `admin-tools` restrita e ignorada pelo git se contiverem segredos.
+1.  **Scripts de Manutenção**:
+    *   A pasta `backend/scripts/debug` organiza os scripts manuais.
+    *   **Risco**: Execução acidental em produção.
+    *   **Ação**: Manter restrito. Garantir que não sejam chamados automaticamente pelo CI/CD.
 
-2.  **Arquivos Gitignored (`scripts/audit_all.sh`)**:
-    *   O script `audit_all.sh` está no `.gitignore`.
-    *   **Risco**: Falta de versionamento pode levar a "drift" (diferenças não rastreadas) e perda de conhecimento. Se contiver credenciais hardcoded, é um risco de vazamento se o arquivo for compartilhado manualmente.
-    *   **Ação**: Verificar conteúdo. Se tiver segredos, usar variáveis de ambiente. Se não, remover do `.gitignore`.
-
-3.  **Ausência de Rate Limiting**:
-    *   Não foi identificado middleware de `express-rate-limit` no `app.js`.
-    *   **Risco**: A API está vulnerável a ataques de força bruta (Brute Force) e negação de serviço (DDoS).
-    *   **Ação**: Implementar limitação de requisições, especialmente nas rotas de login.
-
-4.  **Validação de Dados**:
-    *   Dependência apenas da validação do frontend ou do banco de dados.
-    *   **Risco**: Dados maliciosos podem passar se a requisição for feita diretamente à API (bypassing frontend).
-    *   **Ação**: Implementar validação de schema (ex: Zod) na entrada dos Controllers.
+2.  **Validação de Dados (Input Validation)**:
+    *   Embora o frontend valide, o backend ainda confia parcialmente nos tipos básicos.
+    *   **Risco**: Dados maliciosos complexos podem passar.
+    *   **Ação**: Implementar schema validation (Zod) nos Controllers.
 
 ---
 
 ## 3. 🚀 Roadmap e Consolidação (CHANGELOG & SUGESTÕES)
 
-Fusão das sugestões anteriores com o novo foco em **Dados e Segurança**.
+### ✅ Concluído (Recentemente)
+- [x] **Segurança**: Implementar `express-rate-limit` no backend.
+- [x] **Funcionalidade**: Sistema de Solicitação de Acesso (Frontend + Backend).
+- [x] **Funcionalidade**: Área Administrativa para aprovação de usuários.
+- [x] **Dados**: Refatoração do `registro_funcional` (Split em dois campos inteiros).
+- [x] **UX**: Link "Solicitações" no Sidebar visível apenas para Admins.
+- [x] **UI**: Adaptação da página de Solicitações para Tema Claro/Escuro.
 
-### Curto Prazo (Prioridade Alta)
-- [ ] **Segurança**: Implementar `express-rate-limit` no backend.
-- [ ] **Segurança**: Revisar e proteger a pasta `backend/scripts/debug`.
-- [ ] **Dados**: Criar os primeiros gráficos com Chart.js no Dashboard (Total de Alunos, Distribuição por Escola).
-- [ ] **Infra**: Configurar variáveis de ambiente para todos os segredos (nunca commitar `.env`).
+### 📅 Curto Prazo (Prioridade Alta)
+- [ ] **Dados**: Implementar gráficos reais no Dashboard (Chart.js) - *Atualmente são placeholders*.
+- [ ] **Backend**: Adicionar validação de dados com `zod` nos endpoints de criação/edição.
+- [ ] **Testes**: Expandir cobertura de testes para além do módulo de `accessRequests`.
 
-### Médio Prazo
-- [ ] **Backend**: Adicionar validação de dados com `zod` ou `joi` nos endpoints de criação/edição.
-- [ ] **Frontend**: Migrar componentes chave para TypeScript para evitar erros de tipo.
-- [ ] **Funcionalidade**: Implementar exportação de relatórios (PDF/CSV) a partir dos dashboards.
+### 📅 Médio Prazo
+- [ ] **Funcionalidade**: Exportação de relatórios (PDF/CSV) a partir das tabelas.
+- [ ] **Frontend**: Refinar a UX do Dashboard com widgets de resumo (KPIs).
+- [ ] **Infra**: Configurar pipeline de CI/CD básico (GitHub Actions).
 
-### Longo Prazo
-- [ ] **Auditoria**: Criar logs de auditoria (quem acessou o que e quando) salvos no banco.
-- [ ] **Performance**: Implementar cache (Redis) para rotas de estatísticas pesadas.
+### 📅 Longo Prazo
+- [ ] **Auditoria**: Logs de atividade (quem aprovou quem, quem editou o quê).
+- [ ] **Performance**: Cache (Redis) para endpoints de estatísticas pesadas.
 
 ---
 

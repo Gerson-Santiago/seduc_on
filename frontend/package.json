@@ -1,11 +1,11 @@
 {
-  "name": "frontend",
+  "name": "seduc-on-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "AEE Frontend with Vite",
+  "description": "Frontend do sistema SEDUC ON",
   "author": "Gerson Santiago",
-  "homepage": "https://Gerson-Santiago.github.io/aee",
+  "homepage": "https://Gerson-Santiago.github.io/seduc_on",
   "scripts": {
     "dev": "vite --mode development",
     "build": "vite build --mode production",
