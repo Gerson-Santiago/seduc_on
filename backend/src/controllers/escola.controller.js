@@ -10,12 +10,11 @@ export const listarEscolas = async (req, res) => {
 
 export const getStats = async (req, res) => {
   try {
-    // Helper to count distinct classes based on series
-    const getClassCount = async (seriesList) => {
+    const getClassCount = async (filtroSerieList) => {
       const classes = await req.prisma.alunos_integracao_all.findMany({
         where: {
           situacao: 'ATIVO',
-          serie1: { in: seriesList }
+          filtro_serie: { in: filtroSerieList }
         },
         select: { cod_turma: true },
         distinct: ['cod_turma']
@@ -27,11 +26,11 @@ export const getStats = async (req, res) => {
     const maternal = await getClassCount(['MATERNAL 1', 'MATERNAL 2']);
     const pre = await getClassCount(['PRÉ-ESCOLA 1', 'PRÉ-ESCOLA 2']);
 
-    const ano1 = await getClassCount(['1']);
-    const ano2 = await getClassCount(['2']);
-    const ano3 = await getClassCount(['3']);
-    const ano4 = await getClassCount(['4']);
-    const ano5 = await getClassCount(['5']);
+    const ano1 = await getClassCount(['1 ANO']);
+    const ano2 = await getClassCount(['2 ANO']);
+    const ano3 = await getClassCount(['3 ANO']);
+    const ano4 = await getClassCount(['4 ANO']);
+    const ano5 = await getClassCount(['5 ANO']);
 
     res.json({
       bercario,
