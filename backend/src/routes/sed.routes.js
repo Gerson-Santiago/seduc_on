@@ -1,8 +1,12 @@
 // /home/sant/seduc_on/backend/src/routes/sed.routes.js
 import express from "express";
 import { sedService } from "../services/sed/sed.service.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
+
+// Aplica autenticação em todas as rotas deste roteador
+router.use(authMiddleware);
 
 // Rota para obter um token válido (usa o cache/refresh automático)
 // GET /api/sed/token
