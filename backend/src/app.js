@@ -11,6 +11,9 @@ import accessRequestsRouter from './routes/accessRequests.js';
 import { notFound, errorHandler } from './middleware/error.js';
 import { getBackendConfig } from './config/environments.js'
 import { apiLimiter } from './middleware/rateLimiter.js';
+// importação das rotas da SED @testeAPI_SED
+import sedRoutes from './routes/sed.routes.js';
+
 
 const { ALLOWED_ORIGINS } = getBackendConfig()
 
@@ -31,6 +34,9 @@ app.use((req, res, next) => {
   req.prisma = prisma;
   next();
 });
+
+// Registrar rotas da SED
+app.use('/api/sed', sedRoutes);
 
 // Health check
 app.get('/api/health', async (req, res) => {
