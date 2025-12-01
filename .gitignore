@@ -1,10 +1,11 @@
-# =====================
-# 🔧 CONFIGURAÇÕES GERAIS (NODE)
-# =====================
+# ==============================================================================
+# 🔧 NODE.JS & DEPENDENCIES
+# ==============================================================================
 node_modules/
-# package-lock.json  <-- RECOMENDADO: Mantenha comentado (deixe o git rastrear) para garantir versões iguais.
 
-# Logs
+# ==============================================================================
+# 📝 LOGS & DEBUG
+# ==============================================================================
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -13,56 +14,50 @@ backend.log
 backend/logs/*
 !backend/logs/.gitkeep
 
-# =====================
-# 🐘 PRISMA (BACKEND)
-# =====================
-# Ignora bancos locais SQLite (se usar)
+# ==============================================================================
+# 🔐 ENVIRONMENT & SECRETS (IMPORTANT)
+# ==============================================================================
+.env
+.env.*
+!.env.example
+!.env.github
+credentials/
+!credentials/README.md
+client_secret.json
+
+# ==============================================================================
+# 🐘 BACKEND (PRISMA & DB)
+# ==============================================================================
 *.sqlite
 *.sqlite-journal
 
-# ⚠️ IMPORTANTE: Mantemos as migrations rastreadas!
-# Não ignorar: prisma/migrations/
-# Não ignorar: prisma/schema.prisma
-
-# =====================
-# 🚀 BUILDS & FRONTEND
-# =====================
+# ==============================================================================
+# 🚀 FRONTEND & BUILD ARTIFACTS
+# ==============================================================================
 dist/
 dist-ssr/
 build/
 coverage/
 frontend-seduc-on-vite/test-results/
+.vite/
 
-# =====================
-# 🔐 AMBIENTE & SEGREDOS (CRÍTICO)
-# =====================
-.env
-.env.*
-!.env.example
-!.env.github 
-
-# Credenciais específicas
-credentials/
-!credentials/README.md
-client_secret.json
-
-# =====================
-# 📄 DADOS E ARQUIVOS ESPECÍFICOS
-# =====================
-# CSV - Ignora dados, mantém headers
+# ==============================================================================
+# 📄 DATA & SPECIFIC FILES
+# ==============================================================================
+# CSV - Ignora dados, mantém headers e scripts
 csv/*.csv
 !csv/*_headers.csv
 !csv/csv.txt
 !csv/extract_headers.sh
 
-# Backups temporários (visto no seu tree)
+# Backups temporários
 *.bak
 *.swp
 *.swo
 
-# =====================
-# 💻 SISTEMA & IDE
-# =====================
+# ==============================================================================
+# 💻 IDE, EDITOR & SYSTEM
+# ==============================================================================
 .DS_Store
 .vscode/
 .idea/
@@ -70,19 +65,19 @@ csv/*.csv
 *.ntvs*
 *.njsproj
 *.sln
+*:Zone.Identifier
 
-# =====================
-# 🛠️ SCRIPTS LOCAIS
-# =====================
-start_seduc_on.chorme.sh
+# ==============================================================================
+# 🛠️ LOCAL SCRIPTS & TOOLS
+# ==============================================================================
 create_issues.sh
 create_labels.sh
 add_issues_to_project.sh
 audit_all.sh
 audit-report.json
 
-# =====================
-# 🐛 DEBUG SCRIPTS (NÃO COMMITAR)
-# =====================
+# ==============================================================================
+# 🐛 DEBUG SCRIPTS
+# ==============================================================================
 backend/scripts/debug/
 !backend/scripts/debug/README.md
