@@ -5,13 +5,14 @@ Este diretório contém os arquivos CSV utilizados para popular o banco de dados
 ## Arquivos Principais
 
 - **ALUNOS.csv**: Contém a lista completa de alunos a serem importados.
-- **ALUNOS_headers.csv**: Cabeçalhos do arquivo de alunos (para referência).
+- **dados_das_escolas.csv**: Dados cadastrais das escolas.
+- **consulta_matricula.csv**: Dados de matrícula e turmas.
 
 ## Como Importar os Dados
 
-Para importar os dados do `ALUNOS.csv` para o banco de dados, utilize o script localizado no backend.
+Para importar os dados para o banco de dados, utilize os scripts localizados no backend.
 
-**Atenção**: Este processo apaga os dados existentes nas tabelas de alunos antes de importar os novos.
+**Atenção**: Este processo apaga os dados existentes nas tabelas correspondentes antes de importar os novos.
 
 ### Passo a Passo
 
@@ -20,20 +21,40 @@ Para importar os dados do `ALUNOS.csv` para o banco de dados, utilize o script l
     cd ../backend
     ```
 
-2.  Execute o script de importação:
+2.  Execute os scripts de importação conforme a necessidade:
+
+    **Importar Alunos:**
     ```bash
     node prisma/import_students.js
     ```
 
-### O que o script faz
+    **Importar Escolas:**
+    ```bash
+    node prisma/import_schools.js
+    ```
 
-1.  Limpa a tabela de integração (`alunos_integracao_all`).
-2.  Lê o arquivo `csv/ALUNOS.csv`.
-3.  Insere os dados na tabela de integração.
-4.  Distribui os dados para as tabelas específicas:
-    - `alunos_regular_ei_ef9` (Ensino Fundamental e Infantil)
-    - `alunos_aee` (Atendimento Educacional Especializado)
-    - `alunos_eja` (Educação de Jovens e Adultos)
+    **Importar Matrículas:**
+    ```bash
+    node prisma/import_matricula.js
+    ```
+
+    **Importar Usuários Administrativos:**
+    ```bash
+    node prisma/import_users.js
+    ```
+
+    **Verificar Consistência:**
+    ```bash
+    node scripts/check_consistency.js
+    ```
+
+### O que os scripts fazem
+
+- **import_students.js**: Limpa e popula as tabelas de alunos (`alunos_integracao_all`, `alunos_regular_ei_ef9`, `alunos_aee`, `alunos_eja`).
+- **import_schools.js**: Limpa e popula a tabela `dados_das_escolas`.
+- **import_matricula.js**: Limpa e popula a tabela `consulta_matricula`.
+- **import_users.js**: Importa ou atualiza usuários administrativos (sem apagar os existentes).
+- **check_consistency.js**: Verifica inconsistências nos dados (ex: matrículas órfãs).
 
 ## Verificação
 
