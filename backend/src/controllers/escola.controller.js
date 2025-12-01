@@ -11,18 +11,15 @@ export const listarEscolas = async (req, res) => {
 export const getStats = async (req, res) => {
   try {
     const getClassCount = async (filtroSerieList) => {
-      const classes = await req.prisma.alunos_integracao_all.findMany({
+      const count = await req.prisma.consulta_matricula.count({
         where: {
-          situacao: 'ATIVO',
           filtro_serie: { in: filtroSerieList }
-        },
-        select: { cod_turma: true },
-        distinct: ['cod_turma']
+        }
       });
-      return classes.length;
+      return count;
     };
 
-    const bercario = await getClassCount(['BERÇÁRIO 1', 'BERÇÁRIO 2']);
+    const bercario = await getClassCount(['BERÇARIO 1', 'BERÇARIO 2']);
     const maternal = await getClassCount(['MATERNAL 1', 'MATERNAL 2']);
     const pre = await getClassCount(['PRÉ-ESCOLA 1', 'PRÉ-ESCOLA 2']);
 
@@ -32,6 +29,11 @@ export const getStats = async (req, res) => {
     const ano4 = await getClassCount(['4 ANO']);
     const ano5 = await getClassCount(['5 ANO']);
 
+    const eja1 = await getClassCount(['EJA1']);
+    const eja2 = await getClassCount(['EJA2']);
+    const eee = await getClassCount(['EDUCAÇÃO EXCLUSIVA']);
+    const aee = await getClassCount(['EDUCAÇÃO ESPECIAL']);
+
     res.json({
       bercario,
       maternal,
@@ -40,7 +42,11 @@ export const getStats = async (req, res) => {
       ano2,
       ano3,
       ano4,
-      ano5
+      ano5,
+      eja1,
+      eja2,
+      eee,
+      aee
     });
 
   } catch (error) {
