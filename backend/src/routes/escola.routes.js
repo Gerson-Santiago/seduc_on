@@ -5,5 +5,6 @@ import * as EscolaController from '../controllers/escola.controller.js';
 const router = Router();
 
 router.get('/', EscolaController.listarEscolas);
+router.get('/stats', EscolaController.getStats);
 
 export default router;

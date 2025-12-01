@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model alunos_integracao_all {
@@ -50,6 +51,7 @@ model alunos_integracao_all {
   mais_info5        String?
   mais_info6        String?
   ra_uuid           String?   @db.Uuid
+  escola            dados_das_escolas? @relation(fields: [cod_escola], references: [cod_escola])
 
   @@map("alunos_integracao_all")
 }
@@ -97,6 +99,7 @@ model alunos_regular_ei_ef9 {
   mais_info5        String?
   mais_info6        String?
   ra_uuid           String?   @db.Uuid
+  escola            dados_das_escolas? @relation(fields: [cod_escola], references: [cod_escola])
 
   @@map("alunos_regular_ei_ef9")
 }
@@ -144,6 +147,7 @@ model alunos_aee {
   mais_info5        String?
   mais_info6        String?
   ra_uuid           String?   @db.Uuid
+  escola            dados_das_escolas? @relation(fields: [cod_escola], references: [cod_escola])
 
   @@map("alunos_aee")
 }
@@ -191,6 +195,7 @@ model alunos_eja {
   mais_info5        String?
   mais_info6        String?
   ra_uuid           String?   @db.Uuid
+  escola            dados_das_escolas? @relation(fields: [cod_escola], references: [cod_escola])
 
   @@map("alunos_eja")
 }
@@ -214,6 +219,8 @@ model consulta_matricula {
   cod_turma_dup         String?
   id                    String?
   id_new                Int     @id @default(autoincrement())
+
+  escola                dados_das_escolas? @relation(fields: [cod_escola], references: [cod_escola])
 }
 
 model dados_das_escolas {
@@ -286,6 +293,12 @@ model dados_das_escolas {
   turma38            String?
   turma39            String?
   turma40            String?
+
+  alunos_integracao       alunos_integracao_all[]
+  alunos_regular          alunos_regular_ei_ef9[]
+  alunos_aee              alunos_aee[]
+  alunos_eja              alunos_eja[]
+  matriculas              consulta_matricula[]
 }
 
 model Usuario {
@@ -302,7 +315,7 @@ model Usuario {
   cargo           String?
   setor           String?
   logins          Login[]
-  criadoPor       Usuario?  @relation("UsuarioCriadoPor", fields: [criadoPorId], references: [id])
+  criadoPor       Usuario?  @relation("UsuarioCriadoPor", fields: [criadoPorId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   usuariosCriados Usuario[] @relation("UsuarioCriadoPor")
 
   @@map("usuarios")
@@ -312,7 +325,7 @@ model Login {
   id        Int      @id @default(autoincrement())
   usuarioId Int
   data      DateTime @default(now())
-  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("logins")
 }
