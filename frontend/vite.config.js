@@ -13,12 +13,13 @@ export default ({ mode }) => {
   const isGithub = mode === 'github'       // npm run build:github
   const isProd = mode === 'production'   // npm run build:production
 
-    // ===================================
-    // PATH BASE
-    // - '/' em dev (raiz)
-    // - './' em preview (evita erro nos assets locais)
-    // - VITE_BASE_URL nos demais (ex: '/aee/')
-    // ===================================
+  // ===================================
+  // PATH BASE
+  // - '/' em dev (raiz)
+  // - './' em preview (evita erro nos assets locais)
+  // - VITE_BASE_URL nos demais (ex: '/aee/')
+  // ===================================
+  const base = isDev
     ? '/'
     : isPreview
       ? env.VITE_BASE_URL || '/seduc_on/'  // forçar seduc_on como padrão se faltar variável
