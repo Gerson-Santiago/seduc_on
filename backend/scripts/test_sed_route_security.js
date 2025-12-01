@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
-const BASE_URL = "http://localhost:3000/api/sed";
+const BASE_URL = "http://localhost:3001/api/sed";
 const API_KEY = process.env.TEST_API_KEY;
 
 async function testarSegurancaRotas() {
