@@ -10,44 +10,53 @@ export const listarEscolas = async (req, res) => {
 
 export const getStats = async (req, res) => {
   try {
-    const getClassCount = async (filtroSerieList) => {
-      const count = await req.prisma.consulta_matricula.count({
-        where: {
-          filtro_serie: { in: filtroSerieList }
-        }
-      });
-      return count;
+    // OTIMIZAÇÃO: 1 query com CASE ao invés de 12 queries separadas
+    const stats = await req.prisma.$queryRaw`
+      SELECT 
+        CASE 
+          WHEN filtro_serie IN ('BERÇARIO 1', 'BERÇARIO 2') THEN 'bercario'
+          WHEN filtro_serie IN ('MATERNAL 1', 'MATERNAL 2') THEN 'maternal'
+          WHEN filtro_serie IN ('PRÉ-ESCOLA 1', 'PRÉ-ESCOLA 2') THEN 'pre'
+          WHEN filtro_serie = '1 ANO' THEN 'ano1'
+          WHEN filtro_serie = '2 ANO' THEN 'ano2'
+          WHEN filtro_serie = '3 ANO' THEN 'ano3'
+          WHEN filtro_serie = '4 ANO' THEN 'ano4'
+          WHEN filtro_serie = '5 ANO' THEN 'ano5'
+          WHEN filtro_serie = 'EJA1' THEN 'eja1'
+          WHEN filtro_serie = 'EJA2' THEN 'eja2'
+          WHEN filtro_serie = 'EDUCAÇÃO EXCLUSIVA' THEN 'eee'
+          WHEN filtro_serie = 'EDUCAÇÃO ESPECIAL' THEN 'aee'
+        END as categoria,
+        COUNT(*) as total
+      FROM consulta_matricula
+      WHERE filtro_serie IS NOT NULL
+      GROUP BY categoria
+    `;
+
+    // Transformar resultado em objeto com valores padrão 0
+    const result = {
+      bercario: 0,
+      maternal: 0,
+      pre: 0,
+      ano1: 0,
+      ano2: 0,
+      ano3: 0,
+      ano4: 0,
+      ano5: 0,
+      eja1: 0,
+      eja2: 0,
+      eee: 0,
+      aee: 0
     };
 
-    const bercario = await getClassCount(['BERÇARIO 1', 'BERÇARIO 2']);
-    const maternal = await getClassCount(['MATERNAL 1', 'MATERNAL 2']);
-    const pre = await getClassCount(['PRÉ-ESCOLA 1', 'PRÉ-ESCOLA 2']);
-
-    const ano1 = await getClassCount(['1 ANO']);
-    const ano2 = await getClassCount(['2 ANO']);
-    const ano3 = await getClassCount(['3 ANO']);
-    const ano4 = await getClassCount(['4 ANO']);
-    const ano5 = await getClassCount(['5 ANO']);
-
-    const eja1 = await getClassCount(['EJA1']);
-    const eja2 = await getClassCount(['EJA2']);
-    const eee = await getClassCount(['EDUCAÇÃO EXCLUSIVA']);
-    const aee = await getClassCount(['EDUCAÇÃO ESPECIAL']);
-
-    res.json({
-      bercario,
-      maternal,
-      pre,
-      ano1,
-      ano2,
-      ano3,
-      ano4,
-      ano5,
-      eja1,
-      eja2,
-      eee,
-      aee
+    // Preencher com dados da query
+    stats.forEach(row => {
+      if (row.categoria && row.total) {
+        result[row.categoria] = Number(row.total);
+      }
     });
+
+    res.json(result);
 
   } catch (error) {
     console.error("Error fetching school stats:", error);
