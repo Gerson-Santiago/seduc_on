@@ -16,9 +16,13 @@ Atualmente, o projeto utiliza uma estratégia de **Configuração Distribuída**
 *   **Carregamento:** Via biblioteca `dotenv` no `server.js` ou scripts de inicialização.
 
 ### 📂 Frontend (`/frontend/.env*`)
-*   **Arquivos:** `.env`, `.env.development`, `.env.preview`, `.env.example`
-*   **Conteúdo Típico:** URLs públicas (`VITE_API_URL`), flags de feature (`VITE_ENABLE_DASHBOARD`).
-*   **Carregamento:** Nativo do **Vite**, que injeta no build apenas variáveis iniciadas com `VITE_`.
+*   **Arquivos:**
+    *   `.env`: Carregado em todos os casos (base).
+    *   `.env.development`: Carregado apenas em `npm run dev` (Portas 3001/5173).
+    *   `.env.preview`: Carregado apenas em `npm run preview` (Portas 3000/4173).
+*   **Por que tantos?** Isso é **nativo do Vite**. Permite rodar o ambiente de desenvolvimento (dev) e o ambiente de teste de produção (preview) simultaneamente em portas diferentes sem conflito.
+*   **Conteúdo Típico:** URLs públicas (`VITE_API_BASE_URL`), IDs de cliente OAuth.
+*   **Carregamento:** Automático pelo Vite baseado no script rodado (`dev` vs `build/preview`).
 
 ---
 
