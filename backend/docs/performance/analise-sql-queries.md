@@ -1,7 +1,7 @@
 # Análise de Consultas SQL e Performance - PostgreSQL
 
 **Sistema:** SEDUC ON  
-**Data da Análise:** _A ser preenchido após execução_  
+**Data da Análise:** 03/12/2025
 **Analista:** Antigravity AI
 
 ---
@@ -57,8 +57,10 @@ _A preencher_
 
 **Índices encontrados:**
 ```sql
-_A preencher_
+CREATE INDEX "consulta_matricula_filtro_serie_idx" ON "consulta_matricula"("filtro_serie");
 ```
+**Análise:**
+- ✅ Índice em `filtro_serie` criado em 03/12/2025 para otimizar estatísticas.
 
 ### 2.4 dados_das_escolas
 
@@ -162,30 +164,28 @@ _A preencher_
 
 ### 3.4 Query: `getStats()` Escola - Múltiplos Counts
 
-**Localização:** `backend/src/controllers/escola.controller.js:13-35`
+**Localização:** `backend/src/controllers/escola.controller.js`
 
-**SQL Executado (exemplo):**
-```sql
-SELECT COUNT(*)
-FROM consulta_matricula
-WHERE filtro_serie IN ('BERÇARIO 1', 'BERÇARIO 2');
--- Repetido para cada grupo de séries
-```
+**Status:** ✅ **RESOLVIDO (03/12/2025)**
 
-**Problema:**
-- **12 queries separadas** sendo executadas para montar estatísticas
-- Ineficiente, seria melhor uma única query com GROUP BY
+**Problema Anterior:**
+- 12 queries separadas sendo executadas para montar estatísticas.
 
-**Sugestão de Refatoração:**
+**Solução Aplicada:**
+- Refatorado para usar `prisma.$queryRaw` com `CASE` statement.
+- Redução para **1 única query**.
+- Índice criado em `consulta_matricula(filtro_serie)`.
+
+**SQL Atual:**
 ```sql
 SELECT 
   CASE 
     WHEN filtro_serie IN ('BERÇARIO 1', 'BERÇARIO 2') THEN 'bercario'
-    WHEN filtro_serie IN ('MATERNAL 1', 'MATERNAL 2') THEN 'maternal'
-    -- ... outros casos
+    -- ...
   END as categoria,
   COUNT(*) as total
 FROM consulta_matricula
+WHERE filtro_serie IS NOT NULL
 GROUP BY categoria;
 ```
 
@@ -199,7 +199,7 @@ GROUP BY categoria;
 |-------|--------|----------|-------------------|
 | `situacao` | `alunos_regular_ei_ef9` | `= 'ATIVO'` | ❌ Não |
 | `filtro_serie` | `alunos_regular_ei_ef9` | `=` e `IN` | ❌ Não |
-| `filtro_serie` | `consulta_matricula` | `IN (...)` | ❌ Não |
+| `filtro_serie` | `consulta_matricula` | `IN (...)` | ✅ Sim |
 | `nome_aluno` | `alunos_regular_ei_ef9` | `ILIKE '%..%'` | ❌ Não |
 | `nome_escola` | `alunos_regular_ei_ef9` | `ILIKE '%..%'` | ❌ Não |
 | `ra` | `alunos_regular_ei_ef9` | `= '...'` | ✅ Sim (UNIQUE) |
@@ -230,6 +230,7 @@ CREATE INDEX idx_alunos_regular_situacao_serie
 ON alunos_regular_ei_ef9(situacao, filtro_serie);
 
 -- 2. Índice para filtro em consulta_matricula
+-- ✅ CRIADO EM 03/12/2025
 CREATE INDEX idx_matricula_filtro_serie 
 ON consulta_matricula(filtro_serie);
 

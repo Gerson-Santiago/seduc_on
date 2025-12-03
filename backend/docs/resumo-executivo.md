@@ -184,13 +184,12 @@ CREATE INDEX idx_alunos_eja_situacao ON alunos_eja(situacao);
 ### Scripts Executáveis
 - ✅ `docs/performance/scripts/optimize-database.sql` - Criar índices
 - ✅ `docs/performance/scripts/test-queries.sql` - Análise de queries
-- ✅ `docs/performance/scripts/benchmark-rotas.js` - Benchmark de API
 
 ### Documentação de Análise
 - ✅ `docs/performance/analise-sql-queries.md` - Template de análise SQL
 - ✅ `docs/performance/benchmark-api.md` - Template de benchmark
 - ✅ `docs/performance/analise-csv-ingestion.md` - Análise de CSV
-- ✅ `docs/technology/avaliacao-backend-hibrido.md` - Node vs Python
+
 - ✅ `docs/technology/avaliacao-docker.md` - Avaliação Docker
 - ✅ `docs/relatorio-final.md` - Relatório consolidado
 - ✅ `docs/README.md` - Índice geral
@@ -225,12 +224,7 @@ CREATE INDEX idx_alunos_eja_situacao ON alunos_eja(situacao);
 
 ## 💡 Descobertas Adicionais
 
-### Sobre Backend Híbrido (Node + Python)
-**Conclusão:** ❌ **NÃO NECESSÁRIO**
 
-- PostgreSQL + Node.js são suficientes
-- Não há cálculos complexos que justifiquem Python
-- Separar backend aumentaria complexidade para equipe pequena
 
 ### Sobre Docker
 **Conclusão:** 🔵 **OPCIONAL** (não prioritário)

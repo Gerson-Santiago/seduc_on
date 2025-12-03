@@ -173,6 +173,12 @@ router.use(authMiddleware);
 - Usuários não estão misturados com alunos
 - Senhas não armazenadas (OAuth)
 
+### 4. **Melhorias Recentes (03/12/2025)** ✅
+- **Validação de Dados:** Implementado `Zod` para sanitização e validação de inputs.
+- **Proteção HTTP:** `Helmet` configurado com HSTS e remoção de headers sensíveis.
+- **Rate Limiting:** Proteção contra força bruta e DoS.
+- **Tratamento de Erros:** `asyncHandler` centraliza erros e evita vazamento de stack traces em produção.
+
 ---
 
 ## 🎯 PLANO DE AÇÃO DE SEGURANÇA
