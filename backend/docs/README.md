@@ -15,8 +15,7 @@ docs/
 │   ├── teste-cache-redis.md        # Avaliação de cache (opcional)
 │   └── analise-csv-ingestion.md    # Análise de importação CSV
 ├── technology/               # Avaliações de tecnologia
-│   ├── avaliacao-backend-hibrido.md  # Node + Python (última opção)
-│   └── avaliacao-docker.md           # Docker/containerização
+
 └── relatorio-final.md        # Relatório consolidado final
 
 ```
@@ -88,16 +87,6 @@ time node <script-de-importacao>.js caminho/para/arquivo.csv
 # Monitorar banco durante importação
 watch -n 2 'psql -U <user> -d seduc_on -c "SELECT count(*) FROM alunos_integracao_all"'
 ```
-
----
-
-### 5. Avaliação de Backend Híbrido (Node + Python)
-
-**Arquivo:** [`technology/avaliacao-backend-hibrido.md`](./technology/avaliacao-backend-hibrido.md)
-
-**Objetivo:** Avaliar se há necessidade de separar backend em dois serviços.
-
-**Status:** ⚠️ **Solução de última opção** - apenas se arquitetura atual for inviável.
 
 ---
 

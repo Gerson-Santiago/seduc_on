@@ -220,20 +220,7 @@ Após implementar índices e otimizações de queries, avaliar se ainda há nece
 
 ## 4. Análises Complementares
 
-### 4.1 Backend Híbrido (Node + Python)
 
-**Conclusão:** ❌ **NÃO RECOMENDADO**
-
-**Por quê:**
-- PostgreSQL + Node.js são suficientes para cálculos atuais
-- Separar backend aumentaria complexidade desnecessariamente
-- Equipe de 2 desenvolvedores - manter stack simples
-
-**Implementar apenas se:**
-- Houver necessidade de análises estatísticas avançadas (ML, regressão)
-- PostgreSQL não conseguir executar cálculos em tempo aceitável
-
-**Status:** Não aplicável no momento
 
 ---
 
@@ -349,7 +336,7 @@ O sistema SEDUC ON possui uma **arquitetura sólida e bem estruturada**. Os prob
 
 **Não há necessidade de:**
 - ❌ Migrar de banco de dados
-- ❌ Separar backend em Node + Python
+
 - ❌ Mudar de ORM
 - ❌ Reescrever sistema
 
@@ -365,7 +352,7 @@ O sistema SEDUC ON possui uma **arquitetura sólida e bem estruturada**. Os prob
 2. [Benchmark de API](file:///home/sant/seduc_on/backend/docs/performance/benchmark-api.md)
 3. [Avaliação de Cache Redis](file:///home/sant/seduc_on/backend/docs/performance/teste-cache-redis.md)
 4. [Análise de CSV Ingestion](file:///home/sant/seduc_on/backend/docs/performance/analise-csv-ingestion.md)
-5. [Avaliação Backend Híbrido](file:///home/sant/seduc_on/backend/docs/technology/avaliacao-backend-hibrido.md)
+
 6. [Avaliação Docker](file:///home/sant/seduc_on/backend/docs/technology/avaliacao-docker.md)
 
 ### B. Scripts de Análise

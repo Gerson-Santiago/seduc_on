@@ -104,10 +104,7 @@ Otimizar performance e estrutura do banco de dados do sistema educacional SEDUC 
 
 ### Avaliações Tecnológicas
 
-10. **[avaliacao-backend-hibrido.md](file:///home/sant/seduc_on/backend/docs/technology/avaliacao-backend-hibrido.md)**
-    - Node vs Python avaliado
-    - **Decisão:** Manter Node.js ✅
-    - Separação não necessária
+
 
 11. **[avaliacao-docker.md](file:///home/sant/seduc_on/backend/docs/technology/avaliacao-docker.md)**
     - Docker avaliado
@@ -356,7 +353,7 @@ CSV Import → alunos_integracao_all → alunos_regular/aee/eja
 
 ### Prioridade BAIXA (Contexto)
 
-6. [avaliacao-backend-hibrido.md](file:///home/sant/seduc_on/backend/docs/technology/avaliacao-backend-hibrido.md)
+
 7. [avaliacao-docker.md](file:///home/sant/seduc_on/backend/docs/technology/avaliacao-docker.md)
 
 ---

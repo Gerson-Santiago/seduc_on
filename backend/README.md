@@ -14,6 +14,7 @@ API RESTful para processamento e fornecimento de dados educacionais da rede de B
     *   [API Reference](docs/API.md)
     *   [Guia de Testes](docs/TESTING.md)
     *   [Análises de Performance](docs/README.md)
+    *   [Análise de Segurança](docs/security/analise-seguranca-dados.md)
 
 ## Como Contribuir
 
