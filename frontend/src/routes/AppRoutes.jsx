@@ -15,6 +15,7 @@ import Login from '../pages/Login/index';
 import RequestAccess from '../pages/RequestAccess/index';
 import Dashboard from '../pages/Dashboard/index';
 import Alunos from '../pages/Alunos/index';
+import BuscaAluno from '../pages/BuscaAluno/index';
 import Professores from '../pages/Professores/index';
 import Escolas from '../pages/Escolas/index';
 import Turmas from '../pages/Turmas/index';
@@ -43,6 +44,7 @@ const AppRoutes = () => {
             <Route element={<MainLayout />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/alunos" element={<Alunos />} />
+                <Route path="/busca-aluno" element={<BuscaAluno />} />
                 <Route path="/professores" element={<Professores />} />
                 <Route path="/escolas" element={<Escolas />} />
                 <Route path="/turmas" element={<Turmas />} />

@@ -71,6 +71,12 @@ export default function Sidebar({ collapsed, onToggle }) {
             </NavLink>
           </li>
           <li className="menu-item">
+            <NavLink to="/busca-aluno" className="menu-link">
+              <span className="material-symbols-rounded">person_search</span>
+              <span className="menu-label">Buscar Aluno</span>
+            </NavLink>
+          </li>
+          <li className="menu-item">
             <NavLink to="/professores" className="menu-link">
               <span className="material-symbols-rounded">owl</span>
               <span className="menu-label">Professores</span>
