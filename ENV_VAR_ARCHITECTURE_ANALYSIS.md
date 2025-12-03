@@ -11,18 +11,14 @@
 Atualmente, o projeto utiliza uma estratégia de **Configuração Distribuída**:
 
 ### 📂 Backend (`/backend/.env*`)
-*   **Arquivos:** `.env`, `.env.dev`, `.env.preview`, `.env.example`
+*   **Arquivos:** `.env`, `.env.dev` (usado no script `dev`), `.env.preview`, `.env.example`
 *   **Conteúdo Típico:** Segredos de banco (`DATABASE_URL`), chaves de API (`GOOGLE_CLIENT_ID`), segredos de sessão (`JWT_SECRET`).
-*   **Carregamento:** Via biblioteca `dotenv` no `server.js` ou scripts de inicialização.
+*   **Carregamento:** Nativo do Node.js via flag `--env-file` nos scripts do `package.json`.
 
 ### 📂 Frontend (`/frontend/.env*`)
-*   **Arquivos:**
-    *   `.env`: Carregado em todos os casos (base).
-    *   `.env.development`: Carregado apenas em `npm run dev` (Portas 3001/5173).
-    *   `.env.preview`: Carregado apenas em `npm run preview` (Portas 3000/4173).
-*   **Por que tantos?** Isso é **nativo do Vite**. Permite rodar o ambiente de desenvolvimento (dev) e o ambiente de teste de produção (preview) simultaneamente em portas diferentes sem conflito.
-*   **Conteúdo Típico:** URLs públicas (`VITE_API_BASE_URL`), IDs de cliente OAuth.
-*   **Carregamento:** Automático pelo Vite baseado no script rodado (`dev` vs `build/preview`).
+*   **Arquivos:** `.env`, `.env.development` (Padrão Vite), `.env.preview`, `.env.example`
+*   **Conteúdo Típico:** URLs públicas (`VITE_API_URL`), flags de feature (`VITE_ENABLE_DASHBOARD`).
+*   **Carregamento:** Automático pelo **Vite** baseado no `--mode`.
 
 ---
 
@@ -41,6 +37,22 @@ A metodologia *12-Factor* (padrão ouro para apps modernos) dita que **"A config
 | **Acoplamento** | ✅ **Baixo**. Backend pode ser movido para outro repo sem quebrar config. | ❌ **Alto**. Cria dependência de um arquivo externo à pasta do serviço. |
 | **DX (Dev Experience)** | 😐 **Médio**. Precisa configurar 2 arquivos. | ✅ **Alta**. Um único lugar para editar portas e URLs. |
 | **CI/CD (Deploy)** | ✅ **Padrão**. Pipelines de deploy costumam injetar vars por serviço. | ⚠️ **Complexo**. Precisa de scripts para "fatiar" o env único para cada serviço no deploy. |
+
+---
+
+### 2.3 Validação Específica do Frontend (Vite Modes)
+
+O usuário questionou a necessidade de arquivos como `.env.dev`, `.env.preview` no Frontend.
+**Análise:** Esta prática é **CORRETA e NECESSÁRIA** para o Vite.
+
+No `package.json` do frontend, temos scripts explícitos:
+*   `"dev": "vite --mode development"` -> Carrega `.env.development`
+*   `"build:preview": "vite build --mode preview"` -> Carrega `.env.preview`
+
+**Por que isso é bom?**
+*   Permite apontar para backends diferentes (Local vs Staging vs Produção) sem mudar código.
+*   O Vite "assa" (bakes) essas variáveis no código HTML/JS final durante o build.
+*   **Veredito:** Manter esses arquivos é essencial para o fluxo de build atual.
 
 ---
 
@@ -78,4 +90,54 @@ Para mitigar a "dor" de gerenciar dois arquivos, podemos criar um script de **va
 
 ---
 
-**Conclusão:** Mudar para um `.env` único traria conveniência marginal em troca de **riscos de segurança significativos** e **dívida técnica** no deploy. **Não recomendo a migração.**
+---
+
+## 5. Padrões de Indústria e Soluções de Mercado
+
+### 5.1 O Padrão Vite (Frontend) 🌟
+O Vite possui um sistema de "Modos" nativo que é considerado o **Padrão de Indústria** para SPAs (Single Page Applications).
+
+**Como funciona:**
+Ao contrário do Backend, o Frontend não tem acesso a variáveis de sistema no navegador do usuário. As variáveis precisam ser "embutidas" (baked) no código HTML/JS durante a construção (build).
+
+**Estrutura Padrão Vite:**
+*   `.env` (Carregado em todos os casos)
+*   `.env.local` (Ignorado pelo Git, sobreposições locais)
+*   `.env.[mode]` (Carregado apenas no modo específico)
+
+**Por que ter vários arquivos no Frontend?**
+É a única forma de gerar builds diferentes para ambientes diferentes sem mudar o código:
+1.  **`npm run dev`** (Mode: `development`) -> Lê `.env.development` -> Aponta para `localhost:3001`
+2.  **`npm run build:preview`** (Mode: `preview`) -> Lê `.env.preview` -> Aponta para `staging-api.seduc.com`
+3.  **`npm run build`** (Mode: `production`) -> Lê `.env.production` -> Aponta para `api.seduc.com`
+
+**Veredito:** A estrutura atual do projeto (`.env.preview`, `.env.development`) segue **exatamente** a documentação oficial do Vite.
+
+### 5.2 O Padrão Node.js (Backend) 🛡️
+No Backend, a história é diferente. O servidor lê variáveis em tempo de execução.
+
+**Cenários Comuns:**
+1.  **Desenvolvimento Local:** Uso de `.env` e `.env.test` é padrão para facilitar a troca de bancos de dados.
+2.  **Produção (Cloud/Docker):** O padrão de ouro é **NÃO TER ARQUIVO .ENV**.
+    *   As variáveis são injetadas pela plataforma (AWS Secrets, Kubernetes, Heroku).
+    *   No nosso caso (VPS/VM), o uso de um arquivo `.env` protegido (chmod 600) é aceitável e comum.
+
+### 5.3 Comparativo de Soluções para Monorepos
+
+| Solução | Descrição | Prós | Contras | Adequação ao Projeto |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. Isolada (Atual)** | Cada pasta (`frontend`, `backend`) tem seus próprios `.env`. | Segurança máxima, desacoplamento, padrão nativo das ferramentas. | Repetição de variáveis comuns (ex: PORT). | ⭐⭐⭐⭐⭐ (Ideal) |
+| **2. Centralizada (Root)** | Um único `.env` na raiz do projeto. | Fácil de editar, sem duplicação. | Mistura segredos (Backend) com públicos (Frontend). Risco de vazamento. Requer scripts extras. | ⭐⭐ (Arriscado) |
+| **3. Workspace Config** | Um pacote compartilhado (`packages/config`) que exporta constantes. | Tipagem forte, validação centralizada. | Alta complexidade de setup (npm workspaces, TS references). Overkill para 2 serviços. | ⭐ (Exagero) |
+| **4. Env Vault** | Uso de ferramentas como Doppler ou Vault. | Segurança nível bancário, rotação de chaves. | Custo e complexidade de infraestrutura. | ⭐ (Desnecessário) |
+
+---
+
+## 6. Conclusão Final
+
+A estrutura atual do projeto **SEDUC ON** não é apenas "aceitável", ela é a **Recomendada** para a escala e tecnologias utilizadas.
+
+*   **Frontend:** Segue o padrão Vite de Modes (`.env.[mode]`).
+*   **Backend:** Segue o padrão Node.js de isolamento (`dotenv`).
+
+**Ação Recomendada:** Manter como está. Não há ganho técnico em alterar essa estrutura, apenas riscos.
