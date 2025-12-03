@@ -9,7 +9,8 @@
     "dev": "nodemon --exec \"node --env-file=.env.dev server.js\"",
     "preview": "nodemon --exec \"node --env-file=.env.preview server.js\"",
     "production": "node --env-file=.env server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "keywords": [],
   "author": "Gerson Santiago",
@@ -28,7 +29,8 @@
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.2",
     "prisma": "^6.11.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
