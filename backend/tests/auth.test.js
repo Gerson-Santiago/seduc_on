@@ -2,47 +2,14 @@
 import { jest } from '@jest/globals';
 
 // Mock das dependências
-jest.unstable_mockModule('google-auth-library', () => ({
-  OAuth2Client: jest.fn().mockImplementation(() => ({
-    verifyIdToken: jest.fn().mockImplementation(async ({ idToken }) => {
-      if (idToken === 'valid_token') {
-        return {
-          getPayload: () => ({
-            email: 'test@seducbertioga.com.br', // Domínio correto
-            name: 'Test User',
-            picture: 'http://example.com/pic.jpg',
-            hd: 'seducbertioga.com.br'
-          })
-        };
-      }
-      if (idToken === 'invalid_domain_token') {
-        return {
-          getPayload: () => ({
-            email: 'test@gmail.com',
-            hd: 'gmail.com'
-          })
-        };
-      }
-      throw new Error('Invalid token');
-    })
-  }))
-}));
-
 jest.unstable_mockModule('../src/services/usuario.service.js', () => ({
-  findUsuarioByEmail: jest.fn(),
-  updateUsuario: jest.fn(),
+  autenticarGoogle: jest.fn(),
+  findUsuarioById: jest.fn()
 }));
 
 jest.unstable_mockModule('../src/utils/jwt.js', () => ({
-  gerarToken: jest.fn().mockReturnValue('mocked_jwt_token'),
   verificarToken: jest.fn(),
 }));
-
-// Mock do Prisma (embora o controller importe, vamos mockar o service que ele usa)
-jest.unstable_mockModule('../prisma/client.js', () => ({
-  default: {}
-}));
-
 
 // Importa o controller DEPOIS dos mocks
 const { loginUsuario } = await import('../src/controllers/usuario.controller.js');
@@ -54,34 +21,31 @@ describe('Usuario Controller - Login', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    req = { body: {} };
+    req = { body: {}, prisma: {} };
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
   });
 
-  test('Deve realizar login com sucesso para token válido e domínio correto', async () => {
+  test('Deve realizar login com sucesso', async () => {
     req.body.token = 'valid_token';
 
-    UsuarioService.findUsuarioByEmail.mockResolvedValue({
-      id: 1,
-      email: 'test@seducbertioga.com.br',
-      nome: 'Test User',
-      role: 'ADMIN',
-      picture: 'old_pic.jpg'
-    });
+    const mockResult = {
+      token: 'mocked_jwt_token',
+      user: { email: 'test@seducbertioga.com.br' }
+    };
+
+    UsuarioService.autenticarGoogle.mockResolvedValue(mockResult);
 
     await loginUsuario(req, res);
 
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-      token: 'mocked_jwt_token',
-      user: expect.objectContaining({ email: 'test@seducbertioga.com.br' })
-    }));
+    expect(res.json).toHaveBeenCalledWith(mockResult);
   });
 
-  test('Deve rejeitar domínio inválido', async () => {
-    req.body.token = 'invalid_domain_token';
+  test('Deve retornar 403 para domínio inválido', async () => {
+    req.body.token = 'invalid_token';
+    UsuarioService.autenticarGoogle.mockRejectedValue(new Error('Domínio não autorizado'));
 
     await loginUsuario(req, res);
 
@@ -89,9 +53,9 @@ describe('Usuario Controller - Login', () => {
     expect(res.json).toHaveBeenCalledWith({ error: 'Domínio não autorizado' });
   });
 
-  test('Deve rejeitar se usuário não existir no banco', async () => {
+  test('Deve retornar 401 para usuário não autorizado', async () => {
     req.body.token = 'valid_token';
-    UsuarioService.findUsuarioByEmail.mockResolvedValue(null);
+    UsuarioService.autenticarGoogle.mockRejectedValue(new Error('Usuário não autorizado'));
 
     await loginUsuario(req, res);
 

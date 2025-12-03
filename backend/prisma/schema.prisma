@@ -221,6 +221,8 @@ model consulta_matricula {
   id_new                Int     @id @default(autoincrement())
 
   escola                dados_das_escolas? @relation(fields: [cod_escola], references: [cod_escola])
+
+  @@index([filtro_serie])
 }
 
 model dados_das_escolas {

@@ -21,7 +21,16 @@ const { ALLOWED_ORIGINS } = getBackendConfig()
 const app = express();
 const prisma = new PrismaClient();
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false, // API não serve HTML
+  crossOriginEmbedderPolicy: false,
+  hidePoweredBy: true, // Remove X-Powered-By: Express
+  hsts: {
+    maxAge: 31536000, // 1 ano
+    includeSubDomains: true,
+    preload: true
+  }
+}));
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }))
 
 app.use(express.json());

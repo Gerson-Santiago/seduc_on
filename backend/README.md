@@ -10,8 +10,18 @@ API RESTful para processamento e fornecimento de dados educacionais da rede de B
     *   Cálculo de estatísticas e indicadores por unidade escolar.
     *   Importação e tratamento de dados via CSV.
 *   **Autenticação e Segurança**: Integração com Google OAuth e controle de acesso.
+*   **Documentação**:
+    *   [API Reference](docs/API.md)
+    *   [Guia de Testes](docs/TESTING.md)
+    *   [Análises de Performance](docs/README.md)
 
-## Comandos Úteis
+## Como Contribuir
+
+1.  Clone o repositório.
+2.  Instale as dependências: `npm install`.
+3.  Configure o `.env` (use `.env.example` como base).
+4.  Rode os testes: `npm test`.
+5.  Inicie o servidor: `npm run dev`.
 
 ### Instalação
 ```bash

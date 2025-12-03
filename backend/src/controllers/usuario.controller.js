@@ -1,81 +1,56 @@
-// backend/src/controllers/usuario.controller.js
-import { OAuth2Client } from 'google-auth-library'
 import * as UsuarioService from '../services/usuario.service.js'
-import { gerarToken, verificarToken } from '../utils/jwt.js'
-import 'dotenv/config'
-import prisma from '../../prisma/client.js' // ajuste conforme seu projeto
+import { verificarToken } from '../utils/jwt.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-const client = new OAuth2Client(CLIENT_ID)
-
-export async function loginUsuario(req, res) {
+export const loginUsuario = asyncHandler(async (req, res) => {
   const { token } = req.body
-
   if (!token) return res.status(400).json({ error: 'Token é obrigatório' })
 
   try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: CLIENT_ID,
-    })
-
-    const payload = ticket.getPayload()
-    const email = payload.email
-    const hd = payload.hd
-    const picture = payload.picture  // Pega a foto do Google
-
-    if (hd !== 'seducbertioga.com.br') {
-      return res.status(403).json({ error: 'Domínio não autorizado' })
-    }
-
-    const usuario = await UsuarioService.findUsuarioByEmail(prisma, email)
-    if (!usuario) {
-      return res.status(401).json({ error: 'Usuário não autorizado' })
-    }
-
-    // Se veio foto do Google, atualiza no banco
-    if (picture && usuario.picture !== picture) {
-      await UsuarioService.updateUsuario(prisma, usuario.id, { picture })
-      usuario.picture = picture // Atualiza objeto local
-    }
-
-    // Gerar token incluindo a foto no payload
-    const jwtToken = gerarToken({ ...usuario, picture: usuario.picture })
-
-    return res.json({
-      token: jwtToken,
-      user: {
-        email: usuario.email,
-        nome: usuario.nome,
-        role: usuario.role,
-        picture: usuario.picture,
-      },
-    })
-  } catch (err) {
-    console.error('Erro no login:', err)
-    return res.status(401).json({ error: 'Token inválido ou expirado' })
-  }
-}
-
-export async function getMe(req, res) {
-  try {
-    const authHeader = req.headers.authorization
-    if (!authHeader) return res.status(401).json({ error: 'Token não fornecido' })
-
-    const token = authHeader.split(' ')[1]
-    if (!token) return res.status(401).json({ error: 'Token inválido' })
-
-    const payload = verificarToken(token)
-    if (!payload) return res.status(401).json({ error: 'Token inválido ou expirado' })
-
-    const usuario = await UsuarioService.findUsuarioById(prisma, payload.id)
-    if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
-
-    // Monta objeto incluindo a picture do banco (ou do payload se banco falhar, mas banco é prioridade)
-    const { senha, ...usuarioSemSenha } = usuario
-    res.json({ user: usuarioSemSenha })
+    const result = await UsuarioService.autenticarGoogle(req.prisma, token);
+    res.json(result);
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ error: 'Erro interno' })
+    if (error.message === 'Domínio não autorizado') return res.status(403).json({ error: error.message });
+    if (error.message === 'Usuário não autorizado') return res.status(401).json({ error: error.message });
+    console.error('Erro no login:', error);
+    res.status(401).json({ error: 'Token inválido ou expirado' });
   }
-}
+});
+
+export const getMe = asyncHandler(async (req, res) => {
+  const authHeader = req.headers.authorization
+  if (!authHeader) return res.status(401).json({ error: 'Token não fornecido' })
+
+  const token = authHeader.split(' ')[1]
+  if (!token) return res.status(401).json({ error: 'Token inválido' })
+
+  const payload = verificarToken(token)
+  if (!payload) return res.status(401).json({ error: 'Token inválido ou expirado' })
+
+  const usuario = await UsuarioService.findUsuarioById(req.prisma, payload.id)
+  if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
+
+  const { senha, ...usuarioSemSenha } = usuario
+  res.json({ user: usuarioSemSenha })
+});
+
+export const criarUsuario = asyncHandler(async (req, res) => {
+  const usuario = await UsuarioService.createUsuario(req.prisma, req.body);
+  res.status(201).json(usuario);
+});
+
+export const listarUsuarios = asyncHandler(async (req, res) => {
+  const usuarios = await UsuarioService.findAllUsuarios(req.prisma);
+  res.json(usuarios);
+});
+
+export const buscarUsuarioPorEmail = asyncHandler(async (req, res) => {
+  const usuario = await UsuarioService.findUsuarioByEmail(req.prisma, req.params.email);
+  if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' });
+  res.json(usuario);
+});
+
+export const atualizarUsuario = asyncHandler(async (req, res) => {
+  const usuario = await UsuarioService.updateUsuario(req.prisma, Number(req.params.id), req.body);
+  res.json(usuario);
+});
