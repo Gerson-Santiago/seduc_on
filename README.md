@@ -17,6 +17,7 @@ O intuito é promover uma gestão baseada em dados, garantindo transparência e 
 *   **`csv/`**: Diretório para carga de dados brutos (importação de alunos).
 *   **`scripts/`**: Scripts para processamento de dados e manutenção do sistema.
 *   **`MANUAL_ATUALIZACAO.md`**: Guia para atualização da base de dados.
+*   **`TESTING.md`**: Guia completo sobre a estratégia de testes do projeto.
 
 ---
 
