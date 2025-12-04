@@ -37,7 +37,7 @@ export default function Home() {
       {/* Conteúdo Principal (Card Centralizado) */}
       <main className="home-content">
         <div className="home-card">
-          <h1>Atendimento Educacional Especializado</h1>
+          <h1>Seduc ON</h1>
           <p>
             Sistema integrado para gestão da educação na rede municipal de Bertioga.
             Para acessar os recursos, utilize sua conta institucional.
