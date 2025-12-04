@@ -14,7 +14,8 @@
     "build:github": "vite build --mode github",
     "preview": "vite preview --mode preview --host 0.0.0.0",
     "preview:prod": "vite preview --mode production",
-    "deploy:github": "npm run build:github && gh-pages -d dist"
+    "deploy:github": "npm run build:github && gh-pages -d dist",
+    "test": "npx playwright test"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
