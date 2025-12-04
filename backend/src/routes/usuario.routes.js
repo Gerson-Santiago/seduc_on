@@ -6,11 +6,12 @@ import { usuarioSchema, usuarioUpdateSchema } from '../schemas/usuario.schema.js
 
 const router = Router();
 
+// Rotas de Autenticação (Públicas)
+router.post('/login', UsuarioController.loginUsuario);
+
 // Rotas protegidas
 router.use(verificarToken);
 
-// Rotas de Autenticação
-router.post('/login', UsuarioController.loginUsuario);
 router.get('/me', UsuarioController.getMe);
 
 // Rotas CRUD

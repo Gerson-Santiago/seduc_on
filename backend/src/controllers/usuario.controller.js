@@ -13,7 +13,7 @@ export const loginUsuario = asyncHandler(async (req, res) => {
     if (error.message === 'Domínio não autorizado') return res.status(403).json({ error: error.message });
     if (error.message === 'Usuário não autorizado') return res.status(401).json({ error: error.message });
     console.error('Erro no login:', error);
-    res.status(401).json({ error: 'Token inválido ou expirado' });
+    res.status(401).json({ error: `Erro de login: ${error.message}` });
   }
 });
 

@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
       if (!response.ok) {
         const body = await response.json().catch(() => ({}))
         if (response.status === 401) {
-          throw new Error('Credenciais inválidas.');
+          throw new Error(body.error || 'Credenciais inválidas.');
         }
         if (response.status === 403) {
           setShowAccessDeniedModal(true);
