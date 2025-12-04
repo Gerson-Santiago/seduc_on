@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Fluxo de Login Google', () => {
   test('Deve renderizar a página de login corretamente', async ({ page }) => {
     await page.goto('/login');
-    await expect(page).toHaveTitle(/Login/);
+    await expect(page).toHaveTitle(/SEDUC ON/);
     await expect(page.getByText('Entrar com Google')).toBeVisible();
   });
 
