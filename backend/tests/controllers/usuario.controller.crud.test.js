@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 
 // Mock das dependências
-jest.unstable_mockModule('../src/services/usuario.service.js', () => ({
+jest.unstable_mockModule('../../src/services/usuario.service.js', () => ({
     createUsuario: jest.fn(),
     findAllUsuarios: jest.fn(),
     findUsuarioByEmail: jest.fn(),
@@ -9,7 +9,7 @@ jest.unstable_mockModule('../src/services/usuario.service.js', () => ({
     findUsuarioById: jest.fn() // Usado no getMe
 }));
 
-jest.unstable_mockModule('../src/utils/jwt.js', () => ({
+jest.unstable_mockModule('../../src/utils/jwt.js', () => ({
     verificarToken: jest.fn(),
     gerarToken: jest.fn()
 }));
@@ -19,8 +19,8 @@ jest.unstable_mockModule('google-auth-library', () => ({
 }));
 
 // Import dinâmico
-const UsuarioController = await import('../src/controllers/usuario.controller.js');
-const UsuarioService = await import('../src/services/usuario.service.js');
+const UsuarioController = await import('../../src/controllers/usuario.controller.js');
+const UsuarioService = await import('../../src/services/usuario.service.js');
 
 describe('Usuario Controller - CRUD', () => {
     let req, res;

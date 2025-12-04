@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 
 // Import dinâmico do módulo testado
-const { listarEscolas, getStats } = await import('../src/controllers/escola.controller.js');
+const { listarEscolas, getStats } = await import('../../src/controllers/escola.controller.js');
 
 describe('Escola Controller', () => {
     let req, res;

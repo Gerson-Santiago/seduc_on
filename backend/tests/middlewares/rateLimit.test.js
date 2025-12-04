@@ -1,6 +1,6 @@
 // backend/tests/rateLimit.test.js
 import request from 'supertest';
-import app from '../src/app.js';
+import app from '../../src/app.js';
 
 describe('Rate Limiting', () => {
     it('should allow requests under the limit', async () => {
