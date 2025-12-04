@@ -5,6 +5,7 @@ import '../../styles/components.css';
 import '../../styles/layout.css';
 import '../../styles/variables.css';
 import { useAuth, API_BASE_URL } from '../../context/AuthContext';
+import StatSection from '../../components/StatSection';
 
 const Dashboard = () => {
     const { user } = useAuth();
@@ -64,81 +65,45 @@ const Dashboard = () => {
             </div>
 
             <div style={{ marginTop: '20px' }}>
-                <h2 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--text-secondary)' }}>Educação Infantil</h2>
-                <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>Berçário</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.bercario}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>Maternal</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.maternal}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>Pré-Escola</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.pre}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                </div>
+                <StatSection
+                    title="Educação Infantil"
+                    loading={loading}
+                    stats={[
+                        { title: "Berçário", value: stats.bercario, label: "Turmas" },
+                        { title: "Maternal", value: stats.maternal, label: "Turmas" },
+                        { title: "Pré-Escola", value: stats.pre, label: "Turmas" }
+                    ]}
+                />
 
-                <h2 style={{ fontSize: '1.2rem', marginTop: '20px', marginBottom: '10px', color: 'var(--text-secondary)' }}>Ensino Fundamental</h2>
-                <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>1º Ano</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.ano1}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>2º Ano</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.ano2}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>3º Ano</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.ano3}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>4º Ano</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.ano4}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>5º Ano</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.ano5}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                </div>
+                <StatSection
+                    title="Ensino Fundamental"
+                    loading={loading}
+                    stats={[
+                        { title: "1º Ano", value: stats.ano1, label: "Turmas" },
+                        { title: "2º Ano", value: stats.ano2, label: "Turmas" },
+                        { title: "3º Ano", value: stats.ano3, label: "Turmas" },
+                        { title: "4º Ano", value: stats.ano4, label: "Turmas" },
+                        { title: "5º Ano", value: stats.ano5, label: "Turmas" }
+                    ]}
+                />
 
-                <h2 style={{ fontSize: '1.2rem', marginTop: '20px', marginBottom: '10px', color: 'var(--text-secondary)' }}>EJA</h2>
-                <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>EJA 1</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.eja1}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>EJA 2</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.eja2}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                </div>
+                <StatSection
+                    title="EJA"
+                    loading={loading}
+                    stats={[
+                        { title: "EJA 1", value: stats.eja1, label: "Turmas" },
+                        { title: "EJA 2", value: stats.eja2, label: "Turmas" }
+                    ]}
+                />
 
-                <h2 style={{ fontSize: '1.2rem', marginTop: '20px', marginBottom: '10px', color: 'var(--text-secondary)' }}>Educação Especial</h2>
-                <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>AEE</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.aee}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                    <div className="card" style={{ textAlign: 'center' }}>
-                        <h3>EEE</h3>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{loading ? '...' : stats.eee}</p>
-                        <span style={{ fontSize: '0.8rem', color: '#666' }}>Turmas</span>
-                    </div>
-                </div>
+                <StatSection
+                    title="Educação Especial"
+                    loading={loading}
+                    stats={[
+                        { title: "AEE", value: stats.aee, label: "Turmas" },
+                        { title: "EEE", value: stats.eee, label: "Turmas" }
+                    ]}
+                />
             </div>
         </div>
     );
