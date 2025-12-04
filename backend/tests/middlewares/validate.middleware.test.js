@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { z } from 'zod';
-import { validate } from '../src/middleware/validate.js';
+import { validate } from '../../src/middleware/validate.js';
 
 describe('Middleware de Validação', () => {
     let req, res, next;

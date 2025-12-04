@@ -90,21 +90,25 @@ Abaixo estão os possíveis erros retornados pela API de login e suas causas:
 
 
 
+
 ## 7. Testes Automatizados
 
 ### 7.1 Backend (Jest)
-Os testes do backend foram reorganizados para cobrir cenários de sucesso e erro.
+Os testes do backend estão organizados por responsabilidade em `backend/tests/`:
 
-**Arquivo**: `backend/tests/autenticacao/login_google.test.js`
+- **Autenticação**: `tests/autenticacao/` (Login Google)
+- **Controladores**: `tests/controllers/` (Lógica de negócios)
+- **Middlewares**: `tests/middlewares/` (Validações, Rate Limit)
+- **Funcionalidades**: `tests/funcionalidades/` (Estatísticas, Solicitações)
 
-**Executar:**
+**Executar todos os testes:**
 ```bash
 cd backend
-npm test tests/autenticacao/login_google.test.js
+npm test
 ```
 
 ### 7.2 Frontend (Playwright)
-Testes E2E foram criados para validar o fluxo na interface.
+Testes E2E para validar fluxos completos.
 
 **Arquivo**: `frontend/tests/e2e/login.spec.js`
 
@@ -114,7 +118,8 @@ cd frontend
 npx playwright test tests/e2e/login.spec.js
 ```
 
-## 8. Prevenção
-Para evitar isso no futuro, certifique-se de que o `GOOGLE_CLIENT_ID` em `backend/.env` e o `VITE_GOOGLE_CLIENT_ID` em `frontend/.env` sejam idênticos.
+## 8. Segurança e Prevenção
+- Certifique-se de que `GOOGLE_CLIENT_ID` (Backend) e `VITE_GOOGLE_CLIENT_ID` (Frontend) sejam idênticos.
+- Os arquivos de teste estão localizados fora dos diretórios de código-fonte (`src`) e não são incluídos nos builds de produção, garantindo que scripts de teste não sejam expostos.
 
 

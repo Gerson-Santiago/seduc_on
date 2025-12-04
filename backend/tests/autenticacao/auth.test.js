@@ -2,18 +2,18 @@
 import { jest } from '@jest/globals';
 
 // Mock das dependências
-jest.unstable_mockModule('../src/services/usuario.service.js', () => ({
+jest.unstable_mockModule('../../src/services/usuario.service.js', () => ({
   autenticarGoogle: jest.fn(),
   findUsuarioById: jest.fn()
 }));
 
-jest.unstable_mockModule('../src/utils/jwt.js', () => ({
+jest.unstable_mockModule('../../src/utils/jwt.js', () => ({
   verificarToken: jest.fn(),
 }));
 
 // Importa o controller DEPOIS dos mocks
-const { loginUsuario } = await import('../src/controllers/usuario.controller.js');
-const UsuarioService = await import('../src/services/usuario.service.js');
+const { loginUsuario } = await import('../../src/controllers/usuario.controller.js');
+const UsuarioService = await import('../../src/services/usuario.service.js');
 
 describe('Usuario Controller - Login', () => {
 

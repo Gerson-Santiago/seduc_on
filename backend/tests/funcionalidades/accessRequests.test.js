@@ -17,7 +17,7 @@ jest.unstable_mockModule('@prisma/client', () => ({
 }));
 
 // Dynamic imports are required after unstable_mockModule
-const { default: app } = await import('../src/app.js');
+const { default: app } = await import('../../src/app.js');
 const { default: request } = await import('supertest');
 
 describe('Access Requests API', () => {

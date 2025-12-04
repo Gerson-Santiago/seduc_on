@@ -10,7 +10,7 @@ const mockPrisma = {
 };
 
 // Importa o serviço
-const { getStats } = await import('../src/services/aluno.service.js');
+const { getStats } = await import('../../src/services/aluno.service.js');
 
 describe('Aluno Service - Stats', () => {
 
