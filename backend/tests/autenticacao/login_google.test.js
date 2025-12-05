@@ -54,11 +54,11 @@ describe('Autenticação Google - Backend', () => {
 
         test('Deve retornar 401 para erros genéricos (token inválido)', async () => {
             req.body.token = 'invalid-token';
-            UsuarioService.autenticarGoogle.mockRejectedValue(new Error('Some other error'));
+            UsuarioService.autenticarGoogle.mockRejectedValue(new Error('Token inválido ou expirado'));
 
             await loginUsuario(req, res);
             expect(res.status).toHaveBeenCalledWith(401);
-            expect(res.json).toHaveBeenCalledWith({ error: 'Token inválido ou expirado' });
+            expect(res.json).toHaveBeenCalledWith({ error: 'Erro de login: Token inválido ou expirado' });
         });
     });
 
