@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 // Configurar dotenv para ler do arquivo .env na raiz do backend
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 async function testarIntegracaoSED() {
     console.log("=== Iniciando Teste de Integração SED ===");
@@ -18,7 +18,7 @@ async function testarIntegracaoSED() {
     }
 
     // Importação dinâmica para garantir que as variáveis de ambiente já estejam carregadas
-    const { sedService } = await import("../src/services/sed/sed.service.js");
+    const { sedService } = await import("../../src/services/sed/sed.service.js");
 
     try {
         console.log("\n1. Testando obtenção de token (getToken)...");
