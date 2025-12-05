@@ -1,23 +1,24 @@
-# SEDUC ON - Frontend - Visualização de Dados da Educação (React + Vite)
+# Frontend - SEDUC ON
+> Interface de visualização de dados educacionais (React + Vite).
 
-Interface web para visualização de dados e geração de relatórios da educação municipal de Bertioga.
+## Visão Geral
 
-## Funcionalidades
+Aplicação SPA (Single Page Application) responsiva para exibição de dashboards e relatórios.
 
-*   **Dashboards Interativos**: Gráficos e indicadores visuais sobre a rede de ensino.
-*   **Relatórios de Alunos**:
-    *   Visualização de estatísticas detalhadas (Total, Infantil, Fundamental, EJA, AEE).
-    *   Filtros avançados por escola, série e modalidade.
-*   **Autenticação**: Acesso seguro via Google Login.
+### Stack Tecnológica
+*   **Core:** React 18, Vite
+*   **Routing:** React Router DOM
+*   **Estado:** Context API
+*   **Estilos:** CSS Modules + Vanilla CSS
+*   **Gráficos:** Chart.js
 
-## Tecnologias
+---
 
-*   React
-*   Vite
-*   React Router DOM
-*   Context API (Gerenciamento de Estado)
-*   CSS Modules / Vanilla CSS (Estilização)
-*   Chart.js / React Chartjs 2 (Visualização de Dados)
+## Estrutura
+*   `/src/components`: Componentes reutilizáveis (Cards, Gráficos).
+*   `/src/pages`: Páginas da aplicação (Dashboard, Login).
+*   `/src/context`: Gerenciamento de estado (Auth, Dados).
+*   `/src/services`: Camada de comunicação com API (Axios).
 
 ## Comandos
 
