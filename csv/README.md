@@ -1,65 +1,15 @@
-# Documentação de Importação de CSV
+# Arquivos de Dados CSV
 
-Este diretório contém os arquivos CSV utilizados para popular o banco de dados do sistema SEDUC ON.
+Este diretório contém os arquivos CSV utilizados para alimentar o banco de dados do SEDUC ON.
 
-## Arquivos Principais
+Para instruções detalhadas sobre como atualizar o banco de dados utilizando estes arquivos, consulte o manual principal:
 
-- **ALUNOS.csv**: Contém a lista completa de alunos a serem importados.
-- **dados_das_escolas.csv**: Dados cadastrais das escolas.
-- **consulta_matricula.csv**: Dados de matrícula e turmas.
+👉 **[Manual do Banco de Dados e ETL](../backend/docs/database.md)**
 
-## Como Importar os Dados
+## Arquivos Esperados
 
-Para importar os dados para o banco de dados, utilize os scripts localizados no backend.
-
-**Atenção**: Este processo apaga os dados existentes nas tabelas correspondentes antes de importar os novos.
-
-### Passo a Passo
-
-1.  Navegue até o diretório do backend:
-    ```bash
-    cd ../backend
-    ```
-
-2.  Execute os scripts de importação conforme a necessidade:
-
-    **Importar Alunos:**
-    ```bash
-    node prisma/import_students.js
-    ```
-
-    **Importar Escolas:**
-    ```bash
-    node prisma/import_schools.js
-    ```
-
-    **Importar Matrículas:**
-    ```bash
-    node prisma/import_matricula.js
-    ```
-
-    **Importar Usuários Administrativos:**
-    ```bash
-    node prisma/import_users.js
-    ```
-
-    **Verificar Consistência:**
-    ```bash
-    node scripts/check_consistency.js
-    ```
-
-### O que os scripts fazem
-
-- **import_students.js**: Limpa e popula as tabelas de alunos (`alunos_integracao_all`, `alunos_regular_ei_ef9`, `alunos_aee`, `alunos_eja`).
-- **import_schools.js**: Limpa e popula a tabela `dados_das_escolas`.
-- **import_matricula.js**: Limpa e popula a tabela `consulta_matricula`.
-- **import_users.js**: Importa ou atualiza usuários administrativos (sem apagar os existentes).
-- **check_consistency.js**: Verifica inconsistências nos dados (ex: matrículas órfãs).
-
-## Verificação
-
-Após a importação, você pode verificar os dados rodando:
-
-```bash
-npx prisma studio
-```
+- `ALUNOS.csv`
+- `dados_das_escolas.csv`
+- `consulta_matricula.csv`
+- `usuarios_adm.csv`
+- `usuarios_adm_headers.csv` (Apenas referência de cabeçalho)
