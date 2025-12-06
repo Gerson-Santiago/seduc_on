@@ -12,4 +12,4 @@ Para instruções detalhadas sobre como atualizar o banco de dados utilizando es
 - `dados_das_escolas.csv`
 - `consulta_matricula.csv`
 - `usuarios_adm.csv`
-- `usuarios_adm_headers.csv` (Apenas referência de cabeçalho)
+- `*_headers.csv` (Apenas referência de cabeçalho)

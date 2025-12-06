@@ -349,3 +349,14 @@ model access_requests {
   status             String   @default("pendente") // pendente / aprovado / negado
   solicitado_em      DateTime @default(now())
 }
+
+model inconsistencias_importacao {
+  id             Int      @id @default(autoincrement())
+  arquivo_origem String
+  linha_original Int?
+  dados_json     Json
+  motivo         String
+  ra             String?
+  nome_aluno     String?
+  criado_em      DateTime @default(now())
+}

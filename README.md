@@ -4,7 +4,7 @@
 
 ## 📚 Documentação (Nova Estrutura)
 
-A documentação foi refatorada e unificada. Utilize os links abaixo para navegar:
+A documentação foi unificada. Utilize os links abaixo para navegar:
 
 ### 🚀 Visão Geral e Arquitetura
 *   **[Visão Geral & Roadmap](backend/docs/overview.md)**: Diagnóstico, arquitetura atual e planos de evolução.

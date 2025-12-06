@@ -1,71 +1,33 @@
-# Segurança de Dados e LGPD
+# Segurança e Proteção de Dados
 
-> Análise de riscos, conformidade LGPD e melhores práticas de segurança para o projeto.
+**Data da Última Atualização:** Dezembro 2025
 
-## Índice
-- [1. Análise de Risco (LGPD)](#1-análise-de-risco-lgpd)
-- [2. Vulnerabilidades e Soluções](#2-vulnerabilidades-e-soluções)
-- [3. Plano de Ação](#3-plano-de-ação)
-- [4. Checklist de Conformidade](#4-checklist-de-conformidade)
+Este documento descreve as políticas e implementações de segurança do SEDUC ON, garantindo a proteção dos dados sensíveis dos alunos e o controle de acesso ao sistema.
 
----
+## 🛡 Autenticação e Autorização
 
-## 1. Análise de Risco (LGPD)
+### Google OAuth 2.0
+O sistema utiliza autenticação delegada via Google para garantir identidade segura sem armazenar senhas no banco de dados.
 
-O sistema manipula **Dados Pessoais Sensíveis** de alunos (menores de idade), exigindo conformidade estrita com a LGPD (Lei Geral de Proteção de Dados).
+*   **Fluxo:** O token JWT (`credential`) gerado pelo Google no frontend é enviado para o backend.
+*   **Validação:** O backend utiliza a biblioteca oficial `google-auth-library` para verificar a assinatura e expiração do token.
+*   **Controle de Domínio:** Apenas e-mails institucionais autorizados (configuráveis) podem acessar o sistema.
 
-### Dados Armazenados
-*   ✅ Nome, Endereço, Telefone (Identificação)
-*   🔴 **Dados Sensíveis:** Deficiência, Etnia (Art. 5º, II LGPD)
+### RBAC (Role-Based Access Control)
+O controle de acesso é baseado em perfis de usuário (atualmente simplificado para administradores e usuários padrão).
 
-**Impacto:** Vazamento desses dados pode acarretar multas severas e danos reputacionais críticos.
+## 🔒 Proteção da API (Hardening)
 
----
+### Helmet
+Utilizamos o middleware `helmet` para configurar headers HTTP de segurança padrão, protegendo contra vulnerabilidades comuns como XSS (Cross-Site Scripting) e Sniffing.
 
-## 2. Vulnerabilidades e Soluções
+### Rate Limiting
+Para evitar ataques de força bruta ou DDoS, implementamos limites de requisição:
+*   **Geral:** Limite conservador para rotas públicas.
+*   **Autenticado:** Limite mais permissivo para usuários logados.
 
-### A. Repouso e Trânsito
-| Risco | Nível | Solução Técnica |
-| :--- | :--- | :--- |
-| **Sem Criptografia em Repouso** | Crítico | Ativar criptografia transparente no PostgreSQL (TDE) ou no disco. |
-| **Conexão Sem SSL** | Alto | Forçar `sslmode=require` na string de conexão do PostgreSQL em produção. |
-| **Backups Expostos** | Alto | Criptografar dumps de banco (`gpg`) antes de armazenar. |
+### Sanitização de Dados
+Todas as entradas de dados, especialmente via ETL, passam por higienização rigorosa (`sanitizarTexto`) para prevenir injeção de dados maliciosos ou corrompidos.
 
-### B. Código e Acesso
-| Risco | Nível | Solução Técnica |
-| :--- | :--- | :--- |
-| **Senhas no Histórico** | Crítico | Remover credenciais hardcoded e usar variáveis de ambiente. |
-| **Logs Verborrágicos** | Médio | Implementar sanitização em `console.log` para não gravar objetos de alunos inteiros. |
-
-### C. Auditoria
-*   **Problema:** Falta de rastreabilidade de quem acessou os dados.
-*   **Mitigação:** Criar tabela `audit_log` para registrar leituras e escritas em dados sensíveis.
-
----
-
-## 3. Plano de Ação
-
-### Imediato (Esta Semana)
-1.  [ ] Remover quaisquer senhas hardcoded do código.
-2.  [ ] Configurar `DATABASE_URL` com SSL (`?sslmode=require`).
-3.  [ ] Garantir que backups rotineiros sejam criptografados.
-
-### Médio Prazo
-1.  [ ] Implementar middleware de Auditoria (`audit_log`).
-2.  [ ] Sanitizar logs de aplicação (remover PII).
-3.  [ ] Criar usuário de banco `readonly` para scripts de relatório.
-
----
-
-## 4. Checklist de Conformidade
-
-- [x] **Autenticação Segura:** Uso de OAuth2 (Google) e JWT.
-- [x] **Segregação de Admins:** Tabela de usuários separada de alunos.
-- [x] **Validação de Input:** Uso de `Zod` para evitar injeção de dados inválidos.
-- [x] **Proteção HTTP:** `Helmet` configurado.
-- [ ] **Auditoria (Art. 46):** Pendente implementação.
-- [ ] **Política de Privacidade (Art. 6):** Pendente documentação formal.
-
----
-
-> _Para detalhes técnicos da análise original, consulte o histórico do git._
+## 📝 Auditoria
+O sistema mantem logs de operações críticas e importações falhas na tabela `inconsistencias_importacao`, permitindo rastreabilidade de problemas na carga de dados.
