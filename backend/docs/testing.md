@@ -1,92 +1,52 @@
 # Estratégia de Testes
 
-> Guia completo para execução e manutenção dos testes automatizados (Backend e Frontend).
+**Data da Última Atualização:** Dezembro 2025
 
-## Índice
-- [1. Visão Geral](#1-visão-geral)
-- [2. Backend (Jest)](#2-backend-jest)
-- [3. Frontend (Playwright)](#3-frontend-playwright)
-- [4. Testes Manuais](#4-testes-manuais)
+A qualidade do código no SEDUC ON é garantida através de uma pirâmide de testes abrangente, cobrindo desde unidades isoladas até fluxos de usuário completos.
 
----
+## 🧪 Níveis de Teste
 
-## 1. Visão Geral
+### 1. Testes Unitários (Unit Tests)
+Focam em testar a lógica de regras de negócio e utilitários de forma isolada, sem dependências externas (banco de dados, rede).
+*   **Ferramenta:** Jest
+*   **Localização:** `backend/tests/utils`, `backend/tests/services`
+*   **Exemplo:** Validar se a função `sanitizarTexto` remove espaços corretamente.
 
-O projeto adota uma estratégia de testes em múltiplas camadas:
-*   **Unitários/Integração (Backend):** Foco em regras de negócio, Controllers e Services.
-*   **End-to-End (Frontend):** Testes de fluxo do usuário no navegador.
+### 2. Testes de Integração
+Verificam se os componentes funcionam bem juntos, incluindo a interação com o Banco de Dados (Prisma).
+*   **Ferramenta:** Jest + Supertest
+*   **Localização:** `backend/tests/integration`
+*   **Foco:** Rotas da API e integridade do Banco de Dados.
 
----
+### 3. Testes Ponta-a-Ponta (E2E)
+Simulam o comportamento real do usuário navegando no sistema.
+*   **Ferramenta:** Playwright (Frontend)
+*   **Foco:** Login via Google, navegação no Dashboard, fluxos críticos de cadastro.
 
-## 2. Backend (Jest)
+## 🚀 Como Executar os Testes
 
-Ferramenta: **Jest**  
-Diretório: `backend/tests/`
-
-### Execução
+### Backend (Jest)
 ```bash
-cd backend
-
-# Rodar todos os testes
+# Executar todos os testes
 npm test
 
 # Modo Watch (Desenvolvimento)
 npm test -- --watch
 
-# Relatório de Cobertura
+# Gerar relatório de cobertura
 npm run test:coverage
 ```
 
-### Estrutura dos Testes
-Os arquivos seguem o padrão `*.test.js`.
-
-*   **`autenticacao/`**: Fluxos de login (Google Auth, JWT).
-*   **`controllers/`**: Validação de endpoints e respostas da API.
-*   **`funcionalidades/`**: Regras específicas (ex: Estatísticas).
-*   **`middlewares/`**: Segurança e validação de requisição.
-
-### Padrões de Código
-Utilizamos `jest.unstable_mockModule` para lidar com dependências ESM (ECMAScript Modules).
-
-**Exemplo de Mock em Controller:**
-```javascript
-import { jest } from '@jest/globals';
-
-// 1. Mock antes do import
-jest.unstable_mockModule('../src/services/exemplo.service.js', () => ({
-  metodo: jest.fn()
-}));
-
-// 2. Import dinâmico
-const { controller } = await import('../src/controllers/exemplo.controller.js');
-```
-
----
-
-## 3. Frontend (Playwright)
-
-Ferramenta: **Playwright**  
-Diretório: `frontend/tests/e2e/`
-
-### Execução
+### Frontend (E2E)
 ```bash
-cd frontend
-
-# Rodar testes em "headless mode" (sem abrir navegador)
+# Executar testes Playwright (headless)
 npx playwright test
 
-# Rodar com interface visual (GUI)
+# Executar com interface gráfica
 npx playwright test --ui
 ```
 
-### Principais Cenários
-*   **`login.spec.js`**: Verifica carregamento da tela de login e tratamento de erro na autenticação.
-
----
-
-## 4. Testes Manuais
-
-Localizados em `backend/tests/manual/`, são scripts para validações que exigem interação externa complexa.
-
-*   `test_sed_integration.js`: Validação com sistema externo SED.
-*   `test_sed_route_security.js`: Auditoria de rotas protegidas.
+## 📏 Padrões de Qualidade
+*   **Nomes em Português:** Todos os testes (`describe`, `test`) devem ser descritos em Português Brasileiro.
+*   **AAA:** Arrange, Act, Assert. Organize o código do teste nestas três seções claras.
+*   **Mocking:** Use mocks para serviços externos (como Google Auth) para evitar dependência de rede nos testes unitários.
