@@ -1,4 +1,5 @@
 // backend/src/services/aluno.service.js
+import { alunoSchema, alunoUpdateSchema } from '../schemas/aluno.schema.js';
 
 // Função para buscar estatísticas agrupadas por escola
 export async function getStats(prisma) {
@@ -121,15 +122,23 @@ export async function findAlunoByRa(prisma, ra) {
 // Assumindo edição direta na tabela final por enquanto.
 
 export async function createAluno(prisma, dados) {
+  // 🛡️ SECURITY: Mass Assignment Protection
+  // Valida e filtra apenas os campos permitidos pelo Schema.
+  // Campos extras injetados (ex: isAdmin) serão removidos automaticamente.
+  const dataValidada = alunoSchema.parse(dados);
+
   return await prisma.alunos_regular_ei_ef9.create({
-    data: dados,
+    data: dataValidada, // Usa apenas dados da whitelist
   });
 }
 
 export async function updateAluno(prisma, ra, dados) {
+  // 🛡️ SECURITY: Mass Assignment Protection
+  const dataValidada = alunoUpdateSchema.parse(dados);
+
   return await prisma.alunos_regular_ei_ef9.update({
     where: { ra },
-    data: dados,
+    data: dataValidada,
   });
 }
 
