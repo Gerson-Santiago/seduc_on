@@ -1,7 +1,11 @@
 // backend/src/utils/jwt.js
 import jwt from 'jsonwebtoken';
 
-const SECRET = process.env.JWT_SECRET || 'segredo-supersecreto';
+const SECRET = process.env.JWT_SECRET;
+if (!SECRET) {
+  throw new Error('FATAL: JWT_SECRET não definida no ambiente.');
+}
+
 
 export function gerarToken(usuario) {
   return jwt.sign(
