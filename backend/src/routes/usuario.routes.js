@@ -3,12 +3,12 @@ import * as UsuarioController from '../controllers/usuario.controller.js';
 import { verificarToken, verificarAdmin } from '../middleware/authMiddleware.js';
 import { validate } from '../middleware/validate.js';
 import { usuarioSchema, usuarioUpdateSchema } from '../schemas/usuario.schema.js';
+import { loginLimiter } from '../middleware/rateLimiter.js';
 
 const router = Router();
 
 // Rotas de Autenticação (Públicas)
-// Rotas de Autenticação (Públicas)
-router.post('/login', UsuarioController.loginUsuario);
+router.post('/login', loginLimiter, UsuarioController.loginUsuario);
 router.post('/logout', UsuarioController.logoutUsuario);
 
 // Rotas protegidas
