@@ -19,7 +19,7 @@ export default function AdminAccessRequests() {
         try {
             setLoading(true);
             const res = await fetch(`${API_BASE_URL}/access-requests`, {
-                headers: { Authorization: `Bearer ${user?.token}` }
+                credentials: 'include'
             });
             if (!res.ok) throw new Error('Erro ao buscar solicitações');
             const data = await res.json();
@@ -37,7 +37,7 @@ export default function AdminAccessRequests() {
         try {
             const res = await fetch(`${API_BASE_URL}/access-requests/${id}/${action}`, {
                 method: 'PUT',
-                headers: { Authorization: `Bearer ${user?.token}` }
+                credentials: 'include'
             });
             if (!res.ok) throw new Error('Erro ao processar ação');
 

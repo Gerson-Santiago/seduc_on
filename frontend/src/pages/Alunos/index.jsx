@@ -5,7 +5,7 @@ import { useAuth, API_BASE_URL } from '../../context/AuthContext';
 import './Alunos.css';
 
 const Alunos = () => {
-  const { token } = useAuth();
+  const { user } = useAuth();
   const [stats, setStats] = useState({ global: {}, schools: [] });
   const [alunos, setAlunos] = useState([]);
   const [loadingStats, setLoadingStats] = useState(true);
@@ -23,7 +23,7 @@ const Alunos = () => {
     const fetchStats = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/alunos/stats`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include',
         });
         if (response.ok) {
           const data = await response.json();
@@ -44,7 +44,7 @@ const Alunos = () => {
       }
     };
     fetchStats();
-  }, [token]);
+  }, [user]);
 
   // Fetch Alunos
   useEffect(() => {
@@ -55,7 +55,7 @@ const Alunos = () => {
         if (filtroSerie) url += `&filtro_serie=${encodeURIComponent(filtroSerie)}`;
 
         const response = await fetch(url, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include',
         });
         if (response.ok) {
           const data = await response.json();
@@ -71,7 +71,7 @@ const Alunos = () => {
       }
     };
     fetchAlunos();
-  }, [token, filtroSerie, page]);
+  }, [user, filtroSerie, page]);
 
   // Totais Gerais
   const schools = stats.schools || [];

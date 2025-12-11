@@ -5,7 +5,7 @@ import { useAuth, API_BASE_URL } from '../../context/AuthContext';
 import './BuscaAluno.css';
 
 const BuscaAluno = () => {
-    const { token } = useAuth();
+    const { user } = useAuth(); // Changed from token to user, although not strictly used here, good practice. Or could just remove.
 
     // Estados de busca
     const [ra, setRa] = useState('');
@@ -42,7 +42,7 @@ const BuscaAluno = () => {
             if (queryString) url += `?${queryString}`;
 
             const response = await fetch(url, {
-                headers: { Authorization: `Bearer ${token}` },
+                credentials: 'include',
             });
 
             if (response.ok) {
