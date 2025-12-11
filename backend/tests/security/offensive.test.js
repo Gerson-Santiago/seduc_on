@@ -45,6 +45,14 @@ describe('🔒 Security Offensive Tests (TDS)', () => {
             const res = await request(app).get('/api/alunos');
             expect(res.status).toBe(401);
         });
+
+        test('DEVE BLOQUEAR acesso com token INVÁLIDO/FORJADO (Esperado: 401)', async () => {
+            const res = await request(app)
+                .get('/api/alunos')
+                .set('Authorization', `Bearer ${tokenInvalido}`);
+
+            expect(res.status).toBe(401);
+        });
     });
 
     describe('2. Mass Assignment (Dados Indesejados)', () => {
