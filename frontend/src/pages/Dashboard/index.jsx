@@ -28,12 +28,9 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const token = user?.token || JSON.parse(localStorage.getItem('seduc_on_user'))?.token;
-                if (!token) return;
-
                 console.log('Fetching stats from:', `${API_BASE_URL}/escolas/stats`);
                 const response = await fetch(`${API_BASE_URL}/escolas/stats`, {
-                    headers: { Authorization: `Bearer ${token}` }
+                    credentials: 'include'
                 });
 
                 console.log('Response status:', response.status);
