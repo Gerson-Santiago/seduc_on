@@ -22,14 +22,19 @@ export function verificarToken(req, res, next) {
     }
 
     // 2. Verificação via Token JWT (Usuário Padrão)
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).json({ error: 'Token não fornecido' });
+    // PRIORIDADE: Cookie HttpOnly (Novo Padrão Seguro)
+    let token = req.cookies?.token;
+
+    // FALLBACK: Header Authorization (Para compatibilidade ou clientes sem cookie)
+    if (!token) {
+        const authHeader = req.headers.authorization;
+        if (authHeader) {
+            token = authHeader.split(' ')[1];
+        }
     }
 
-    const token = authHeader.split(' ')[1];
     if (!token) {
-        return res.status(401).json({ error: 'Formato de token inválido' });
+        return res.status(401).json({ error: 'Token não fornecido' });
     }
 
     const payload = verifyJwt(token);

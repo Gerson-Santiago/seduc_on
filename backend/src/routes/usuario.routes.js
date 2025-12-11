@@ -7,7 +7,9 @@ import { usuarioSchema, usuarioUpdateSchema } from '../schemas/usuario.schema.js
 const router = Router();
 
 // Rotas de Autenticação (Públicas)
+// Rotas de Autenticação (Públicas)
 router.post('/login', UsuarioController.loginUsuario);
+router.post('/logout', UsuarioController.logoutUsuario);
 
 // Rotas protegidas
 router.use(verificarToken);
