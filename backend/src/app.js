@@ -1,9 +1,9 @@
 // backend/src/app.js
-// src/app.js
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser'; // Moved to top
 import { PrismaClient } from '@prisma/client';
 import usuarioRoutes from './routes/usuario.routes.js';
 import alunoRoutes from './routes/aluno.routes.js';
@@ -14,6 +14,7 @@ import { getBackendConfig } from './config/environments.js'
 import { apiLimiter } from './middleware/rateLimiter.js';
 // importação das rotas da SED @testeAPI_SED
 import sedRoutes from './routes/sed.routes.js';
+import logger from './utils/logger.js'; // Importar Logger Seguro
 
 
 const { ALLOWED_ORIGINS } = getBackendConfig()
@@ -34,10 +35,22 @@ app.use(helmet({
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }))
 
 app.use(express.json());
-app.use(morgan('combined'));
+
+// Morgan streamando para o Winston (como info)
+app.use(morgan('combined', {
+  stream: {
+    write: (message) => logger.info(message.trim())
+  }
+}));
+
+
+// ... (other imports)
 
 // Aplicar Rate Limiting
 app.use(apiLimiter);
+
+// Parsear Cookies (Necessário para Auth Segura)
+app.use(cookieParser());
 
 // Injetar prisma
 app.use((req, res, next) => {
@@ -60,7 +73,7 @@ app.get('/api/health', async (req, res) => {
     });
   } catch (error) {
     // Se a query falhar, o banco está offline
-    console.error("Database health check failed:", error);
+    logger.error("Database health check failed:", error); // Usando logger seguro
     res.status(503).json({
       backend: 'online',
       database: 'offline',
@@ -79,6 +92,16 @@ app.use('/api/access-requests', accessRequestsRouter);
 
 // Middleware de erro
 app.use(notFound);
+
+// Intercepta erros para logar antes do handler final (se necessário, mas o errorHandler pode fazer isso)
+// Vamos deixar o errorHandler lidar, mas idealmente ele deveria usar o logger.
+// Como não vou editar o error.js agora, adicionamos um interceptor aqui ou assumimos que o error.js logs to console?
+// Melhor: editar o error.js seria ideal, mas vou adicionar um middleware de log de erro ANTES do errorHandler
+app.use((err, req, res, next) => {
+  logger.error(`Erro na requisição ${req.method} ${req.url}`, { error: err.message, stack: err.stack });
+  next(err);
+});
+
 app.use(errorHandler);
 
 export default app;
