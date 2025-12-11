@@ -1,55 +1,77 @@
 # SEDUC ON - Plataforma de Gestão Educacional
 
-> Sistema de visualização de dados e gestão para a Secretaria de Educação de Bertioga.
+> **Enterprise Data Management System** para a Secretaria de Educação de Bertioga.
 
-## 📚 Documentação (Nova Estrutura)
+O **SEDUC ON** é uma plataforma de alta performance projetada para centralização, processamento e visualização de dados educacionais. O sistema implementa uma arquitetura robusta para suportar ingestão massiva de dados (ETL) e entrega de informações em tempo real.
 
-A documentação foi unificada. Utilize os links abaixo para navegar:
-
-### 🚀 Visão Geral e Arquitetura
-*   **[Visão Geral & Roadmap](backend/docs/overview.md)**: Diagnóstico, arquitetura atual e planos de evolução.
-*   **[Variáveis de Ambiente](ENV_VARS.md)**: Configuração de `.env` (Backend e Frontend).
-*   **[Requisitos de Infra](INFRA_REQUIREMENTS.md)**: Versões de software e rede.
-
-### 🛠️ Backend & API
-*   **[Referência da API](backend/docs/api-reference.md)**: Endpoints, autenticação e exemplos.
-*   **[Banco de Dados & ETL](backend/docs/database.md)**: Schema, comandos Prisma e importação de CSV.
-*   **[Segurança & LGPD](backend/docs/security.md)**: Análise de riscos e boas práticas.
-*   **[Testes](backend/docs/testing.md)**: Guia de execução de testes (Unitários e E2E).
-*   **[Performance](backend/docs/performance/results.md)**: Relatórios de otimização e benchmarks.
-
-### 💻 Frontend
-*   **[Documentação Frontend](frontend/README.md)**: Estrutura, componentes e build.
-
-### 📂 Estrutura de Pastas
-*   `/backend`: API Node.js/Express + Prisma.
-*   `/frontend`: SPA React + Vite.
-*   `/csv`: Arquivos de dados brutos para importação.
-*   `/docs`: Documentação técnica detalhada.
+| Componente | Stack Tecnológica | Arquitetura |
+| :--- | :--- | :--- |
+| **Backend** | Node.js (v22), Express 5.x, Prisma ORM | Three-Tier Layered Modular |
+| **Frontend** | React, Vite, TailwindCSS | SPA (Single Page Application) |
+| **Database** | PostgreSQL 15+ | Relational Data Warehouse |
+| **Segurança** | OAuth2, JWT (HttpOnly), Helmet | Defense in Depth |
 
 ---
 
-## 🚦 Guia Rápido (Quickstart)
+## 📚 Documentação Técnica Corporativa
 
-### 1. Configuração Inicial
-Certifique-se de configurar as variáveis de ambiente conforme o guia [ENV_VARS.md](ENV_VARS.md).
+A documentação do projeto foi estruturada para refletir os padrões de engenharia de software adotados.
 
-### 2. Rodar o Projeto (Desenvolvimento)
-Utilize o script de conveniência na raiz:
+### 🏛️ Arquitetura e Engenharia
+*   **[Relatório de Segurança e Arquitetura](backend/docs/RELATORIO_SEGURANCA_ARQUITETURA.md)**: (⭐ **Start Here**) Documento definitivo sobre o design solution, auditoria de segurança e padrões arquiteturais.
+*   **[Visão Geral do Sistema](backend/docs/overview.md)**: Roadmap estratégico e análise funcional.
+*   **[Especificação de Infraestrutura](INFRA_REQUIREMENTS.md)**: Matriz de compatibilidade e requisitos de ambiente.
+
+### 🔐 Segurança e Autenticação
+*   **[Políticas de Segurança](backend/docs/security.md)**: Detalhamento de protocolos de defesa, sanitização e conformidade.
+*   **[Manual de Autenticação](backend/docs/AUTH_CONFIG.md)**: Implementação do fluxo OAuth2 com Cookies Seguros.
+
+### 🛠️ Operacional e Desenvolvimento
+*   **[Referência da API](backend/docs/api-reference.md)**: Catálogo de endpoints RESTful.
+*   **[Engenharia de Dados (ETL/DB)](backend/docs/database.md)**: Modelagem de dados e pipelines de ingestão.
+*   **[Guia de Testes](backend/docs/testing.md)**: Estratégias de Quality Assurance (QA).
+
+---
+
+## 🚀 Quickstart (Ambiente de Desenvolvimento)
+
+### Pré-requisitos
+Consulte [INFRA_REQUIREMENTS.md](INFRA_REQUIREMENTS.md) para garantir conformidade de ambiente.
+
+### Inicialização
+O projeto utiliza scripts de automação para orquestrar os serviços.
 
 ```bash
+# Iniciar todo o ecossistema (Backend + Frontend)
 ./start_seduc_on.sh dev
 ```
-Ou manualmente em cada pasta:
 
+### Configuração Manual
+Para execução granular dos serviços:
+
+**Backend (API & Workers)**
 ```bash
-# Backend (Porta 3001)
-cd backend && npm run dev
+cd backend
+npm install
+npm run dev # Porta 3001
+```
 
-# Frontend (Porta 5173)
-cd frontend && npm run dev
+**Frontend (Dashboard)**
+```bash
+cd frontend
+npm install
+npm run dev # Porta 5173
 ```
 
 ---
 
-> **Status:** 🚧 Em Refatoração e Otimização
+## 📦 Estrutura de Diretórios (Source Tree)
+
+*   `/backend`: Núcleo da aplicação baseada em **Modular Pattern**.
+*   `/frontend`: Interface de usuário reativa.
+*   `/csv`: Staging area para ingestão de dados legados.
+*   `/docs`: Repositório central de conhecimento técnico.
+
+---
+
+> **Status do Projeto:** Ativo e em Evolução Contínua.

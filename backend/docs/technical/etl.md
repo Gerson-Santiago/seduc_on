@@ -1,54 +1,59 @@
-# Arquitetura de ETL (Extração, Transformação e Carga)
+# Data Engineering & ETL Pipelines
 
-**Data da Última Atualização:** Dezembro 2025
+**Classificação:** Data Architecture
+**Pattern:** Extract-Transform-Load (ETL)
+**Estratégia:** Stream Processing & Bulk Loading
 
-Este documento descreve o processo de importação de dados no sistema SEDUC ON, que segue a arquitetura **MSC (Model-Service-Controller)** para garantir reutilização de código e manutenção simplificada.
+Este documento detalha a engenharia de dados responsável pela ingestão e processamento de grandes volumes de dados legados (CSV) no ecossistema SEDUC ON.
 
-## 🏗 Visão Geral
+## 1. Pipeline Architecture
 
-O processo de ETL não é isolado; ele é parte integrante do sistema, compartilhando utilitários e lógica com a API.
+O pipeline foi desenhado para maximizar o throughput de escrita e garantir a integridade referencial final, utilizando uma arquitetura de **Staging Buffer**.
 
 ```mermaid
-graph TD
-    CSV[Arquivo CSV] -->|Leitura Stream| Script(import_ALUNOS.js)
-    API[Rota da API] --> Controller(Aluno Controller)
-    
-    subgraph Shared Logic [Lógica Compartilhada]
-        Script --> Utils(src/utils/formatters.js)
-        Controller --> Utils
-    end
-    
-    subgraph Data Persistence [Persistência]
-        Script -->|Batch Insert| Staging(Tabela de Integração)
-        Staging -->|SQL Queries| FinalTables(Tabelas Finais)
-    end
+graph LR
+    Source[Raw CSV Files] -->|Node.js Stream| Extractor[Stream CLI]
+    Extractor -->|Sanitize & Validate| Transformer[Logic Layer]
+    Transformer -->|Bulk Copy| Staging[Staging Table]
+    Staging -->|SQL Transaction| DW[Normalized Tables]
 ```
 
-## 📂 Estrutura de Arquivos
+### 1.1 Camada de Extração (Extraction Layer)
+*   **Tecnologia:** Node.js Streams (`fs.createReadStream` + `csv-parser`).
+*   **Justificativa:** O processamento via Stream permite a leitura de arquivos arbitrariamente grandes (GBs) com consumo de memória constante (`O(1)`), evitando *Heap Out of Memory*.
 
-*   **Orquestrador:** `backend/prisma/import_ALUNOS.js`
-    *   Script principal que lê o arquivo, chama os validadores e insere no banco.
-*   **Utilitários (Transform):** `backend/src/utils/formatters.js`
-    *   Contém funções puras como `sanitizarTexto`, `converterData`, `converterIntSeguro`.
-    *   **Importante:** Estas funções são usadas tanto pelo script quanto pela API para garantir consistência.
-*   **Queries (Load):** `backend/src/etl/queries/distribution.queries.js`
-    *   Armazena comandos SQL complexos e massivos para distribuir dados da tabela temporária para as tabelas finais.
+### 1.2 Camada de Transformação (Transformation Layer)
+*   **Localização:** `src/utils/formatters.js`
+*   **Lógica Compartilhada:** As funções de sanitização (`sanitizarTexto`, `parseDate`) são isomorfas, utilizadas tanto pelo ETL quanto pela API REST para garantir consistência de dados.
+*   **Validação:** Registros que violam regras de negócio são desviados para `inconsistencias_importacao` (Dead Letter Queue concept).
 
-## 🔄 Fluxo de Execução
+### 1.3 Camada de Carga (Load Layer)
+*   **Estratégia:** Two-Phase Commit simplificado.
+    1.  **Staging Load:** Inserção rápida em tabelas sem constraints (`alunos_integracao_all`).
+    2.  **Distribution:** Queries SQL massivas (`INSERT INTO ... SELECT`) movem os dados para as tabelas de domínio (`alunos_regular`, `alunos_aee`), aplicando normalização final.
 
-1.  **Extract (Extração):**
-    *   Leitura do arquivo CSV usando *streams* (pipe) para suportar arquivos gigantes sem estourar a memória.
-2.  **Transform (Transformação):**
-    *   Cada linha passa pelo `sanitizarTexto` para limpeza de espaços.
-    *   Conversão de tipos (datas, inteiros) usando utilitários seguros.
-    *   Validação de erros (campos obrigatórios vazios, datas inválidas).
-    *   Registros inválidos são separados para a tabela `inconsistencias_importacao`.
-3.  **Load (Carga):**
-    *   Inserção em lote (Batch Insert) na tabela `alunos_integracao_all`.
-    *   Execução das queries de distribuição para povoar `alunos_regular_ei_ef9`, `alunos_aee` e `alunos_eja`.
+## 2. Componentes do Subsistema
 
-## 🛠 Como Executar
+| Componente | Path | Função Técnica |
+| :--- | :--- | :--- |
+| **Orchestrator** | `backend/prisma/import_ALUNOS.js` | Entrypoint CLI para execução do pipeline. |
+| **Logic Unit** | `src/utils/formatters.js` | Pure Functions para limpeza de strings e tipos. |
+| **SQL Queries** | `src/etl/queries/*` | Raw SQL otimizado para distribuição de dados. |
+
+## 3. Operational Guide
+
+### Execução Manual do Pipeline
+O ETL é invocado via CLI Node.js. Certifique-se de que o arquivo alvo existe no diretório `/csv`.
 
 ```bash
+# Execução Padrão
 node backend/prisma/import_ALUNOS.js
+
+# Flags Opcionais (Futuro)
+# --dry-run: Simula validação sem escrita
+# --verbose: Logs detalhados de cada chunk
 ```
+
+### Monitoramento
+O sucesso da operação é indicado pelo exit code `0`. Falhas críticas retornam `1`.
+Erros de linha (Row Level Errors) **não** abortam o processo, mas incrementam o contador de inconsistências.

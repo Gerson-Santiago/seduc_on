@@ -1,49 +1,53 @@
-# Banco de Dados e Estratégia de Dados
+# Arquitetura de Persistência e Modelagem de Dados
 
-**Data da Última Atualização:** Dezembro 2025
+**Classificação:** Data Engineering & Schema Documentation
+**Tecnologia:** PostgreSQL 15+ & Prisma ORM
 
-Este documento detalha a estrutura do banco de dados (PostgreSQL) e a estratégia de gerenciamento de dados do SEDUC ON, incluindo o uso do Prisma ORM e tabelas de integração.
+Este documento detalha a estratégia de persistência de dados, incluindo pipelines de ingestão (ETL) e modelagem relacional.
 
-## 🗄 Arquitetura de Dados
+## 1. Estratégia de Ingestão de Dados (ETL Strategy)
 
-O sistema utiliza uma abordagem híbrida com **Tabelas de Integração (Staging)** e **Tabelas Normalizadas**.
+O sistema adota uma arquitetura de "Staging Area" para processar cargas massivas de dados legados sem impactar a performance de leitura das tabelas principais.
 
-### 1. Tabelas de Integração (Staging)
-Tabelas temporárias otimizadas para escrita rápida (Bulk Insert). Recebem os dados brutos dos arquivos CSV antes de serem processados.
-*   **Nome:** `alunos_integracao_all`
-*   **Propósito:** Buffer de entrada. Não possui chaves estrangeiras restritivas para permitir importação rápida.
-*   **Ciclo de Vida:** Truncada (`TRUNCATE`) no início de cada importação.
+### 1.1 Tabelas de Integração (Staging Architecture)
+Tabelas otimizadas para **High-Throughput Write Operations** (Bulk Insert).
+*   **Recurso:** `alunos_integracao_all`
+*   **Design Pattern:** Tabela Temporária Persistente.
+*   **Restrições:** Baixa complexidade de constraints (FKs relaxadas) para maximizar velocidade de ingestão.
+*   **Ciclo de Vida:** `TRUNCATE` -> `COPY/INSERT` -> `VALIDATE` -> `MIGRATE`.
 
-### 2. Tabela de Inconsistências
-Armazena registros que falharam na validação inicial (ETL).
-*   **Nome:** `inconsistencias_importacao`
-*   **Colunas Chave:** `ra`, `nome_aluno`, `motivo`, `dados_json` (payload original).
-*   **Uso:** Auditoria e correção de dados.
+### 1.2 Auditoria de Qualidade de Dados
+Registros rejeitados durante a validação de regras de negócio são segregados para análise posterior.
+*   **Recurso:** `inconsistencias_importacao`
+*   **Schema:** Armazena o payload original (`dados_json`) e o motivo da rejeição.
+*   **Uso:** Análise de causa raiz e correção na fonte (CSV).
 
-### 3. Tabelas Finais (Domínio)
-Tabelas otimizadas para leitura e consumo pela aplicação.
-*   `alunos_regular_ei_ef9`: Alunos do Ensino Fundamental e Infantil.
-*   `alunos_aee`: Alunos de Atendimento Educacional Especializado.
-*   `alunos_eja`: Alunos da Educação de Jovens e Adultos.
+### 1.3 Tabelas de Domínio (Normalized Schema)
+Tabelas finais em 3ª Forma Normal (3NF), otimizadas para leitura (`SELECT`) pela aplicação.
+*   `alunos_regular_ei_ef9`: Ensino Fundamental e Infantil.
+*   `alunos_aee`: Atendimento Educacional Especializado.
+*   `alunos_eja`: Educação de Jovens e Adultos.
 
-> **Nota:** A separação em tabelas específicas por modalidade facilita a consulta e relatórios específicos no frontend.
+## 2. Camada de Acesso a Dados (Data Access Layer)
 
-## 🛠 Prisma ORM
+O acesso ao banco de dados é abstraído estritamente através do **Prisma ORM Client**.
 
-O projeto utiliza o Prisma como única fonte de verdade para o schema do banco (`schema.prisma`).
+### 2.1 Schema Management (Single Source of Truth)
+O arquivo `schema.prisma` é a definição canônica da estrutura do banco.
 
-### Comandos Essenciais
+### 2.2 Operações de Engenharia
 ```bash
-# Sincronizar banco com schema (Dev)
+# Synchronization: Aplica estado do schema ao banco de desenvolvimento
 npx prisma db push
 
-# Gerar cliente tipado (após alteração de schema)
+# Client Generation: Atualiza tipagem estática (TypeScript/JSDoc)
 npx prisma generate
 
-# Visualizar dados (GUI)
+# Data Explorer: Interface GUI para inspeção de dados
 npx prisma studio
 ```
 
-## 🔒 Integridade e Performance
-*   **Índices:** As tabelas finais possuem índices no `ra` (Registro do Aluno) e `nome_escola` para buscas rápidas.
-*   **Transações:** Operações críticas utilizam transações do Prisma (`$transaction`) ou SQL Raw quando a performance é prioritária.
+## 3. Otimização e Indexação
+
+*   **Índices Compostos (Composite Indices):** Estratégia aplicada em tabelas de grande volume para cobrir queries frequentes (`ra`, `nome_escola`).
+*   **Atomicidade:** Operações de escrita complexas são envelopadas em transações (`$transaction`) para garantir propriedades ACID.
