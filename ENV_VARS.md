@@ -1,83 +1,59 @@
-# Variáveis de Ambiente
-> Guia de referência e configuração das variáveis de ambiente para Backend e Frontend.
+# Matriz de Variáveis de Ambiente
 
-## Índice
-- [1. Visão Geral](#visão-geral)
-- [2. Configuração do Backend](#configuração-do-backend)
-- [3. Configuração do Frontend](#configuração-do-frontend)
-- [4. Solução de Problemas](#solução-de-problemas)
+**Classificação:** Configuration Management
+**Escopo:** Backend & Frontend (Vite)
 
----
+Este documento define a taxonomia das variáveis de configuração do sistema. A separação estrita entre segredos de servidor e chaves públicas de cliente é mandatória.
 
-## Visão Geral
+## 1. Backend Runtime Configuration
+**Arquivo:** `backend/.env`
+**Carregamento:** Node.js native (`--env-file`)
 
-O projeto utiliza uma estratégia de **Configuração Distribuída**, onde Frontend e Backend possuem seus próprios arquivos de configuração. Isso garante segurança (segredos do backend não vazam no build do frontend) e desacoplamento.
+### 1.1 Identidade e Segurança (Critical Secrets)
 
-*   **Backend:** Usa `dotenv` para carregar variáveis em tempo de execução.
-*   **Frontend:** Usa o sistema de `modes` do Vite (`.env`, `.env.development`, `.env.production`).
+| Chave | Obrigatoriedade | Descrição Técnica |
+| :--- | :---: | :--- |
+| `JWT_SECRET` | **CRÍTICO** | Chave simétrica (HMAC) para assinatura de Tokens de Sessão. Mínimo 256 bits de entropia. |
+| `GOOGLE_CLIENT_ID` | **MANDATÓRIO** | Credencial de Identidade (OIDC) do Provedor (GCP). |
+| `GOOGLE_REDIRECT_URI`| **MANDATÓRIO** | Callback URI autorizada na console do GCP. Deve corresponder exatamente à rota de callback. |
 
----
+### 1.2 Persistência e Rede
 
-## Configuração do Backend
-
-Arquivo: `backend/.env`
-
-Para iniciar, copie o exemplo:
-```bash
-cd backend
-cp .env.example .env
-```
-
-### Referência das Variáveis
-
-| Variável | Descrição | Exemplo |
+| Chave | Padrão | Descrição Técnica |
 | :--- | :--- | :--- |
-| **AMBIENTE** | | |
-| `NODE_ENV` | Define o modo de execução (`development`, `production`, `preview`). | `development` |
-| `PORT` | Porta onde o servidor Express irá rodar. | `3001` |
-| **CORS & FRONTEND** | | |
-| `FRONTEND_URL` | URL base onde o frontend está rodando (usado para redirecionamentos). | `http://localhost:5173` |
-| `ALLOWED_ORIGINS` | Lista de origens permitidas no CORS (separadas por vírgula). | `http://localhost:5173` |
-| **AUTENTICAÇÃO & GOOGLE** | | |
-| `GOOGLE_CLIENT_ID` | ID do Cliente obtido no Google Cloud Console. | `123...apps.googleusercontent.com` |
-| `GOOGLE_REDIRECT_URI` | Deve coincidir exatamente com a URI autorizada no Google Cloud. | `/aee/auth/callback` |
-| `JWT_SECRET` | Chave secreta para assinar tokens JWT. Use uma string longa e aleatória. | `super-secret-key` |
-| **BANCO DE DADOS** | | |
-| `DATABASE_URL` | Connection string do PostgreSQL. | `postgresql://user:pass@host:5432/db` |
-| **SETUP INICIAL** | | |
-| `SUPERADMIN_EMAIL` | Email para o primeiro usuário admin. | `admin@seduc.sp.gov.br` |
-| `SUPERADMIN_NAME` | Nome do primeiro usuário admin. | `Admin Seduc` |
-| **INTEGRAÇÃO SED** | | |
-| `URL_VALIDASED` | Endpoint da API do SED. | `https://.../api` |
-| `LOGIN_AUTH_SED` | Rota de login do SED. | `login` |
-| `SED_AUTH` | Rota de auth do SED. | `auth` |
+| `DATABASE_URL` | N/A | DSN de conexão PostgreSQL. Formato: `postgresql://user:pass@host:port/db?schema=public` |
+| `PORT` | `3001` | Porta de escuta do Servidor HTTP (Express). |
+| `NODE_ENV` | `development` | Define otimizações de runtime. Valores: `production` | `development` | `test`. |
+
+### 1.3 Política de Cross-Origin (CORS)
+
+| Chave | Descrição Técnica |
+| :--- | :--- |
+| `ALLOWED_ORIGINS` | Lista de origens permitidas (Comma-Separated). Ex: `https://app.seduc.sp.gov.br,http://localhost:5173` |
+| `FRONTEND_URL` | Origem canônica do Frontend para redirecionamentos de Auth. |
 
 ---
 
-## Configuração do Frontend
+## 2. Frontend Build Configuration
+**Arquivo:** `frontend/.env.*`
+**Injeção:** Build-time (Vite Static Replacement)
 
-Arquivo: `frontend/.env` (ou `.env.development`, `.env.production`)
+> [!CAUTION]
+> Variáveis prefixadas com `VITE_` são expostas publicamente no bundle JavaScript. **NUNCA** inclua chaves privadas aqui.
 
-As variáveis do frontend são embutidas no código durante o build do Vite. Apenas variáveis iniciadas com `VITE_` são expostas.
+| Chave | Descrição Técnica |
+| :--- | :--- |
+| `VITE_API_BASE_URL` | Endpoint raiz da API REST (Gateway). |
+| `VITE_GOOGLE_CLIENT_ID` | Public Client ID para inicialização do SDK Google Identity. |
+| `VITE_GOOGLE_REDIRECT_URI` | Deve coincidir com a configuração do Backend para evitar `redirect_uri_mismatch`. |
+| `VITE_APP_URL` | Canônico público da aplicação SPA. |
 
-### Referência das Variáveis
-
-| Variável | Descrição | Exemplo |
-| :--- | :--- | :--- |
-| `VITE_APP_URL` | URL onde o frontend está sendo servido. | `http://localhost:5173` |
-| `VITE_API_BASE_URL` | URL base da API do Backend. | `http://localhost:3001/api` |
-| `VITE_GOOGLE_CLIENT_ID` | ID do Cliente Google (deve ser o mesmo do backend). | `123...apps.googleusercontent.com` |
-| `VITE_GOOGLE_REDIRECT_URI` | URI de callback (deve apontar para o frontend). | `http://localhost:5173/auth/callback` |
-| `VITE_LOGIN_PATH` | Caminho interno para a rota de login. | `/login` |
-| `VITE_DASHBOARD_PATH` | Caminho interno para o dashboard. | `/dashboard` |
-| `VITE_INSTITUTION_DOMAIN` | Domínio da instituição (para personalização). | `seducbertioga.com.br` |
-
----
-
-## Solução de Problemas
+## 3. Diagnóstico de Configuração
 
 ### Erro: `Google Auth Error: redirect_uri_mismatch`
-Verifique se `GOOGLE_REDIRECT_URI` (Backend) e `VITE_GOOGLE_REDIRECT_URI` (Frontend) estão idênticos ao configurado no Google Cloud Console. Lembre-se que em produção, `localhost` não funciona.
+**Causa:** Discrepância entre a URI enviada pelo Frontend (`VITE_GOOGLE_REDIRECT_URI`) e a registrada no Backend/GCP.
+**Resolução:** Garantir integridade referencial entre as variáveis de ambiente e o console do Google Cloud.
 
-### Erro: Variável `undefined` no Frontend
-Certifique-se de que a variável começa com `VITE_`. Se você alterou o `.env`, reinicie o servidor de desenvolvimento (`npm run dev`), pois o Vite não recarrega variáveis de ambiente "a quente" instantaneamente em todos os casos.
+### Erro: Variável não definida no Frontend
+**Causa:** Ausência do prefixo `VITE_` ou cache de build.
+**Resolução:** Reiniciar processo de build (`npm run dev`) após alterações em `.env`.

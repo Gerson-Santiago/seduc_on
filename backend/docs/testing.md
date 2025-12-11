@@ -1,52 +1,62 @@
-# Estratégia de Testes
+# Estratégia de Qualidade e Testes (QA Strategy)
 
-**Data da Última Atualização:** Dezembro 2025
+**Classificação:** Quality Assurance Standard
+**Frameworks:** Jest (Unit/Integration), Playwright (E2E)
 
-A qualidade do código no SEDUC ON é garantida através de uma pirâmide de testes abrangente, cobrindo desde unidades isoladas até fluxos de usuário completos.
+A garantia de qualidade no SEDUC ON baseia-se no modelo **Test Pyramid** invertido para modernidade, priorizando testes de integração rápidos e E2E críticos.
 
-## 🧪 Níveis de Teste
+## 1. Níveis de Teste (Test Layers)
 
-### 1. Testes Unitários (Unit Tests)
-Focam em testar a lógica de regras de negócio e utilitários de forma isolada, sem dependências externas (banco de dados, rede).
-*   **Ferramenta:** Jest
-*   **Localização:** `backend/tests/utils`, `backend/tests/services`
-*   **Exemplo:** Validar se a função `sanitizarTexto` remove espaços corretamente.
+### 1.1 Testes Unitários (Unit Testing)
+Validam a lógica de negócio pura ("Domain Logic") em isolamento.
+*   **Escopo:** `src/services`, `src/utils`.
+*   **Estratégia:** Mocking de dependências externas (Prisma, Google API).
+*   **Localização:** `backend/tests/unit`.
+*   **Comando:** `npm test -- unit`
 
-### 2. Testes de Integração
-Verificam se os componentes funcionam bem juntos, incluindo a interação com o Banco de Dados (Prisma).
-*   **Ferramenta:** Jest + Supertest
-*   **Localização:** `backend/tests/integration`
-*   **Foco:** Rotas da API e integridade do Banco de Dados.
+### 1.2 Testes de Integração (Integration Testing)
+Validam o contrato da API e a persistência de dados.
+*   **Escopo:** `src/controllers`, `src/routes`, `Database`.
+*   **Estratégia:** Uso de banco de dados de teste (Dockerized ou SQLite in-memory) e `supertest` para chamadas HTTP.
+*   **Localização:** `backend/tests/integration`.
+*   **Comando:** `npm test -- integration`
 
-### 3. Testes Ponta-a-Ponta (E2E)
-Simulam o comportamento real do usuário navegando no sistema.
-*   **Ferramenta:** Playwright (Frontend)
-*   **Foco:** Login via Google, navegação no Dashboard, fluxos críticos de cadastro.
+### 1.3 Testes Ponta-a-Ponta (E2E Testing)
+Validam fluxos críticos de usuário na interface real.
+*   **Escopo:** Login Flow, Dashboard Rendering, CRUD Critical Path.
+*   **Ferramenta:** Playwright.
+*   **Comando:** `npx playwright test`
 
-## 🚀 Como Executar os Testes
+## 2. Métricas de Cobertura (Code Coverage)
 
-### Backend (Jest)
+A aplicação persegue métricas de cobertura utilitária (não apenas percentual cego).
+
 ```bash
-# Executar todos os testes
-npm test
-
-# Modo Watch (Desenvolvimento)
-npm test -- --watch
-
-# Gerar relatório de cobertura
+# Geração de Relatório de Cobertura
 npm run test:coverage
 ```
 
-### Frontend (E2E)
-```bash
-# Executar testes Playwright (headless)
-npx playwright test
+**Alvos de Qualidade:**
+*   **Services:** > 80% (Foco em Regras de Negócio).
+*   **Utils:** 100% (Funções Puras).
+*   **Controllers:** Cobertura via Testes de Integração.
 
-# Executar com interface gráfica
-npx playwright test --ui
+## 3. Padrões de Escrita (Authoring Standards)
+
+### 3.1 Nomenclatura e Idioma
+Testes devem ser descritivos e escritos em **Português Brasileiro**.
+
+```javascript
+describe('Serviço de Aluno', () => {
+  test('deve rejeitar cadastro com RA duplicado', async () => {
+    // ...
+  });
+});
 ```
 
-## 📏 Padrões de Qualidade
-*   **Nomes em Português:** Todos os testes (`describe`, `test`) devem ser descritos em Português Brasileiro.
-*   **AAA:** Arrange, Act, Assert. Organize o código do teste nestas três seções claras.
-*   **Mocking:** Use mocks para serviços externos (como Google Auth) para evitar dependência de rede nos testes unitários.
+### 3.2 Padrão AAA
+Todo teste deve seguir estritamente o padrão Arrange-Act-Assert.
+
+*   **Arrange:** Preparar o mock ou estado do banco.
+*   **Act:** Executar a função alvo.
+*   **Assert:** Verificar o resultado esperado (Expectations).

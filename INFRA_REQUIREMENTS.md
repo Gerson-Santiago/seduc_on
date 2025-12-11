@@ -1,81 +1,54 @@
-# Requisitos de Infraestrutura
-> Especificações de software, versões e rede para o ambiente de produção.
+# Requisitos de Infraestrutura e Provisionamento
 
-## Índice
-- [1. Software Essencial](#1-software-versões-exatas)
-- [2. Configurações de Rede](#2-configurações-de-rede)
-- [3. Checklist de Variáveis](#3-variáveis-de-ambiente-env)
-- [4. Resumo para Solicitação](#resumo-para-a-ti-copie-e-cole-isso)
+**Classificação:** Infrastructure Specification
+**Alvo:** Ambiente de Produção (Ubuntu LTS)
 
----
+Este documento estabelece a *Bill of Materials* (BOM) de software e os requisitos de rede para o deployment do SEDUC ON.
 
-## 1. Software (Versões EXATAS)
+## 1. Runtime Environment (Versões LTS)
 
-Para garantir compatibilidade total e evitar problemas de deploy, instale **exatamente** estas versões:
+A aplicação é homologada estritamente nas versões abaixo. O desvio de versão pode ocasionar incompatibilidade de ABI ou falhas na camada de ORM.
 
-### Essenciais
-1.  **Node.js**: Versão **24.11.1**
-    ```bash
-    node -v
-    ```
-2.  **NPM**: Versão **11.6.4**
-    ```bash
-    npm -v
-    ```
-3.  **PostgreSQL**: Versão **18.1**
-    ```bash
-    psql --version
-    ```
+### 1.1 Core Runtime
+| Componente | Versão Homologada | Comando de Verificação |
+| :--- | :---: | :--- |
+| **Node.js** | `v24.11.1` | `node -v` |
+| **NPM** | `v11.6.4` | `npm -v` |
+| **PostgreSQL** | `v18.1` | `psql --version` |
 
-### Sistema Operacional
-*   **Linux**: Ubuntu 24.04 LTS (Noble Numbat)
-    *   *Recomendado por compatibilidade nativa com as versões acima.*
+### 1.2 Process Management & Utility
+| Ferramenta | Versão Mínima | Função |
+| :--- | :---: | :--- |
+| **PM2** | `5.4.x` | Gerenciador de Processos (Daemon, Logs, Restart) |
+| **Git** | `2.43.0` | Controle de Versão (Deploy) |
 
-### Gerenciamento de Processos
-4.  **PM2**: Versão **5.4.x** (ou superior estável)
-    ```bash
-    npm install -g pm2
-    ```
-5.  **Git**: Versão **2.43.0** (ou superior)
+## 2. Topology & Network Security
 
----
+### 2.1 Perímetro de Rede (Firewall Rules)
+O servidor deve operar sob o princípio de **Least Privilege Access**.
 
-## 2. Configurações de Rede
+| Porta | Protocolo | Direção | Ação | Justificativa |
+| :---: | :---: | :---: | :---: | :--- |
+| **443** | TCP | Inbound | **ALLOW** | Tráfego HTTPS (TLS 1.2/1.3) para usuários finais. |
+| **80** | TCP | Inbound | **ALLOW** | Redirecionamento HTTP -> HTTPS (Certbot/Challenges). |
+| **22** | TCP | Inbound | **RESTRICT** | Acesso Administrativo (SSH). Restringir a IPs de gestão (VPN/Bastian). |
+| **3001** | TCP | Inbound | **DENY** | Porta da API (Backend). Deve ser acessível apenas via `localhost` (Reverse Proxy). |
+| **5432** | TCP | Inbound | **DENY** | Porta do Banco de Dados. Acesso restrito à aplicação local. |
 
-Para o servidor de produção (VPS/VM):
+### 2.2 Estratégia de Reverse Proxy
+Recomenda-se o uso de **Nginx** ou **Caddy** como Gateway na frente dos processos Node.js para:
+1.  Terminação SSL/TLS.
+2.  Compressão Gzip/Brotli.
+3.  Load Balancing básico.
 
-*   **Portas de Entrada (Firewall):**
-    *   `80` (HTTP) - Para redirecionamento ou proxy reverso.
-    *   `443` (HTTPS) - Tráfego seguro obrigatório.
-    *   `22` (SSH) - Acesso remoto administrativo.
+## 3. Provisioning Checklist
 
-> [!WARNING]
-> As portas `3000` ou `3001` (Node.js) **NÃO** devem ser expostas publicamente. Use um Proxy Reverso (Nginx/Apache) para encaminhar o tráfego da porta 80/443 para a aplicação.
+Para a equipe de Infraestrutura/DevOps:
 
----
-
-## 3. Variáveis de Ambiente (.env)
-
-O sistema **NÃO INICIA** sem estas chaves configuradas. Consulte o arquivo [ENV_VARS.md](./ENV_VARS.md) para detalhes completos.
-
-*   `DATABASE_URL`
-*   `JWT_SECRET`
-*   `GOOGLE_CLIENT_ID`
-*   `NODE_ENV=production`
-
----
-
-## Resumo para a TI (Copie e cole isso)
-
-> **Solicitação de Provisionamento de Servidor - Projeto SEDUC ON**
+> **Solicitação de Recurso Computacional**
 >
-> **Software (Versões Exatas):**
-> *   OS: Ubuntu 24.04 LTS
-> *   Node.js: **v24.11.1**
-> *   NPM: **v11.6.4**
-> *   PostgreSQL: **v18.1**
-> *   PM2: Latest Stable
->
-> **Rede:**
-> *   Liberar entrada: 80, 443, 22.
-> *   Bloquear externa: 3000, 3001, 5432 (Banco deve aceitar conexão apenas local ou de IP confiável).
+> **OS:** Ubuntu 24.04 LTS (Noble Numbat)
+> **Compute:** 2 vCPU / 4GB RAM (Mínimo recomendado para ETL + API)
+> **Storage:** SSD NVMe (I/O intensivo durante ingestão CSV)
+> **Stack:** Node.js v24+, Postgres 18+
+> **Network:** Expor apenas 80/443. Bloquear tráfego direto para 3001.

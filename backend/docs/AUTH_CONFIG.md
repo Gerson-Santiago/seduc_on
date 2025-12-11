@@ -1,39 +1,56 @@
-# Configuração de Autenticação Blindada (Google OAuth & Cookies)
+# Especificação de Autenticação e Gestão de Identidade
 
-Este documento define o padrão **obrigatório** de configuração para a autenticação do SEDUC ON.
+**Classificação:** Technical Specification
+**Protocolo:** OAuth 2.0 + OIDC
+**Sessão:** Stateful HttpOnly Cookies
 
-## 1. Variáveis de Ambiente Obrigatórias
-O backend **não iniciará** se qualquer uma destas variáveis estiver faltando.
+Este documento define os padrões mandatórios para a configuração do subsistema de autenticação do módulo backend.
 
-| Variável | Descrição | Exemplo |
-| :--- | :--- | :--- |
-| `GOOGLE_CLIENT_ID` | Credencial pública do GCP | `123...apps.googleusercontent.com` |
-| `JWT_SECRET` | Chave secreta para assinar tokens | `segredo_super_forte_v1` |
-| `DATABASE_URL` | Conexão PostgreSQL (Prisma) | `postgresql://user:pass@localhost:5432/db` |
-| `FRONTEND_URL` | URL exata do Frontend (CORS) | `http://localhost:5173` |
+## 1. Configuração de Ambiente (Environment)
 
-## 2. Política de Cookies (Segurança)
-A aplicação aplica automaticamente flags de segurança nos cookies dependendo do ambiente (`NODE_ENV`).
+O runtime de segurança exige a definição estrita das seguintes variáveis de ambiente. A ausência de qualquer chave resultará em *Startup Failure*.
 
-| Ambiente | HTTPS | Secure | SameSite |
+| Variável | Classificação | Descrição Técnica | Exemplo |
 | :--- | :--- | :--- | :--- |
-| `development` | Não | `false` | `Lax` |
-| `production` | **Sim** | **`true`** | `Lax` |
+| `GOOGLE_CLIENT_ID` | Identidade | Credencial pública do Authorization Server (GCP) | `123...apps.googleusercontent.com` |
+| `JWT_SECRET` | Criptografia | Chave simétrica (HMAC SHA256) para assinatura de tokens | `hash_256_bits_complexo` |
+| `DATABASE_URL` | Conectividade | Connection String JDBC-like para PostgreSQL | `postgresql://user:pass@host:5432/db` |
+| `FRONTEND_URL` | Segurança | Origem confiável para Política CORS | `http://localhost:5173` |
 
-> **PERIGO:** Em produção, se você rodar sem HTTPS, o login **falhará silenciosamente** porque o navegador rejeitará o cookie `Secure`.
+## 2. Política de Segurança de Sessão (Session Policy)
 
-## 3. Contrato Frontend
-Para o login funcionar, toda requisição autenticada do frontend deve incluir:
+A gestão de sessão utiliza cookies seguros para evitar vetores de ataque comuns (XSS/CSRF). A aplicação aplica flags de segurança condicionalmente ao ambiente (`NODE_ENV`).
+
+| Ambiente | Flag `Secure` (HTTPS) | Atributo `SameSite` | Comportamento |
+| :--- | :---: | :---: | :--- |
+| `development` | `false` | `Lax` | Permite testes locais via HTTP. |
+| `production` | **`true`** | `Lax` | **Exige HTTPS**. Cookies são rejeitados silenciosamente em HTTP. |
+
+> [!WARNING]
+> Em produção, a terminação SSL/TLS (Load Balancer ou Reverse Proxy) é **obrigatória**. Sem HTTPS, a autenticação falhará.
+
+## 3. Contrato de Integração (Frontend Consumer)
+
+Para garantir a persistência da sessão, o cliente HTTP (Browser/Frontend) deve ser configurado para incluir credenciais em requisições Cross-Origin.
+
+**Exemplo de Implementação (Fetch API):**
 ```javascript
-fetch(url, {
-  credentials: 'include' // OBRIGATÓRIO para enviar o cookie HttpOnly
-})
+const response = await fetch(API_URL, {
+  method: 'GET',
+  credentials: 'include', // Mandatório para transporte de Cookies HttpOnly
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 ```
 
-## 4. Diagnóstico de Falhas Comuns
-**Sintoma:** "Faço login, o Google redireciona, mas volto para a tela de login."
-**Causa:** Backend gerou o cookie, mas o endpoint `/me` não conseguiu lê-lo.
-**Solução:**
-1. Verifique se o `getMe` no controller está usando `req.user.id`.
-2. Verifique se o frontend está enviando `credentials: 'include'`.
-3. Se for produção, verifique se está usando HTTPS.
+## 4. Troubleshooting e Diagnóstico
+
+### Cenário: Loop de Redirecionamento (Auth Loop)
+**Sintoma:** Usuário autentica no Google, retorna à aplicação, mas permanece deslogado.
+**Causa Raiz:** O backend emitiu o cookie `Set-Cookie`, mas o Frontend não o retransmitiu na chamada subsequente (`/me`).
+
+**Checklist de Resolução:**
+1.  **Backend:** Verificar se o Controller `getMe` acessa `req.user` corretamente.
+2.  **Frontend:** Confirmar flag `credentials: 'include'`.
+3.  **Infraestrutura:** Verificar se o domínio do Backend e Frontend compartilham o mesmo eTLD+1 ou se as políticas de `SameSite` permitem a troca.

@@ -1,23 +1,21 @@
-# Referência da API (Backend)
+# Interface Contracts & API Reference
 
-**Data da Última Atualização:** Dezembro 2025
+**Classificação:** Interface Documentation
+**Protocolo:** RESTful over HTTPS
+**Formatos:** JSON (application/json)
 
-Documentação dos padrões de comunicação e principais endpoints da API do SEDUC ON.
+Este documento define os contratos de interface da Camada de Apresentação (Presentation Layer).
 
-## 📡 Padrões de Comunicação
+## 1. Padrões de Protocolo (Protocol Standards)
 
-### Base URL
-Todas as rotas da API são prefixadas com `/api`.
-Exemplo: `http://localhost:3000/api/alunos`
-
-### Formato de Resposta
-A API utiliza JSON para todas as respostas.
+### 1.1 Envelope de Resposta (Response Envelope)
+A API implementa um envelope padronizado para garantir consistência de consumo pelo client (Frontend).
 
 **Sucesso (200 OK):**
 ```json
 {
-  "data": { ... }, // Objeto ou Lista
-  "meta": {        // Metadados (opcional, p/ paginação)
+  "data": { ... },       // Payload Principal (Object ou Array)
+  "meta": {              // Metadados de Paginação (Opcional)
     "total": 150,
     "page": 1,
     "limit": 20
@@ -28,37 +26,56 @@ A API utiliza JSON para todas as respostas.
 **Erro (4xx/5xx):**
 ```json
 {
-  "error": "Descrição do erro",
-  "details": "Mensagem técnica (apenas em ambiente de DEV)"
+  "error": "Access Denied",  // Mensagem Amigável (User-Facing)
+  "code": "AUTH_001",        // Código de Erro Interno (Opcional)
+  "details": "..."           // Stack Trace (Apenas em ambiente DEV)
 }
 ```
 
-## 🔐 Autenticação
+### 1.2 Segurança de Transporte
+*   **Authentication:** Bearer Token (JWT) via Cookie HttpOnly.
+*   **Authorization:** Middleware `verificarToken` valida a sessão antes do Controller.
 
-A segurança é gerenciada via **Google OAuth 2.0**.
-*   O frontend envia um `credential` (token JWT do Google).
-*   O backend valida o token e cria uma sessão interna.
+## 2. Catálogo de Recursos (Resource Catalog)
 
-## 🗺 Principais Endpoints
+### 2.1 Módulo: Identidade (`/auth`)
 
-### Alunos (`/api/alunos`)
-*   `GET /`: Lista alunos com filtros (nome, escola, série). Suporta paginação.
-*   `GET /:ra`: Busca detalhes de um aluno específico pelo RA.
-*   `GET /stats`: Estatísticas agregadas (alunos por escola, série).
-*   `POST /`: Cria um novo aluno (Utiliza `AlunoService`).
-*   `PUT /:ra`: Atualiza dados de um aluno.
-*   `DELETE /:ra`: Remove um aluno.
+| Método | Endpoint | Middleware | Descrição Técnica |
+| :---: | :--- | :--- | :--- |
+| `POST` | `/api/auth/google-login` | `RateLimit(Login)` | Exchange de Credencial Google para Sessão interna. |
+| `POST` | `/api/auth/logout` | `Auth` | Invalidação de Cookie de Sessão. |
 
-### Autenticação (`/api/auth`)
-*   `POST /google-login`: Valida credenciais do Google e inicia sessão.
-*   `POST /logout`: Encerra a sessão.
+### 2.2 Módulo: Estudantes (`/alunos`)
 
-### Escolas (`/api/escolas`)
-*   `GET /`: Lista todas as escolas cadastradas.
+| Método | Endpoint | Middleware | Descrição Técnica |
+| :---: | :--- | :--- | :--- |
+| `GET` | `/api/alunos` | `Auth` | Listagem paginada com suporte a filtros dinâmicos via Query Param. |
+| `GET` | `/api/alunos/:ra` | `Auth` | Recuperação de entidade por Chave Primária (RA). |
+| `GET` | `/api/alunos/stats` | `Auth` | Agregação de dados para Dashboard (OLAP-like queries). |
+| `POST` | `/api/alunos` | `Auth, Admin` | Criação de recurso. Exige payload validado por `alunoSchema`. |
 
-## 🧩 Arquitetura MSC na API
+### 2.3 Módulo: Instituições (`/escolas`)
 
-Os Controllers (`src/controllers`) **nunca** executam regras de negócio.
-1.  **Controller:** Recebe `req`, valida *inputs* básicos.
-2.  **Service:** Chamado pelo Controller. Executa a lógica (ex: verificar duplicidade).
-3.  **Controller:** Formata o retorno do Service para JSON e envia `res`.
+| Método | Endpoint | Middleware | Descrição Técnica |
+| :---: | :--- | :--- | :--- |
+| `GET` | `/api/escolas` | `Auth` | Listagem de referência de unidades escolares. |
+
+## 3. Padrão de Camadas (Layered Pattern)
+
+Seguindo a arquitetura **MSC**, os endpoints delegam imediatamente para a camada de serviço.
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Controller
+    participant Service
+    participant DB
+    
+    Client->>Controller: GET /alunos (HTTP)
+    Controller->>Controller: Validate Query Params (Zod)
+    Controller->>Service: findAllAlunos(filters)
+    Service->>DB: Prisma.findMany()
+    DB-->>Service: Result Set
+    Service-->>Controller: DTO List
+    Controller-->>Client: JSON Response (200 OK)
+```
