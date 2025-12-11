@@ -6,7 +6,6 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localho
 // Cria o contexto de autenticação
 
 const AuthContext = createContext()
-const LOCAL_STORAGE_KEY = 'seduc_on_user'
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 export const AuthProvider = ({ children }) => {
@@ -17,25 +16,20 @@ export const AuthProvider = ({ children }) => {
   const [showAccessDeniedModal, setShowAccessDeniedModal] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(LOCAL_STORAGE_KEY)
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      validateSession(parsed.token)
-    } else {
-      setLoading(false)
-    }
+    // Tenta validar a sessão existente (via cookie) ao carregar
+    validateSession()
   }, [])
 
-  const validateSession = async (token) => {
+  const validateSession = async () => {
     try {
+      // 🍪 Cookie é enviado automaticamente com credentials: 'include'
       const response = await fetch(`${API_BASE_URL}/usuarios/me`, {
-        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
       })
       if (!response.ok) throw new Error('Sessão inválida')
       const data = await response.json()
-      setUser({ ...data.user, token })
+      setUser({ ...data.user }) // Token não é mais armazenado no estado do cliente
     } catch {
-      localStorage.removeItem(LOCAL_STORAGE_KEY)
       setUser(null)
     } finally {
       setLoading(false)
@@ -51,6 +45,7 @@ export const AuthProvider = ({ children }) => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: credential }),
+          credentials: 'include', // Necessário para receber o Set-Cookie
         })
       } catch (networkError) {
         throw new Error('Servidor fora do ar. Tente novamente mais tarde.')
@@ -72,10 +67,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json()
 
       // ✅ Aqui chamamos validateSession para obter o user completo
-      await validateSession(data.token)
-
-      // Obs: validateSession já seta o user e o loading
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ token: data.token }))
+      await validateSession()
 
       setError(null)
       return true // Indica sucesso
@@ -108,9 +100,19 @@ export const AuthProvider = ({ children }) => {
   };
 
 
-  const logout = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY)
-    setUser(null)
+  const logout = async () => {
+    try {
+      await fetch(`${API_BASE_URL}/usuarios/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    } finally {
+      setUser(null)
+      // Opcional: recarregar a página para limpar estados globais
+      // window.location.reload(); 
+    }
   }
 
   return (
