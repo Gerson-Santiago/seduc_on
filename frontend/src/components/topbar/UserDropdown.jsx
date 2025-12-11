@@ -32,6 +32,7 @@ export default function UserDropdown({ user, onLogout }) {
           className="user-dropdown-avatar"
           onClick={() => setOpen(o => !o)}
           onError={() => setImgError(true)}
+          referrerPolicy="no-referrer"
         />
       ) : (
         <div
