@@ -16,7 +16,16 @@ API RESTful para processamento e fornecimento de dados educacionais da rede de B
     *   [Análises de Performance](docs/README.md)
     *   [Análise de Segurança](docs/security/analise-seguranca-dados.md)
 
+## Pré-requisitos
+
+Certifique-se de ter o ambiente configurado com as versões homologadas:
+
+*   **Node.js:** v24.11.1
+*   **NPM:** v11.6.4
+*   **PostgreSQL:** v18.1
+
 ## Como Contribuir
+
 
 1.  Clone o repositório.
 2.  Instale as dependências: `npm install`.
