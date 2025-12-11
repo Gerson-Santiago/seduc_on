@@ -6,9 +6,9 @@ O **SEDUC ON** é uma plataforma de alta performance projetada para centralizaç
 
 | Componente | Stack Tecnológica | Arquitetura |
 | :--- | :--- | :--- |
-| **Backend** | Node.js (v22), Express 5.x, Prisma ORM | Three-Tier Layered Modular |
-| **Frontend** | React, Vite, TailwindCSS | SPA (Single Page Application) |
-| **Database** | PostgreSQL 15+ | Relational Data Warehouse |
+| **Backend** | Node.js (v24.11.1), Express 5.x, Prisma 6.x | Three-Tier Layered Modular |
+| **Frontend** | React 18, Vite, TailwindCSS | SPA (Single Page Application) |
+| **Database** | PostgreSQL 18.1 | Relational Data Warehouse |
 | **Segurança** | OAuth2, JWT (HttpOnly), Helmet | Defense in Depth |
 
 ---
