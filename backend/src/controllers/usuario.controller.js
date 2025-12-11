@@ -8,7 +8,17 @@ export const loginUsuario = asyncHandler(async (req, res) => {
 
   try {
     const result = await UsuarioService.autenticarGoogle(req.prisma, token);
-    res.json(result);
+
+    // 🍪 SECURITY: HTTP-Only Cookie
+    const isProd = process.env.NODE_ENV === 'production';
+    res.cookie('token', result.token, {
+      httpOnly: true,
+      secure: isProd, // HTTPS only in production
+      sameSite: 'Lax', // CSRF protection + UX
+      maxAge: 24 * 60 * 60 * 1000 // 1 dia
+    });
+
+    res.json({ ...result, token: undefined }); // Don't send token in body anymore (or keep for compatibility if needed, but safer to remove)
   } catch (error) {
     if (error.message === 'Domínio não autorizado') return res.status(403).json({ error: error.message });
     if (error.message === 'Usuário não autorizado') return res.status(401).json({ error: error.message });
@@ -17,17 +27,23 @@ export const loginUsuario = asyncHandler(async (req, res) => {
   }
 });
 
+export const logoutUsuario = (req, res) => {
+  const isProd = process.env.NODE_ENV === 'production';
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: 'Lax'
+  });
+  res.status(200).json({ message: 'Logout realizado com sucesso' });
+};
+
 export const getMe = asyncHandler(async (req, res) => {
-  const authHeader = req.headers.authorization
-  if (!authHeader) return res.status(401).json({ error: 'Token não fornecido' })
+  // O middleware verificarToken já populou req.user
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ error: 'Usuário não autenticado' });
+  }
 
-  const token = authHeader.split(' ')[1]
-  if (!token) return res.status(401).json({ error: 'Token inválido' })
-
-  const payload = verificarToken(token)
-  if (!payload) return res.status(401).json({ error: 'Token inválido ou expirado' })
-
-  const usuario = await UsuarioService.findUsuarioById(req.prisma, payload.id)
+  const usuario = await UsuarioService.findUsuarioById(req.prisma, req.user.id)
   if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
 
   const { senha, ...usuarioSemSenha } = usuario

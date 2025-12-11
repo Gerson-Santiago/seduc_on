@@ -37,7 +37,17 @@ console.log('🔥 Configurações Ativas:', {
 // 3. Iniciar Servidor
 const PORT = process.env.PORT || 3000;
 
+// Validate critical environment variables
+const REQUIRED_ENV = ['JWT_SECRET', 'GOOGLE_CLIENT_ID', 'DATABASE_URL'];
+const missingEnv = REQUIRED_ENV.filter(key => !process.env[key]);
+
+if (missingEnv.length > 0) {
+  console.error('\x1b[31m%s\x1b[0m', `FATAL ERROR: Missing required environment variables: ${missingEnv.join(', ')}`);
+  console.error('Please configure them in your .env file.');
+  process.exit(1);
+}
+
 app.listen(PORT, () => {
-  console.log(`🚀 Backend rodando na porta http://localhost:${PORT}`);
-  console.log('=====================================');
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🔥 Environment: ${process.env.NODE_ENV}`);
 });
