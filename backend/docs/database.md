@@ -1,7 +1,7 @@
 # Arquitetura de Persistência e Modelagem de Dados
 
 **Classificação:** Data Engineering & Schema Documentation
-**Tecnologia:** PostgreSQL 15+ & Prisma ORM
+**Tecnologia:** PostgreSQL 18.1 & Prisma ORM
 
 Este documento detalha a estratégia de persistência de dados, incluindo pipelines de ingestão (ETL) e modelagem relacional.
 

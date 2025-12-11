@@ -14,7 +14,7 @@
 
 ## 1. Análise Arquitetural Detalhada
 
-O sistema adota o padrão **Three-Tier Layered Architecture** (Arquitetura em Três Camadas) implementado sobre um runtime **Node.js** utilizando **Express.js** como framework de servidor. A estrutura de código segue o padrão **Modular Pattern** utilizando ES Modules (ESM).
+O sistema adota o padrão **Three-Tier Layered Architecture** (Arquitetura em Três Camadas) implementado sobre um runtime **Node.js (v24.11.1)** utilizando **Express.js** como framework de servidor. A estrutura de código segue o padrão **Modular Pattern** utilizando ES Modules (ESM).
 
 ### 1.1. Decomposição das Camadas
 

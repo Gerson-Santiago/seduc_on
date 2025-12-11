@@ -1,7 +1,11 @@
 # Visão Geral Técnica (System Overview)
 
 **Classificação:** Documentação de Arquitetura de Alto Nível
-**Stack:** Node.js, Express, PostgreSQL, Prisma
+## 🛠 Stack Tecnológico
+*   **Runtime:** Node.js (v24.11.1 LTS)
+*   **Framework:** Express.js 5.x
+*   **Database:** PostgreSQL 18.1
+*   **ORM:** Prisma 6.x
 
 ## 1. Introdução Estratégica
 
