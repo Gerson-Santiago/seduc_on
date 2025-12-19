@@ -11,16 +11,18 @@ API RESTful para processamento e fornecimento de dados educacionais da rede de B
     *   Importação e tratamento de dados via CSV.
 *   **Autenticação e Segurança**: Integração com Google OAuth e controle de acesso.
 *   **Documentação**:
-    *   [API Reference](docs/API.md)
+    *   [Visão Geral Técnica](docs/OVERVIEW.md)
+    *   [API Reference](docs/API_REFERENCE.md)
     *   [Guia de Testes](docs/TESTING.md)
-    *   [Análises de Performance](docs/README.md)
-    *   [Análise de Segurança](docs/security/analise-seguranca-dados.md)
+    *   [Política de Segurança](docs/SECURITY.md)
+    *   [Arquitetura de Banco de Dados](docs/DATABASE.md)
+    *   [Variáveis de Ambiente](../ENV_VARS.md)
 
 ## Pré-requisitos
 
 Certifique-se de ter o ambiente configurado com as versões homologadas:
 
-*   **Node.js:** v24.11.1
+*   **Node.js:** v24.12.0
 *   **NPM:** v11.6.4
 *   **PostgreSQL:** v18.1
 
