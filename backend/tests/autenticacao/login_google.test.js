@@ -23,6 +23,7 @@ describe('Autenticação Google - Backend', () => {
         res = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
+            cookie: jest.fn(),
         };
         jest.clearAllMocks();
     });
@@ -80,7 +81,12 @@ describe('Autenticação Google - Backend', () => {
             await loginUsuario(req, res);
 
             expect(UsuarioService.autenticarGoogle).toHaveBeenCalledWith(req.prisma, 'valid-google-token');
-            expect(res.json).toHaveBeenCalledWith(mockUser);
+
+            // Verifies cookie is set
+            expect(res.cookie).toHaveBeenCalledWith('token', 'jwt-token-exemplo', expect.any(Object));
+
+            // Verifies JSON response has token undefined
+            expect(res.json).toHaveBeenCalledWith({ ...mockUser, token: undefined });
             // Não deve chamar status com erro
             expect(res.status).not.toHaveBeenCalledWith(400);
             expect(res.status).not.toHaveBeenCalledWith(401);
