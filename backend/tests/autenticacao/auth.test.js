@@ -25,6 +25,7 @@ describe('Usuario Controller - Login', () => {
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
+      cookie: jest.fn(),
     };
   });
 
@@ -40,7 +41,8 @@ describe('Usuario Controller - Login', () => {
 
     await loginUsuario(req, res);
 
-    expect(res.json).toHaveBeenCalledWith(mockResult);
+    expect(res.cookie).toHaveBeenCalledWith('token', 'mocked_jwt_token', expect.any(Object));
+    expect(res.json).toHaveBeenCalledWith({ ...mockResult, token: undefined });
   });
 
   test('Deve retornar 403 para domínio inválido', async () => {
