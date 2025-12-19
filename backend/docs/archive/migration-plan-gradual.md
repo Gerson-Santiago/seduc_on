@@ -22,4 +22,4 @@ A migração foi realizada em fases, priorizando a estabilidade do processo de i
 2.  **Qualidade de Dados:** Validação estrita impede entrada de dados corrompidos.
 3.  **Manutenibilidade:** Código modular (Service Pattern) facilitou a criação de novos scripts.
 
-Este plano agora serve como registro histórico. Para entender a arquitetura atual, consulte a [Visão Geral](./overview.md).
+Este plano agora serve como registro histórico. Para entender a arquitetura atual, consulte a [Visão Geral](../OVERVIEW.md).

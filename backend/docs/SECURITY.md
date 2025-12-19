@@ -46,4 +46,4 @@ Implementação de logging estruturado (JSON) com **Redação Automática de Seg
 Ações críticas e processos de ETL geram trilhas de auditoria persistentes no banco de dados (`inconsistencias_importacao`), garantindo accountability.
 
 ---
-*Referência Técnica: [RELATORIO_SEGURANCA_ARQUITETURA.md](./RELATORIO_SEGURANCA_ARQUITETURA.md)*
+*Referência Técnica: [Relatório Técnico de Arquitetura (Arquivado)](./archive/RELATORIO_2025-12-11.md)*
