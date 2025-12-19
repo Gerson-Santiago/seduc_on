@@ -9,8 +9,8 @@
     "dev": "nodemon --exec \"node --env-file=.env.dev server.js\"",
     "preview": "nodemon --exec \"node --env-file=.env.preview server.js\"",
     "production": "node --env-file=.env server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+    "test": "cross-env JWT_SECRET=test_secret node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "cross-env JWT_SECRET=test_secret node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "keywords": [],
   "author": "Gerson Santiago",
