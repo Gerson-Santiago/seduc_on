@@ -2,10 +2,10 @@
 
 **Classificação:** Documentação de Arquitetura de Alto Nível
 ## 🛠 Stack Tecnológico
-*   **Runtime:** Node.js (v24.11.1 LTS)
+*   **Runtime:** Node.js (v24.12.0)
 *   **Framework:** Express.js 5.x
 *   **Database:** PostgreSQL 18.1
-*   **ORM:** Prisma 6.x
+*   **ORM:** Prisma 6.11.0
 
 ## 1. Introdução Estratégica
 
@@ -70,4 +70,4 @@ A organização de diretórios reflete a separação lógica das camadas:
 *   **Performance:** ✅ Otimizada (Streaming ETL).
 
 ---
-*Para uma análise profunda de segurança e decisões de design, consulte o [Relatório Técnico de Arquitetura](./RELATORIO_SEGURANCA_ARQUITETURA.md).*
+*Para uma análise profunda de segurança e decisões de design, consulte o [Relatório Técnico de Arquitetura (Arquivado)](./archive/RELATORIO_2025-12-11.md).*

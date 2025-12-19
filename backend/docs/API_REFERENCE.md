@@ -4,6 +4,9 @@
 **Protocolo:** RESTful over HTTPS
 **Formatos:** JSON (application/json)
 
+> [!WARNING]
+> Esta documentação é mantida **manualmente**. Em caso de divergência, o código-fonte (`src/routes`, `src/schemas`) é a fonte da verdade.
+
 Este documento define os contratos de interface da Camada de Apresentação (Presentation Layer).
 
 ## 1. Padrões de Protocolo (Protocol Standards)
