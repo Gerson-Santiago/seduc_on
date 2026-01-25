@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: seduc_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: seduc_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - seduc-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d seduc_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    container_name: seduc_backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./backend/.env
+    environment:
+      # Override DB URL to use container hostname 'db' instead of 'localhost'
+      - DATABASE_URL=postgresql://user:password@db:5432/seduc_db
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - seduc-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: seduc_frontend
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - seduc-network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  seduc-network:
+    driver: bridge
