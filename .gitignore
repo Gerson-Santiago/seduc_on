@@ -81,3 +81,6 @@ audit-report.json
 # ==============================================================================
 backend/scripts/debug/
 !backend/scripts/debug/README.md
+
+
+*.apps.googleusercontent.com.json

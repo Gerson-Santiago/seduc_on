@@ -15,15 +15,9 @@ export default ({ mode }) => {
 
   // ===================================
   // PATH BASE
-  // - '/' em dev (raiz)
-  // - './' em preview (evita erro nos assets locais)
-  // - VITE_BASE_URL nos demais (ex: '/aee/')
+  // - Respeita VITE_BASE_URL (ex: /aee/) em todos os ambientes
   // ===================================
-  const base = isDev
-    ? '/'
-    : isPreview
-      ? env.VITE_BASE_URL || '/seduc_on/'  // forçar seduc_on como padrão se faltar variável
-      : env.VITE_BASE_URL || '/'
+  const base = env.VITE_BASE_URL || '/'
 
 
 
