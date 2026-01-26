@@ -50,6 +50,12 @@ npm install
 npm run dev
 ```
 
+Ou via Docker (na raiz do projeto):
+```bash
+docker compose up frontend
+```
+
+
 ### 3.2 Variáveis de Ambiente
 Consulte [ENV_VARS.md](../ENV_VARS.md) na raiz do projeto. Variáveis devem ser prefixadas com `VITE_`.
 

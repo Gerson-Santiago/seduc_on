@@ -9,7 +9,7 @@ O **SEDUC ON** é uma plataforma de alta performance projetada para centralizaç
 | **Backend** | Node.js (v24.11.1), Express 5.x, Prisma 6.x | Three-Tier Layered Modular |
 | **Frontend** | React 18, Vite, TailwindCSS | SPA (Single Page Application) |
 | **Database** | PostgreSQL 18.1 | Relational Data Warehouse |
-| **Segurança** | OAuth2, JWT (HttpOnly), Helmet | Defense in Depth |
+| **Container** | Docker Compose | Isolated Services (App + DB) |
 
 ---
 
@@ -38,8 +38,21 @@ A documentação do projeto foi estruturada para refletir os padrões de engenha
 ### Pré-requisitos
 Consulte [INFRA_REQUIREMENTS.md](INFRA_REQUIREMENTS.md) para garantir conformidade de ambiente.
 
-### Inicialização
-O projeto utiliza scripts de automação para orquestrar os serviços.
+
+### 🐳 Docker Quickstart (Recomendado)
+
+A maneira mais rápida e limpa de rodar o projeto.
+
+```bash
+# Inicia Backend, Frontend e Banco de Dados
+docker compose up --build
+```
+- **Backend:** http://localhost:3001
+- **Frontend:** http://localhost:5173
+- **Banco:** Isolado no container `seduc_db`
+
+### Inicialização Manual (Legado)
+O projeto utiliza scripts de automação para orquestrar os serviços localmente sem Docker.
 
 ```bash
 # Iniciar todo o ecossistema (Backend + Frontend)

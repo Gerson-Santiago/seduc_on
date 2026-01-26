@@ -52,3 +52,44 @@ Para a equipe de Infraestrutura/DevOps:
 > **Storage:** SSD NVMe (I/O intensivo durante ingestão CSV)
 > **Stack:** Node.js v24+, Postgres 18+
 > **Network:** Expor apenas 80/443. Bloquear tráfego direto para 3001.
+
+## 4. Containerized Deployment (Docker)
+
+Para ambientes containerizados, a gestão de dependências (Node/Postgres) é abstraída pelas imagens Docker.
+
+### 4.1 Host Requirements
+| Componente | Versão Mínima |
+| :--- | :--- |
+| **Docker Engine** | 24.0+ |
+| **Docker Compose** | 2.20+ |
+
+### 4.2 Instalação no Debian 12 (Bookworm)
+Se o comando `docker` não for encontrado, execute:
+
+```bash
+# 1. Configurar repositório oficial
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# 2. Instalar Docker Engine e Plugin Compose
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# 3. Permissões (para não usar sudo no docker)
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+
+### 4.2 Vantagens
+*   **Isolamento**: O ambiente de execução é idêntico em Dev e Prod.
+*   **Zero-Config**: Não requer instalação manual de Node.js ou PostgreSQL no host.
+

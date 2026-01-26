@@ -35,6 +35,12 @@ Certifique-se de ter o ambiente configurado com as versões homologadas:
 4.  Rode os testes: `npm test`.
 5.  Inicie o servidor: `npm run dev`.
 
+Também é possível rodar via Docker (na raiz do projeto):
+```bash
+docker compose up backend
+```
+
+
 ### Instalação
 ```bash
 npm install
