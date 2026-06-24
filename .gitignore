@@ -38,8 +38,11 @@ dist/
 dist-ssr/
 build/
 coverage/
-frontend-seduc-on-vite/test-results/
 .vite/
+
+# Playwright — artefatos gerados pelos testes E2E (não versionar)
+playwright-report/
+test-results/
 
 # ==============================================================================
 # 📄 DATA & SPECIFIC FILES
