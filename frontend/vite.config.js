@@ -66,6 +66,7 @@ export default ({ mode }) => {
     // INJEÇÃO DE VARIÁVEIS EM import.meta.env
     // ===================================
     define: {
+      'import.meta.env.VITE_GOOGLE_CLIENT_ID': JSON.stringify(env.VITE_GOOGLE_CLIENT_ID),
       'import.meta.env.VITE_APP_URL': JSON.stringify(env.VITE_APP_URL),
       'import.meta.env.VITE_API_BASE_URL': JSON.stringify(env.VITE_API_BASE_URL),
       'import.meta.env.VITE_GOOGLE_REDIRECT_URI': JSON.stringify(env.VITE_GOOGLE_REDIRECT_URI),

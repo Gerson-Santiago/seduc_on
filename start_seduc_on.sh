@@ -21,7 +21,7 @@ BACKEND_DIR="$BASE_DIR/backend"
 FRONTEND_DIR="$BASE_DIR/frontend"
 
 # Cluster PostgreSQL
-PG_CLUSTER_VERSION="18"
+PG_CLUSTER_VERSION="17"
 PG_CLUSTER_NAME="main"
 
 # Parâmetro: dev | preview | stop
@@ -70,10 +70,10 @@ start_backend() {
     
     if [ "$ENV_MODE" = "dev" ]; then
         # Força NODE_ENV development
-        NODE_ENV=development npm run dev &
+        NODE_ENV=development pnpm run dev &
     else
         # Força NODE_ENV preview
-        NODE_ENV=preview npm run preview &
+        NODE_ENV=preview pnpm run preview &
     fi
 }
 
@@ -85,10 +85,10 @@ start_frontend() {
     sanitize_env
 
     if [ "$ENV_MODE" = "dev" ]; then
-        npm run dev &
+        pnpm run dev &
     else
-        npm run build:preview || { echo "❌ Build do frontend falhou!"; exit 1; }
-        npm run preview &
+        pnpm run build:preview || { echo "❌ Build do frontend falhou!"; exit 1; }
+        pnpm run preview &
     fi
 }
 

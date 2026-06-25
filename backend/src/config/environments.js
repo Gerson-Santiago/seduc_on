@@ -4,17 +4,17 @@ const environments = {
   development: {
     FRONTEND_URL: 'http://localhost:5173',
     ALLOWED_ORIGINS: ['http://localhost:5173'],
-    GOOGLE_REDIRECT_URI: 'http://localhost:5173/seduc_on/auth/callback'
+    GOOGLE_REDIRECT_URI: 'http://localhost:5173/aee/auth/callback'
   },
   test: {
     FRONTEND_URL: 'http://localhost:5173',
     ALLOWED_ORIGINS: ['http://localhost:5173'],
-    GOOGLE_REDIRECT_URI: 'http://localhost:5173/seduc_on/auth/callback'
+    GOOGLE_REDIRECT_URI: 'http://localhost:5173/aee/auth/callback'
   },
   preview: {
     FRONTEND_URL: 'http://localhost:4173',
     ALLOWED_ORIGINS: ['http://localhost:4173'],
-    GOOGLE_REDIRECT_URI: 'http://localhost:4173/seduc_on/auth/callback'
+    GOOGLE_REDIRECT_URI: 'http://localhost:4173/aee/auth/callback'
   },
   github: {
     FRONTEND_URL: 'https://gerson-santiago.github.io/seduc_on',
