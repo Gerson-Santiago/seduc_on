@@ -23,8 +23,8 @@ backend/logs/*
 !.env.github
 credentials/
 !credentials/README.md
-client_secret.json
-
+client_secret*.json
+*.apps.googleusercontent.com.json
 # ==============================================================================
 # 🐘 BACKEND (PRISMA & DB)
 # ==============================================================================
