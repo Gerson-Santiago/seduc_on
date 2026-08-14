@@ -3,3 +3,8 @@ allowBuilds:
   '@prisma/engines': false
   prisma: false
   unrs-resolver: false
+
+overrides:
+  ip-address: "^10.3.1"
+  js-yaml: "^4.3.1"
+  brace-expansion: "^2.1.4"
